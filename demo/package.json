@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "demo",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "next build",
+    "lint": "next lint",
+    "serve": "next start",
+    "start": "next dev",
+    "prettier": "prettier -w --plugin=prettier-plugin-organize-imports . && prettier-package-json --write"
+  },
+  "dependencies": {
+    "@cassiozen/usestatemachine": "^1.0.0-beta.4",
+    "@cs124/ace-tracer": "2021.10.0",
+    "@cs124/audio-recorder": "2021.10.0",
+    "next": "11.1.2",
+    "react": "17.0.2",
+    "react-ace": "9.4.4",
+    "react-compound-timer": "^1.2.0",
+    "react-dom": "17.0.2",
+    "rooks": "^5.7.3",
+    "runtypes": "6.4.1",
+    "styled-components": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.30",
+    "@types/styled-components": "^5.1.15",
+    "eslint": "8.0.1",
+    "eslint-config-next": "11.1.2",
+    "prettier": "2.4.1",
+    "prettier-package-json": "2.6.0",
+    "prettier-plugin-organize-imports": "2.3.4",
+    "sass": "1.43.2",
+    "typescript": "4.4.4"
+  }
+}
