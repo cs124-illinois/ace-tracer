@@ -29,7 +29,10 @@ const PlayerControls: React.FC<{ replayer: RecordReplayer }> = ({ replayer }) =>
       >
         Stop
       </button>
-      <button disabled={state === "notrace" || state === "playing" || state === "recording"} onClick={() => replayer.clearTrace()}>
+      <button
+        disabled={state === "notrace" || state === "playing" || state === "recording"}
+        onClick={() => replayer.clearTrace()}
+      >
         Clear
       </button>
     </div>
@@ -144,6 +147,8 @@ const AudioRecord: React.FC = () => {
 export default function Home() {
   return (
     <>
+      <h1><kbd>ace-tracer</kbd></h1>
+      <p>Visit the <a href="https://github.com/cs124-illinois/ace-tracer">project homepage</a></p>
       <SingleEditorRecord />
       <AudioRecord />
       <SingleEditorStream />
