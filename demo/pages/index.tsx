@@ -1,11 +1,12 @@
-import { AceRecord, recordreplayer, RecordReplayer, RecordReplayerState, stream } from "@cs124/ace-tracer"
-import { AudioRecorder, record as recordAudio } from "@cs124/audio-recorder"
+import { AceRecord, recordreplayer, RecordReplayer, RecordReplayerState, stream } from '../../ace-tracer'
+import { AudioRecorder, record as recordAudio} from "../../audio-recorder"
 import dynamic from "next/dynamic"
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Timer from "react-compound-timer"
 
 const PlayerControls: React.FC<{ replayer: RecordReplayer }> = ({ replayer }) => {
   const [state, setState] = useState<RecordReplayerState>("notrace")
+  const [rate, setRate] = useState<number>(1)
   useEffect(() => {
     replayer.events.on("state", (s) => setState(s))
     replayer.events.on("timestamp", (t) => console.log(t))
@@ -14,7 +15,7 @@ const PlayerControls: React.FC<{ replayer: RecordReplayer }> = ({ replayer }) =>
     <div style={{ display: "flex", width: "100%", flexDirection: "row", alignItems: "center" }}>
       <button
         disabled={state === "notrace" || state === "playing" || state === "recording"}
-        onClick={() => replayer.startPlaying()}
+        onClick={() => replayer.startPlaying({playBackRate: rate})}
       >
         Play
       </button>
@@ -34,6 +35,31 @@ const PlayerControls: React.FC<{ replayer: RecordReplayer }> = ({ replayer }) =>
         onClick={() => replayer.clearTrace()}
       >
         Clear
+      </button>
+      <button
+        disabled={state == "recording" || state == "playing" || rate == 1.5}
+        onClick={() => setRate(1.5)}
+      >
+        1.5 Speed
+      </button>
+      <button
+        disabled={state == "recording" || state == "playing" || rate == 2.0}
+        onClick={() => setRate(2.0)}
+      >
+        2.0 Speed
+      </button>
+      <button
+        disabled={state == "recording" || state == "playing" || rate == 0.5}
+        onClick={() => setRate(0.5)}
+      >
+        0.5 Speed
+      </button>
+
+      <button
+        disabled={state == "recording" || state == "playing" || rate == 1.0}
+        onClick={() => setRate(1.0)}
+      >
+        normal Speed
       </button>
     </div>
   )
@@ -109,6 +135,7 @@ const AudioRecord: React.FC = () => {
   const [recording, setRecording] = useState(false)
   const recorder = useRef<AudioRecorder | undefined>()
   const [url, setUrl] = useState<string | undefined>()
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     const toggleRecording = async (recording: boolean) => {
@@ -138,7 +165,8 @@ const AudioRecord: React.FC = () => {
             )}
           </Timer>
         )}
-        {url && <audio controls src={url} />}
+        {url && <audio ref={audioRef} controls src={url}/>}
+        <div onClick={() => {if (audioRef.current) audioRef.current.playbackRate = 2}}>Click for 2X Speed</div>
       </div>
     </>
   )

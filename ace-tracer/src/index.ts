@@ -397,6 +397,7 @@ export interface AceReplayer {
 export interface ReplayOptions {
   start?: number
   seek?: boolean
+  playBackRate?: number
   onExternalChange?: (externalChange: ExternalChange) => void
 }
 export const replay: (
@@ -404,7 +405,7 @@ export const replay: (
   trace: AceRecord[],
   options?: ReplayOptions,
   events?: EventEmitter.Emitter
-) => AceReplayer = (editor, trace, options = { start: 0, seek: false }, events) => {
+) => AceReplayer = (editor, trace, options = { start: 0, seek: false, playBackRate: 1}, events) => {
   const replayer: AceReplayer = {} as AceReplayer
 
   let cancelled = false
@@ -415,6 +416,7 @@ export const replay: (
 
   Promise.resolve().then(async () => {
     const start = options.start || 0
+    const playBackRate = options.playBackRate || 1
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = editor.renderer as any
@@ -445,6 +447,7 @@ export const replay: (
       return resolve()
     }
 
+    let timeOffSet = 0
     for (let i = startIndex; i < trace.length && !cancelled; i++) {
       const aceRecord = trace[i]
       events?.emit("timestamp", aceRecord.timestamp)
@@ -456,9 +459,10 @@ export const replay: (
       if (trace[i + 1]) {
         const traceNextTime = new Date(trace[i + 1].timestamp).valueOf()
         const nextTime = startTime + (traceNextTime - (traceStartTime + start))
-        const delay = nextTime - new Date().valueOf()
+        const delay = nextTime - new Date().valueOf() - timeOffSet
         if (delay > 0) {
-          await sleep(delay)
+          timeOffSet += delay - (delay / playBackRate)
+          await sleep(delay / playBackRate)
         }
       }
     }
