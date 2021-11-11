@@ -1,45 +1,186 @@
-import { AceRecord, recordreplayer, RecordReplayer, RecordReplayerState, stream } from "@cs124/ace-tracer"
-import { AudioRecorder, record as recordAudio } from "@cs124/audio-recorder"
+import {
+  AceRecord,
+  recordreplayer as acerecordreplayer,
+  RecordReplayer as AceRecordReplayer,
+  RecordReplayerState as AceRecordReplayerState,
+  stream,
+} from "@cs124/ace-tracer"
+import {
+  RecordReplayer as AudioRecordReplayer,
+  recordreplayer as audiorecordreplayer,
+  RecordReplayerState as AudioRecordReplayerState,
+} from "@cs124/audio-recorder"
 import dynamic from "next/dynamic"
 import { useEffect, useRef, useState } from "react"
 import Timer from "react-compound-timer"
 
-const PlayerControls: React.FC<{ replayer: RecordReplayer }> = ({ replayer }) => {
-  const [state, setState] = useState<RecordReplayerState>("notrace")
+const AceEditor = dynamic(() => import("react-ace"), { ssr: false })
+
+const PlayerControls: React.FC<{ acereplayer?: AceRecordReplayer; audioreplayer?: AudioRecordReplayer }> = ({
+  acereplayer,
+  audioreplayer,
+}) => {
+  const [state, setState] = useState<AceRecordReplayerState>("blank")
   useEffect(() => {
-    replayer.events.on("state", (s) => setState(s))
-    replayer.events.on("timestamp", (t) => console.log(t))
+    acereplayer?.events.on("state", (s) => setState(s))
+    audioreplayer?.events.on("state", (s) => setState(s))
   }, [])
   return (
     <div style={{ display: "flex", width: "100%", flexDirection: "row", alignItems: "center" }}>
       <button
-        disabled={state === "notrace" || state === "playing" || state === "recording"}
-        onClick={() => replayer.startPlaying()}
+        disabled={state === "blank" || state === "playing" || state === "recording"}
+        onClick={() => {
+          acereplayer?.startPlaying()
+          audioreplayer?.startPlaying()
+        }}
       >
         Play
       </button>
-      <button disabled={state !== "notrace"} onClick={() => replayer.startRecording()}>
+      <button
+        disabled={state !== "blank"}
+        onClick={() => {
+          acereplayer?.startRecording()
+          audioreplayer?.startRecording()
+        }}
+      >
         Record
       </button>
       <button
         disabled={state !== "recording" && state !== "playing"}
         onClick={() => {
-          state === "recording" ? replayer.stopRecording() : replayer.stopPlaying()
+          if (state === "recording") {
+            acereplayer?.stopRecording()
+            audioreplayer?.stopRecording()
+          } else {
+            acereplayer?.stopPlaying()
+            audioreplayer?.stopPlaying()
+          }
         }}
       >
         Stop
       </button>
       <button
-        disabled={state === "notrace" || state === "playing" || state === "recording"}
-        onClick={() => replayer.clearTrace()}
+        disabled={state === "blank" || state === "playing" || state === "recording"}
+        onClick={() => {
+          acereplayer?.clear()
+          audioreplayer?.clear()
+        }}
       >
         Clear
+      </button>
+      <button
+        disabled={state === "blank" || state === "playing" || state === "recording"}
+        onClick={async () => {
+          const trace = acereplayer?.getTrace()
+          const audio = await audioreplayer?.getAudio()
+          console.log({
+            ...(trace && { trace }),
+            ...(audio && { audio }),
+          })
+        }}
+      >
+        Log
       </button>
     </div>
   )
 }
 
-const AceEditor = dynamic(() => import("react-ace"), { ssr: false })
+const WithAudioRecord: React.FC = () => {
+  const [aceReplayer, setAceReplayer] = useState<AceRecordReplayer | undefined>(undefined)
+  const audioReplayer = useRef(audiorecordreplayer())
+  const [state, setState] = useState<AudioRecordReplayerState>("blank")
+  useEffect(() => {
+    audioReplayer.current?.events.on("state", (s) => setState(s))
+  }, [])
+
+  return (
+    <>
+      <h2>Single Editor Record and Replay Demo (With Audio)</h2>
+      <p>Use the record button to start recording, and replay to replay when you are finished.</p>
+      {aceReplayer && <PlayerControls acereplayer={aceReplayer} audioreplayer={audioReplayer.current} />}
+      <div style={{ display: "flex" }}>
+        {state === "recording" && (
+          <Timer>
+            {() => (
+              <>
+                <Timer.Minutes />:<Timer.Seconds />
+              </>
+            )}
+          </Timer>
+        )}
+      </div>
+      <AceEditor
+        mode="java"
+        theme="github"
+        width="100%"
+        height="16rem"
+        minLines={16}
+        maxLines={Infinity}
+        showPrintMargin={false}
+        onBeforeLoad={(ace) => {
+          ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
+        }}
+        onLoad={(ace) => {
+          setAceReplayer(acerecordreplayer(ace))
+        }}
+      />
+    </>
+  )
+}
+
+const SingleEditorRecord: React.FC = () => {
+  const [replayer, setReplayer] = useState<AceRecordReplayer | undefined>(undefined)
+
+  return (
+    <>
+      <h2>Single Editor Record and Replay Demo (No Audio)</h2>
+      <p>Use the record button to start recording, and replay to replay when you are finished.</p>
+      {replayer && <PlayerControls acereplayer={replayer} />}
+      <AceEditor
+        mode="java"
+        theme="github"
+        width="100%"
+        height="16rem"
+        minLines={16}
+        maxLines={Infinity}
+        showPrintMargin={false}
+        onBeforeLoad={(ace) => {
+          ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
+        }}
+        onLoad={(ace) => {
+          setReplayer(acerecordreplayer(ace))
+        }}
+      />
+    </>
+  )
+}
+
+const AudioRecord: React.FC = () => {
+  const replayer = useRef(audiorecordreplayer())
+  const [state, setState] = useState<AudioRecordReplayerState>("blank")
+  useEffect(() => {
+    replayer.current?.events.on("state", (s) => setState(s))
+  }, [])
+
+  return (
+    <>
+      <h2>Audio Recording Demo</h2>
+      <p>Use the record button to start recording, and replay to replay when you are finished.</p>
+      {replayer && <PlayerControls audioreplayer={replayer.current} />}
+      <div style={{ display: "flex" }}>
+        {state === "recording" && (
+          <Timer>
+            {() => (
+              <>
+                <Timer.Minutes />:<Timer.Seconds />
+              </>
+            )}
+          </Timer>
+        )}
+      </div>
+    </>
+  )
+}
 
 const SingleEditorStream: React.FC = () => {
   const [records, setRecords] = useState<AceRecord[]>([])
@@ -77,80 +218,16 @@ const SingleEditorStream: React.FC = () => {
   )
 }
 
-const SingleEditorRecord: React.FC = () => {
-  const [state, setState] = useState<RecordReplayerState>("notrace")
-  const [replayer, setReplayer] = useState<RecordReplayer | undefined>(undefined)
-
-  return (
-    <>
-      <h2>Single Editor Record and Replay Demo</h2>
-      <p>Use the record button to start recording, and replay to replay when you are finished.</p>
-      {replayer && <PlayerControls replayer={replayer} />}
-      <AceEditor
-        mode="java"
-        theme="github"
-        width="100%"
-        height="16rem"
-        minLines={16}
-        maxLines={Infinity}
-        showPrintMargin={false}
-        onBeforeLoad={(ace) => {
-          ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
-        }}
-        onLoad={(ace) => {
-          setReplayer(recordreplayer(ace))
-        }}
-      />
-    </>
-  )
-}
-
-const AudioRecord: React.FC = () => {
-  const [recording, setRecording] = useState(false)
-  const recorder = useRef<AudioRecorder | undefined>()
-  const [url, setUrl] = useState<string | undefined>()
-
-  useEffect(() => {
-    const toggleRecording = async (recording: boolean) => {
-      if (recording) {
-        recorder.current?.stop()
-        recorder.current = await recordAudio()
-      } else {
-        setUrl(await recorder.current?.stop())
-      }
-    }
-    toggleRecording(recording)
-  }, [recording])
-
-  return (
-    <>
-      <h2>Audio Recording Demo</h2>
-      <div style={{ display: "flex" }}>
-        <button onClick={() => (url ? setUrl(undefined) : setRecording((r) => !r))}>
-          {url ? "Clear" : recording ? "Stop" : "Record"}
-        </button>
-        {recording && (
-          <Timer>
-            {() => (
-              <>
-                <Timer.Minutes />:<Timer.Seconds />
-              </>
-            )}
-          </Timer>
-        )}
-        {url && <audio controls src={url} />}
-      </div>
-    </>
-  )
-}
-
 export default function Home() {
   return (
     <>
-      <h1><kbd>ace-tracer</kbd></h1>
-      <p>Visit the <a href="https://github.com/cs124-illinois/ace-tracer">project homepage</a></p>
-      <SingleEditorRecord />
-      <AudioRecord />
+      <h1>
+        <kbd>ace-tracer</kbd>
+      </h1>
+      <p>
+        Visit the <a href="https://github.com/cs124-illinois/ace-tracer">project homepage</a>
+      </p>
+      <WithAudioRecord />
       <SingleEditorStream />
     </>
   )

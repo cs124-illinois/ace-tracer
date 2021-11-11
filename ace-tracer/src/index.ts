@@ -481,15 +481,16 @@ export const safeChangeValue = (editor: Ace.Editor, value: string): void => {
   editor.session.selection.fromJSON(position)
 }
 
-export type RecordReplayerState = "loading" | "notrace" | "recording" | "hastrace" | "playing"
+export type RecordReplayerState = "loading" | "blank" | "recording" | "recorded" | "playing"
 export type RecordReplayStateChangeListener = (state: RecordReplayerState) => void
 export interface RecordReplayer {
   startRecording: (options?: RecordOptions) => void
   stopRecording: () => void
   startPlaying: (options?: ReplayOptions) => void
   stopPlaying: () => void
-  clearTrace: () => void
+  clear: () => void
   events: EventEmitter.Emitter
+  getTrace: () => AceRecord[] | undefined
 }
 
 export const recordreplayer = (editor: Ace.Editor): RecordReplayer => {
@@ -504,7 +505,7 @@ export const recordreplayer = (editor: Ace.Editor): RecordReplayer => {
     state = newState
     events.emit("state", state)
   }
-  setState("notrace")
+  setState("blank")
 
   const startRecording = (options?: RecordOptions) => {
     if (recorder) {
@@ -519,8 +520,8 @@ export const recordreplayer = (editor: Ace.Editor): RecordReplayer => {
     }
     trace = recorder.stop()
     recorder = undefined
-    setState("hastrace")
-    events.emit("newtrace", trace)
+    setState("recorded")
+    events.emit("content", trace)
   }
 
   const stopPlaying = () => {
@@ -529,7 +530,7 @@ export const recordreplayer = (editor: Ace.Editor): RecordReplayer => {
     }
     replayer.stop()
     replayer = undefined
-    setState("hastrace")
+    setState("recorded")
   }
   const startPlaying = (options?: ReplayOptions) => {
     if (!trace) {
@@ -543,11 +544,15 @@ export const recordreplayer = (editor: Ace.Editor): RecordReplayer => {
     setState("playing")
   }
 
-  const clearTrace = () => {
+  const clear = () => {
     replayer && replayer.stop()
     replayer = undefined
     trace = []
-    setState("notrace")
+    setState("blank")
+  }
+
+  const getTrace = () => {
+    return trace
   }
 
   return {
@@ -555,7 +560,8 @@ export const recordreplayer = (editor: Ace.Editor): RecordReplayer => {
     stopRecording,
     startPlaying,
     stopPlaying,
-    clearTrace,
+    clear,
     events,
+    getTrace
   }
 }

@@ -14,27 +14,27 @@
   },
   "dependencies": {
     "@cassiozen/usestatemachine": "^1.0.0-beta.4",
-    "@cs124/ace-tracer": "2021.10.0",
-    "@cs124/audio-recorder": "2021.10.0",
-    "next": "11.1.2",
+    "@cs124/ace-tracer": "2021.11.0",
+    "@cs124/audio-recorder": "2021.11.0",
+    "next": "12.0.3",
     "react": "17.0.2",
-    "react-ace": "9.4.4",
+    "react-ace": "9.5.0",
     "react-compound-timer": "^1.2.0",
     "react-dom": "17.0.2",
-    "rooks": "^5.7.3",
-    "runtypes": "6.4.1",
+    "rooks": "^5.8.0",
+    "runtypes": "6.5.0",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
-    "@types/react": "17.0.31",
+    "@types/react": "17.0.34",
     "@types/styled-components": "^5.1.15",
-    "eslint": "^8.0.1",
-    "eslint-config-next": "11.1.2",
+    "eslint": "^8.2.0",
+    "eslint-config-next": "12.0.3",
     "gh-pages": "^3.2.3",
     "prettier": "2.4.1",
     "prettier-package-json": "2.6.0",
     "prettier-plugin-organize-imports": "2.3.4",
-    "sass": "1.43.3",
+    "sass": "1.43.4",
     "typescript": "4.4.4"
   }
 }

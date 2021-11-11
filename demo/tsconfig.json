@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,11 +18,25 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@cs124/ace-tracer": ["../ace-tracer/dist/"],
-      "@cs124/ace-tracer-ui": ["../ace-tracer-ui/dist/"],
-      "@cs124/audio-recorder": ["../audio-recorder/dist"]
-    }
+      "@cs124/ace-tracer": [
+        "../ace-tracer/dist/"
+      ],
+      "@cs124/ace-tracer-ui": [
+        "../ace-tracer-ui/dist/"
+      ],
+      "@cs124/audio-recorder": [
+        "../audio-recorder/dist"
+      ]
+    },
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/_document.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
