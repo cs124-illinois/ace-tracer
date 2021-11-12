@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-tracer",
-  "version": "2021.11.0",
+  "version": "2021.11.1",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
@@ -14,7 +14,6 @@
   },
   "types": "dist/index.d.ts",
   "dependencies": {
-    "event-emitter": "^0.3.5",
     "throttle-debounce": "^3.0.1"
   },
   "peerDependencies": {

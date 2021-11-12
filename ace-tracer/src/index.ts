@@ -1,5 +1,5 @@
 import type { Ace } from "ace-builds"
-import EventEmitter from "event-emitter"
+import EventEmitter from "events"
 import {
   Array,
   Boolean,
@@ -204,174 +204,185 @@ export const deserializeAceRecordTimestamp = (aceRecord: AceRecord): AceRecord =
   return aceRecord
 }
 
-export interface AceStreamer {
-  pause: () => void
-  restart: () => void
-  stop: () => void
+export const safeChangeValue = (editor: Ace.Editor, value: string): void => {
+  const position = editor.session.selection.toJSON()
+  editor.setValue(value)
+  editor.session.selection.fromJSON(position)
 }
-export const stream: (editor: Ace.Editor, callback: (record: AceRecord) => void) => AceStreamer = (
-  editor,
-  callback
-) => {
-  let running = true
 
-  let lastValue = editor.getValue()
-  const changeListener = (delta: { [key: string]: unknown }) => {
-    if (!running) {
-      return
-    }
-    if (editor.getValue() === lastValue) {
-      return
-    }
-    lastValue = editor.getValue()
-    callback(
-      Delta.check({
-        type: "delta",
-        timestamp: new Date(),
-        focused: editor.isFocused(),
-        ...delta,
-      })
-    )
+// const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export class AceStreamer {
+  private editor: Ace.Editor
+  private _stop: () => void = () => {}
+  running = false
+
+  public constructor(editor: Ace.Editor) {
+    this.editor = editor
   }
 
-  let lastSelection = Selection.check(editor.selection.getRange())
-  const selectionListener = throttle(100, () => {
-    if (!running) {
-      return
+  public start(callback: (record: AceRecord) => void) {
+    let lastValue = this.editor.getValue()
+    const changeListener = (delta: { [key: string]: unknown }) => {
+      if (!this.running) {
+        return
+      }
+      if (this.editor.getValue() === lastValue) {
+        return
+      }
+      lastValue = this.editor.getValue()
+      callback(
+        Delta.check({
+          type: "delta",
+          timestamp: new Date(),
+          focused: this.editor.isFocused(),
+          ...delta,
+        })
+      )
     }
-    const selection = Selection.check(editor.selection.getRange())
-    if (compareSelections(selection, lastSelection) || selectionIsEmpty(selection)) {
+
+    let lastSelection = Selection.check(this.editor.selection.getRange())
+    const selectionListener = throttle(100, () => {
+      if (!this.running) {
+        return
+      }
+      const selection = Selection.check(this.editor.selection.getRange())
+      if (compareSelections(selection, lastSelection) || selectionIsEmpty(selection)) {
+        lastSelection = selection
+        return
+      }
       lastSelection = selection
-      return
-    }
-    lastSelection = selection
-    callback(
-      SelectionChange.check({
-        type: "selectionchange",
-        timestamp: new Date(),
-        focused: editor.isFocused(),
-        ...selection,
-      })
-    )
-  })
+      callback(
+        SelectionChange.check({
+          type: "selectionchange",
+          timestamp: new Date(),
+          focused: this.editor.isFocused(),
+          ...selection,
+        })
+      )
+    })
 
-  let lastCursor = EditorLocation.check(editor.selection.getCursor())
-  const cursorListener = throttle(100, () => {
-    if (!running) {
-      return
-    }
-    const cursor = EditorLocation.check(editor.selection.getCursor())
-    if (compareEditorLocations(cursor, lastCursor) || !selectionIsEmpty(editor.selection.getRange())) {
+    let lastCursor = EditorLocation.check(this.editor.selection.getCursor())
+    const cursorListener = throttle(100, () => {
+      if (!this.running) {
+        return
+      }
+      const cursor = EditorLocation.check(this.editor.selection.getCursor())
+      if (compareEditorLocations(cursor, lastCursor) || !selectionIsEmpty(this.editor.selection.getRange())) {
+        lastCursor = cursor
+        return
+      }
       lastCursor = cursor
-      return
-    }
-    lastCursor = cursor
-    callback(
-      CursorChange.check({
-        type: "cursorchange",
-        timestamp: new Date(),
-        focused: editor.isFocused(),
-        location: cursor,
-      })
-    )
-  })
-
-  let lastScroll = ScrollPosition.check({
-    top: editor.renderer.getScrollTop(),
-    left: editor.renderer.getScrollLeft(),
-  })
-  const scrollListener = throttle(100, () => {
-    if (!running) {
-      return
-    }
-    const scroll = ScrollPosition.check({
-      top: editor.renderer.getScrollTop(),
-      left: editor.renderer.getScrollLeft(),
+      callback(
+        CursorChange.check({
+          type: "cursorchange",
+          timestamp: new Date(),
+          focused: this.editor.isFocused(),
+          location: cursor,
+        })
+      )
     })
-    if (scroll.top === lastScroll.top && scroll.left === lastScroll.left) {
-      return
-    }
-    lastScroll = scroll
-    callback(
-      ScrollChange.check({
-        type: "scrollchange",
-        timestamp: new Date(),
-        focused: editor.isFocused(),
-        ...scroll,
-      })
-    )
-  })
 
-  let lastWindowSize = WindowSize.check({
-    top: editor.renderer.getScrollTopRow(),
-    bottom: editor.renderer.getScrollBottomRow(),
-  })
-  const windowSizeListener = throttle(100, () => {
-    if (!running) {
-      return
-    }
-    const windowSize = WindowSize.check({
-      top: editor.renderer.getScrollTopRow(),
-      bottom: editor.renderer.getScrollBottomRow(),
+    let lastScroll = ScrollPosition.check({
+      top: this.editor.renderer.getScrollTop(),
+      left: this.editor.renderer.getScrollLeft(),
     })
-    if (windowSize.top === lastWindowSize.top && windowSize.bottom === lastWindowSize.bottom) {
-      return
-    }
-    lastWindowSize = windowSize
-    callback(
-      WindowSizeChange.check({
-        type: "windowsizechange",
-        timestamp: new Date(),
-        focused: editor.isFocused(),
-        ...windowSize,
+    const scrollListener = throttle(100, () => {
+      if (!this.running) {
+        return
+      }
+      const scroll = ScrollPosition.check({
+        top: this.editor.renderer.getScrollTop(),
+        left: this.editor.renderer.getScrollLeft(),
       })
-    )
-  })
+      if (scroll.top === lastScroll.top && scroll.left === lastScroll.left) {
+        return
+      }
+      lastScroll = scroll
+      callback(
+        ScrollChange.check({
+          type: "scrollchange",
+          timestamp: new Date(),
+          focused: this.editor.isFocused(),
+          ...scroll,
+        })
+      )
+    })
 
-  editor.session.addEventListener("change", changeListener)
-  editor.addEventListener("changeSelection", selectionListener)
-  editor.addEventListener("changeSelection", cursorListener)
-  editor.session.addEventListener("changeScrollTop", scrollListener)
-  editor.session.addEventListener("changeScrollTop", windowSizeListener)
+    let lastWindowSize = WindowSize.check({
+      top: this.editor.renderer.getScrollTopRow(),
+      bottom: this.editor.renderer.getScrollBottomRow(),
+    })
+    const windowSizeListener = throttle(100, () => {
+      if (!this.running) {
+        return
+      }
+      const windowSize = WindowSize.check({
+        top: this.editor.renderer.getScrollTopRow(),
+        bottom: this.editor.renderer.getScrollBottomRow(),
+      })
+      if (windowSize.top === lastWindowSize.top && windowSize.bottom === lastWindowSize.bottom) {
+        return
+      }
+      lastWindowSize = windowSize
+      callback(
+        WindowSizeChange.check({
+          type: "windowsizechange",
+          timestamp: new Date(),
+          focused: this.editor.isFocused(),
+          ...windowSize,
+        })
+      )
+    })
 
-  let restartTimer: ReturnType<typeof setTimeout>
-  const pause = () => {
-    clearTimeout(restartTimer)
-    running = false
-  }
-  const restart = () => {
-    restartTimer = setTimeout(() => {
-      running = true
-    }, 200)
-  }
-  const stop = () => {
-    clearTimeout(restartTimer)
-    editor.session.removeEventListener("change", changeListener)
-    editor.removeEventListener("changeSelection", selectionListener)
-    editor.removeEventListener("changeSelection", cursorListener)
-    editor.session.removeEventListener("changeScrollTop", scrollListener)
+    this.editor.session.addEventListener("change", changeListener)
+    this.editor.addEventListener("changeSelection", selectionListener)
+    this.editor.addEventListener("changeSelection", cursorListener)
+    this.editor.session.addEventListener("changeScrollTop", scrollListener)
+    this.editor.session.addEventListener("changeScrollTop", windowSizeListener)
+
+    this.running = true
+
+    this._stop = () => {
+      this.editor.session.removeEventListener("change", changeListener)
+      this.editor.removeEventListener("changeSelection", selectionListener)
+      this.editor.removeEventListener("changeSelection", cursorListener)
+      this.editor.session.removeEventListener("changeScrollTop", scrollListener)
+    }
   }
 
-  return { stop, pause, restart }
+  public stop() {
+    if (!this.running) {
+      throw new Error("Not running")
+    }
+    this._stop()
+  }
 }
 
-export interface AceRecorder {
-  addExternalChange: (change: Record<string, unknown>) => void
-  stop: () => AceRecord[]
-}
-export interface RecordOptions {
-  interval?: number
-}
-export const record: (editor: Ace.Editor, options?: RecordOptions) => AceRecorder = (
-  editor,
-  options = { interval: 1000 }
-) => {
-  const interval = options.interval || 1000
-  const records: AceRecord[] = [getComplete(editor)]
-  const { stop: cancel } = stream(editor, (record: AceRecord) => records.push(record))
-  const timer = setInterval(() => records.push(getComplete(editor)), interval)
-  const addExternalChange = (change: Record<string, unknown>) => {
-    records.push(
+export class AceRecorder {
+  private editor: Ace.Editor
+  private streamer: AceStreamer
+  recording = false
+  private records: AceRecord[] = []
+  private timer: ReturnType<typeof setInterval> | undefined
+
+  public constructor(editor: Ace.Editor) {
+    this.editor = editor
+    this.streamer = new AceStreamer(editor)
+  }
+
+  public start(options?: AceRecorder.Options) {
+    const interval = options?.interval || 1000
+    this.records = [getComplete(this.editor)]
+    this.streamer.start((record: AceRecord) => this.records.push(record))
+    this.timer = setInterval(() => this.records.push(getComplete(this.editor)), interval)
+    this.recording = true
+  }
+  public addExternalChange(change: Record<string, unknown>) {
+    if (!this.recording) {
+      throw new Error("Not recording")
+    }
+    this.records.push(
       ExternalChange.check({
         ...change,
         type: "external",
@@ -379,17 +390,115 @@ export const record: (editor: Ace.Editor, options?: RecordOptions) => AceRecorde
       })
     )
   }
-  const stop = () => {
-    clearInterval(timer)
-    cancel()
-    records.push(getComplete(editor))
-    return records
+  public stop() {
+    if (!this.recording) {
+      throw new Error("Not recording")
+    }
+    this.timer && clearInterval(this.timer)
+    this.streamer?.stop()
+    this.records.push(getComplete(this.editor))
+    return [...this.records]
   }
-  return { stop, addExternalChange }
 }
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+export module AceRecorder {
+  export type Options = {
+    interval?: number
+  }
+}
 
+export class AcePlayer extends EventEmitter {
+  private editor: Ace.Editor
+  private wasVisible: boolean
+  private wasBlinking: boolean
+  private previousOpacity: number
+  private _src: AceRecord[] = []
+  private timer?: ReturnType<typeof setTimeout>
+  private timerStarted: number | undefined
+  private startTime?: number
+  private traceTime = 0
+  private currentIndex = 0
+  private traceTimes: { complete: boolean; offset: number }[] = []
+  private onExternalChange?: (externalChange: ExternalChange) => void
+
+  public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
+    super()
+    this.editor = editor
+    this.onExternalChange = onExternalChange
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const renderer = this.editor.renderer as any
+    this.wasVisible = renderer.$cursorLayer.isVisible
+    this.wasBlinking = renderer.$cursorLayer.isBlinking
+    this.previousOpacity = renderer.$cursorLayer.element.style.opacity
+  }
+  public set src(src: AceRecord[]) {
+    if (src.length === 0) {
+      throw new Error("Empty source")
+    }
+    this._src = src
+    const traceStartTime = new Date(this._src[0].timestamp).valueOf()
+    this.traceTimes = this._src.map((record) => {
+      return { complete: AceRecord.guard(record), offset: new Date(record.timestamp).valueOf() - traceStartTime }
+    })
+  }
+
+  public play() {
+    if (!this._src) {
+      throw new Error("No source loaded")
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const renderer = this.editor.renderer as any
+    renderer.$cursorLayer.isVisible = true
+    renderer.$cursorLayer.setBlinking(true)
+    renderer.$cursorLayer.element.style.opacity = 1
+
+    this.startTime = new Date().valueOf() - this.traceTime
+    this.next()
+  }
+
+  private next() {
+    this.timer && clearTimeout(this.timer)
+    this.timerStarted = undefined
+
+    const aceRecord = this._src[this.currentIndex]
+    this.traceTime = this.traceTimes[this.currentIndex].offset
+    this.emit("timestamp", this.traceTime)
+    if (ExternalChange.guard(aceRecord) && this.onExternalChange) {
+      this.onExternalChange(aceRecord)
+    } else {
+      applyAceRecord(this.editor, aceRecord)
+    }
+
+    this.currentIndex++
+    if (this._src[this.currentIndex]) {
+      const nextTime = this.startTime! + this.traceTimes[this.currentIndex].offset
+      this.timerStarted = new Date().valueOf()
+      const delay = Math.max(nextTime - this.timerStarted, 0)
+      this.timer = setTimeout(() => {
+        this.next()
+      }, delay)
+    } else {
+      this.emit("ended")
+      this.traceTime = 0
+      this.currentIndex = 0
+    }
+  }
+
+  public pause() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.traceTime += new Date().valueOf() - this.timerStarted!
+    }
+
+    const renderer = this.editor.renderer as any
+    renderer.$cursorLayer.element.style.opacity = this.previousOpacity
+    renderer.$cursorLayer.setBlinking(this.wasBlinking)
+    renderer.$cursorLayer.isVisible = this.wasVisible
+  }
+}
+/*
 export interface AceReplayer {
   promise: Promise<void>
   stop: () => void
@@ -474,94 +583,76 @@ export const replay: (
   }
   return replayer
 }
+*/
 
-export const safeChangeValue = (editor: Ace.Editor, value: string): void => {
-  const position = editor.session.selection.toJSON()
-  editor.setValue(value)
-  editor.session.selection.fromJSON(position)
+export class RecordReplayer extends EventEmitter {
+  private recorder: AceRecorder
+  private player: AcePlayer
+  private _state: RecordReplayer.State = "empty"
+  private _trace: AceRecord[] = []
+
+  constructor(editor: Ace.Editor) {
+    super()
+    this.recorder = new AceRecorder(editor)
+    this.player = new AcePlayer(editor)
+    this.player.addListener("ended", () => {
+      this.pause()
+    })
+    this.emit("state", "empty")
+  }
+  public get state() {
+    return this._state
+  }
+  private set state(state: RecordReplayer.State) {
+    this._state = state
+    this.emit("state", this._state)
+  }
+  public startRecording(options?: AceRecorder.Options) {
+    if (this._state === "playing" || this._state === "recording") {
+      throw new Error("Still playing or recording")
+    }
+    this.recorder.start(options)
+    this.state = "recording"
+  }
+  public stopRecording() {
+    if (this._state !== "recording") {
+      throw new Error("Not recording")
+    }
+    this._trace = this.recorder.stop()
+    this.state = "paused"
+    this.emit("content", this._trace)
+  }
+  public pause() {
+    if (this._state !== "playing") {
+      throw new Error("Not playing")
+    }
+    this.player.pause()
+    this.state = "paused"
+  }
+  public play() {
+    if (this._state !== "paused") {
+      throw new Error("No content or already playing or recording")
+    }
+    this.player.src = this._trace!
+    this.player.play()
+    this.state = "playing"
+  }
+  public clear() {
+    this.player.pause()
+    this._trace = []
+    this.state = "empty"
+  }
+  public get src() {
+    return this._trace
+  }
+  public set src(src: AceRecord[]) {
+    if (this._state === "playing" || this._state === "recording") {
+      throw new Error("Currently playing or recording")
+    }
+    this._trace = src
+    this.state = src.length === 0 ? "empty" : "paused"
+  }
 }
-
-export type RecordReplayerState = "loading" | "blank" | "recording" | "recorded" | "playing"
-export type RecordReplayStateChangeListener = (state: RecordReplayerState) => void
-export interface RecordReplayer {
-  startRecording: (options?: RecordOptions) => void
-  stopRecording: () => void
-  startPlaying: (options?: ReplayOptions) => void
-  stopPlaying: () => void
-  clear: () => void
-  events: EventEmitter.Emitter
-  getTrace: () => AceRecord[] | undefined
-}
-
-export const recordreplayer = (editor: Ace.Editor): RecordReplayer => {
-  let trace: AceRecord[] | undefined
-  let recorder: AceRecorder | undefined
-  let state: RecordReplayerState
-  let replayer: AceReplayer | undefined
-
-  const events = EventEmitter()
-
-  const setState = (newState: RecordReplayerState) => {
-    state = newState
-    events.emit("state", state)
-  }
-  setState("blank")
-
-  const startRecording = (options?: RecordOptions) => {
-    if (recorder) {
-      throw new Error("Recorder is still running")
-    }
-    recorder = record(editor, options)
-    setState("recording")
-  }
-  const stopRecording = () => {
-    if (!recorder) {
-      throw new Error("Recorder was not started")
-    }
-    trace = recorder.stop()
-    recorder = undefined
-    setState("recorded")
-    events.emit("content", trace)
-  }
-
-  const stopPlaying = () => {
-    if (!replayer) {
-      throw new Error("Replayer was not started")
-    }
-    replayer.stop()
-    replayer = undefined
-    setState("recorded")
-  }
-  const startPlaying = (options?: ReplayOptions) => {
-    if (!trace) {
-      throw new Error("Recording not available")
-    }
-    if (replayer) {
-      throw new Error("Replayer is still running")
-    }
-    replayer = replay(editor, trace, options, events)
-    replayer.promise.then(() => stopPlaying())
-    setState("playing")
-  }
-
-  const clear = () => {
-    replayer && replayer.stop()
-    replayer = undefined
-    trace = []
-    setState("blank")
-  }
-
-  const getTrace = () => {
-    return trace
-  }
-
-  return {
-    startRecording,
-    stopRecording,
-    startPlaying,
-    stopPlaying,
-    clear,
-    events,
-    getTrace
-  }
+export namespace RecordReplayer {
+  export type State = "empty" | "paused" | "recording" | "playing"
 }

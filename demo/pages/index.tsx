@@ -1,15 +1,5 @@
-import {
-  AceRecord,
-  recordreplayer as acerecordreplayer,
-  RecordReplayer as AceRecordReplayer,
-  RecordReplayerState as AceRecordReplayerState,
-  stream,
-} from "@cs124/ace-tracer"
-import {
-  RecordReplayer as AudioRecordReplayer,
-  recordreplayer as audiorecordreplayer,
-  RecordReplayerState as AudioRecordReplayerState,
-} from "@cs124/audio-recorder"
+import { AceRecord, AceStreamer, RecordReplayer as AceRecordReplayer } from "@cs124/ace-tracer"
+import { RecordReplayer as AudioRecordReplayer } from "@cs124/audio-recorder"
 import dynamic from "next/dynamic"
 import { useEffect, useRef, useState } from "react"
 import Timer from "react-compound-timer"
@@ -20,24 +10,24 @@ const PlayerControls: React.FC<{ acereplayer?: AceRecordReplayer; audioreplayer?
   acereplayer,
   audioreplayer,
 }) => {
-  const [state, setState] = useState<AceRecordReplayerState>("blank")
+  const [state, setState] = useState<AceRecordReplayer.State>("empty")
   useEffect(() => {
-    acereplayer?.events.on("state", (s) => setState(s))
-    audioreplayer?.events.on("state", (s) => setState(s))
+    acereplayer?.on("state", (s) => setState(s))
+    audioreplayer?.on("state", (s) => setState(s))
   }, [])
   return (
     <div style={{ display: "flex", width: "100%", flexDirection: "row", alignItems: "center" }}>
       <button
-        disabled={state === "blank" || state === "playing" || state === "recording"}
+        disabled={state === "empty" || state === "playing" || state === "recording"}
         onClick={() => {
-          acereplayer?.startPlaying()
-          audioreplayer?.startPlaying()
+          acereplayer?.play()
+          audioreplayer?.play()
         }}
       >
         Play
       </button>
       <button
-        disabled={state !== "blank"}
+        disabled={state !== "empty"}
         onClick={() => {
           acereplayer?.startRecording()
           audioreplayer?.startRecording()
@@ -52,15 +42,15 @@ const PlayerControls: React.FC<{ acereplayer?: AceRecordReplayer; audioreplayer?
             acereplayer?.stopRecording()
             audioreplayer?.stopRecording()
           } else {
-            acereplayer?.stopPlaying()
-            audioreplayer?.stopPlaying()
+            acereplayer?.pause()
+            audioreplayer?.pause()
           }
         }}
       >
         Stop
       </button>
       <button
-        disabled={state === "blank" || state === "playing" || state === "recording"}
+        disabled={state === "empty" || state === "playing" || state === "recording"}
         onClick={() => {
           acereplayer?.clear()
           audioreplayer?.clear()
@@ -69,10 +59,10 @@ const PlayerControls: React.FC<{ acereplayer?: AceRecordReplayer; audioreplayer?
         Clear
       </button>
       <button
-        disabled={state === "blank" || state === "playing" || state === "recording"}
+        disabled={state === "empty" || state === "playing" || state === "recording"}
         onClick={async () => {
-          const trace = acereplayer?.getTrace()
-          const audio = await audioreplayer?.getAudio()
+          const trace = acereplayer?.src
+          const audio = await audioreplayer?.srcBase64()
           console.log({
             ...(trace && { trace }),
             ...(audio && { audio }),
@@ -87,10 +77,10 @@ const PlayerControls: React.FC<{ acereplayer?: AceRecordReplayer; audioreplayer?
 
 const WithAudioRecord: React.FC = () => {
   const [aceReplayer, setAceReplayer] = useState<AceRecordReplayer | undefined>(undefined)
-  const audioReplayer = useRef(audiorecordreplayer())
-  const [state, setState] = useState<AudioRecordReplayerState>("blank")
+  const audioReplayer = useRef(new AudioRecordReplayer())
+  const [state, setState] = useState<AudioRecordReplayer.State>("empty")
   useEffect(() => {
-    audioReplayer.current?.events.on("state", (s) => setState(s))
+    audioReplayer.current?.on("state", (s) => setState(s))
   }, [])
 
   return (
@@ -121,7 +111,7 @@ const WithAudioRecord: React.FC = () => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
         }}
         onLoad={(ace) => {
-          setAceReplayer(acerecordreplayer(ace))
+          setAceReplayer(new AceRecordReplayer(ace))
         }}
       />
     </>
@@ -148,7 +138,7 @@ const SingleEditorRecord: React.FC = () => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
         }}
         onLoad={(ace) => {
-          setReplayer(acerecordreplayer(ace))
+          setReplayer(new AceRecordReplayer(ace))
         }}
       />
     </>
@@ -156,10 +146,10 @@ const SingleEditorRecord: React.FC = () => {
 }
 
 const AudioRecord: React.FC = () => {
-  const replayer = useRef(audiorecordreplayer())
-  const [state, setState] = useState<AudioRecordReplayerState>("blank")
+  const replayer = useRef(new AudioRecordReplayer())
+  const [state, setState] = useState<AudioRecordReplayer.State>("empty")
   useEffect(() => {
-    replayer.current?.events.on("state", (s) => setState(s))
+    replayer.current?.on("state", (s) => setState(s))
   }, [])
 
   return (
@@ -201,7 +191,7 @@ const SingleEditorStream: React.FC = () => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
         }}
         onLoad={(ace) => {
-          stream(ace, (record: AceRecord) => {
+          new AceStreamer(ace).start((record: AceRecord) => {
             setRecords((current) => [record, ...current])
           })
         }}

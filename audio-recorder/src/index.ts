@@ -1,4 +1,4 @@
-import EventEmitter from "event-emitter"
+import EventEmitter from "events"
 import { Decoder, Reader, tools } from "ts-ebml"
 
 const readAsArrayBuffer = function (blob: Blob): Promise<ArrayBuffer> {
@@ -32,35 +32,45 @@ const injectMetadata = async function (blob: Blob): Promise<Blob> {
   return result_1
 }
 
-export interface AudioRecorder {
-  stop: () => Promise<string | undefined>
-}
-export const record = async (): Promise<AudioRecorder> => {
-  const audioRecorder = new MediaRecorder(await navigator.mediaDevices.getUserMedia({ audio: true }))
-  let recording = true
-  const chunks: Blob[] = []
-  let resolver: (value: string) => void
-  const waiter = new Promise<string>((resolve) => {
-    resolver = resolve
+export class AudioRecorder {
+  private audioRecorder: MediaRecorder | undefined
+  recording = false
+  private chunks: Blob[] = []
+  private resolver: (value: string) => void = () => {}
+  private waiter: Promise<string> = new Promise((resolve) => {
+    resolve("")
   })
-  audioRecorder.addEventListener("dataavailable", async ({ data }) => {
-    const blob = await injectMetadata(data)
-    chunks.push(blob)
-    if (!recording) {
-      resolver(window.URL.createObjectURL(new Blob(chunks)))
+
+  public async start() {
+    this.audioRecorder = new MediaRecorder(await navigator.mediaDevices.getUserMedia({ audio: true }))
+    this.recording = true
+    this.chunks = []
+    this.waiter = new Promise<string>((resolve) => {
+      this.resolver = resolve
+    })
+    this.audioRecorder.addEventListener("dataavailable", async ({ data }) => {
+      const blob = await injectMetadata(data)
+      this.chunks.push(blob)
+      if (!this.recording) {
+        this.resolver(window.URL.createObjectURL(new Blob(this.chunks)))
+      }
+    })
+    try {
+      this.audioRecorder.start()
+    } catch (err) {
+      console.log(err)
     }
-  })
-  audioRecorder.start()
-  const stop = async () => {
-    if (!recording || audioRecorder.state === "inactive") {
-      return
-    }
-    recording = false
-    audioRecorder.stop()
-    audioRecorder.stream.getTracks()[0].stop()
-    return waiter
   }
-  return { stop }
+  public async stop() {
+    if (!this.recording || !this.audioRecorder || this.audioRecorder.state === "inactive") {
+      return ""
+    }
+    this.recording = false
+    this.audioRecorder.stop()
+    this.audioRecorder.stream.getTracks()[0].stop()
+
+    return this.waiter
+  }
 }
 
 export const urlToBase64 = async (url: string): Promise<string | undefined> => {
@@ -72,90 +82,99 @@ export const urlToBase64 = async (url: string): Promise<string | undefined> => {
   })
 }
 
-export type RecordReplayerState = "loading" | "blank" | "recording" | "recorded" | "playing"
-export type RecordReplayStateChangeListener = (state: RecordReplayerState) => void
-export interface RecordReplayer {
-  startRecording: () => Promise<void>
-  stopRecording: () => Promise<void>
-  startPlaying: () => void
-  stopPlaying: () => void
-  clear: () => void
-  events: EventEmitter.Emitter
-  getAudio: () => Promise<string | undefined>
+export class RecordReplayer extends EventEmitter {
+  private recorder = new AudioRecorder()
+  private player: HTMLAudioElement | undefined
+  private _state: RecordReplayer.State = "empty"
+
+  public constructor() {
+    super()
+    this.emit("state", "empty")
+  }
+  public get state() {
+    return this._state
+  }
+  private set state(state: RecordReplayer.State) {
+    this._state = state
+    this.emit("state", this._state)
+  }
+  public async startRecording() {
+    if (this._state === "playing" || this._state === "recording") {
+      throw new Error("Still playing or recording")
+    }
+    await this.recorder.start()
+    this.state = "recording"
+  }
+  private setPlayer() {
+    if (this.player) {
+      return
+    }
+    this.player = new Audio()
+    this.player.addEventListener("ended", () => {
+      this.pause()
+    })
+  }
+  public async stopRecording() {
+    if (this._state !== "recording") {
+      throw new Error("Not recording")
+    }
+    const url = await this.recorder.stop()
+    this.setPlayer()
+    this.player!.src = url
+    if (url !== "") {
+      this.state = "paused"
+      this.emit("content", url)
+    } else {
+      this.state = "empty"
+    }
+  }
+  public pause() {
+    if (this._state !== "playing") {
+      throw new Error("Not playing")
+    }
+    this.player?.pause()
+    this.state = "paused"
+  }
+  public play() {
+    if (this._state !== "paused") {
+      throw new Error("No content or already playing or recording")
+    }
+    this.setPlayer()
+    this.player!.play()
+    this.state = "playing"
+  }
+  public clear() {
+    if (this.player) {
+      this.player.pause()
+      this.player.src = ""
+    }
+    this.state = "empty"
+  }
+  public get src() {
+    return this.player?.src || ""
+  }
+  public set src(src: string) {
+    if (this._state === "playing" || this._state === "recording") {
+      throw new Error("Currently playing or recording")
+    }
+    this.setPlayer()
+    this.player!.src = src
+    this.state = src === "" ? "empty" : "paused"
+  }
+  public get duration() {
+    if (this._state === "empty") {
+      throw new Error("No audio loaded")
+    }
+    return this.player!.duration
+  }
+  public async srcBase64() {
+    if (!this.player || this.player.src === "") {
+      throw new Error("Source is empty")
+    }
+    return await urlToBase64(this.player.src)
+  }
 }
 
-export const recordreplayer = (): RecordReplayer => {
-  let url: string | undefined
-  let recorder: AudioRecorder | undefined
-  let state: RecordReplayerState
-  let replayer: HTMLAudioElement | undefined
-
-  const events = EventEmitter()
-
-  const setState = (newState: RecordReplayerState) => {
-    state = newState
-    events.emit("state", state)
-  }
-  setState("blank")
-
-  const startRecording = async () => {
-    if (recorder) {
-      throw new Error("Recorder is still running")
-    }
-    recorder = await record()
-    setState("recording")
-  }
-  const stopRecording = async () => {
-    if (!recorder) {
-      throw new Error("Recorder was not started")
-    }
-    url = await recorder.stop()
-    recorder = undefined
-    setState("recorded")
-    events.emit("content", url)
-  }
-
-  const stopPlaying = () => {
-    if (!replayer) {
-      throw new Error("Replayer was not started")
-    }
-    replayer.pause()
-    replayer = undefined
-    setState("recorded")
-  }
-  const startPlaying = () => {
-    if (!url) {
-      throw new Error("Recording not available")
-    }
-    if (replayer) {
-      throw new Error("Replayer is still running")
-    }
-    replayer = new Audio(url)
-    replayer.play()
-    replayer.addEventListener("ended", () => {
-      stopPlaying()
-    })
-    setState("playing")
-  }
-
-  const clear = () => {
-    replayer && replayer.pause()
-    replayer = undefined
-    url = undefined
-    setState("blank")
-  }
-
-  const getAudio = async () => {
-    return url ? urlToBase64(url) : undefined
-  }
-
-  return {
-    startRecording,
-    stopRecording,
-    startPlaying,
-    stopPlaying,
-    clear,
-    events,
-    getAudio,
-  }
+export namespace RecordReplayer {
+  export type State = "empty" | "paused" | "recording" | "playing"
 }
