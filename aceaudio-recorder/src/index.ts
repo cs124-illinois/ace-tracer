@@ -7,7 +7,7 @@ export class RecordReplayer extends EventEmitter {
   private aceRecordReplayer
   private audioRecordReplayer = new AudioRecordReplayer()
   private _state: RecordReplayer.State = "empty"
-  private _started: Date | undefined
+  public duration: number | undefined
 
   public constructor(editor: Ace.Editor) {
     super()
@@ -38,7 +38,6 @@ export class RecordReplayer extends EventEmitter {
     await this.audioRecordReplayer.startRecording()
     this.aceRecordReplayer.startRecording()
     this.state = "recording"
-    this._started = new Date()
   }
   public async stopRecording() {
     if (this._state !== "recording") {
@@ -48,9 +47,16 @@ export class RecordReplayer extends EventEmitter {
     this.aceRecordReplayer.stopRecording()
     if (this.aceRecordReplayer.state === "paused" && this.audioRecordReplayer.state === "paused") {
       this.state = "paused"
+      const aceDuration = this.aceRecordReplayer.duration
+      const audioDuration = this.audioRecordReplayer.duration * 1000
+      if (Math.abs(aceDuration - audioDuration) > 100) {
+        throw new Error("Recordings do not have equal length")
+      }
+      this.duration = Math.min(aceDuration, audioDuration)
       // this.emit("content", url)
     } else {
       this.state = "empty"
+      this.duration = undefined
     }
   }
   public pause() {
@@ -81,6 +87,22 @@ export class RecordReplayer extends EventEmitter {
     return this.audioRecordReplayer.base64.then((audio) => {
       return { audio, trace: this.aceRecordReplayer.trace! }
     })
+  }
+  public set currentTime(currentTime: number) {
+    if (this._state === "empty") {
+      throw new Error("No content loaded")
+    }
+    this.audioRecordReplayer.currentTime = currentTime / 1000
+    this.aceRecordReplayer.currentTime = currentTime
+  }
+  public set percent(percent: number) {
+    if (this._state === "empty") {
+      throw new Error("No trace loaded")
+    }
+    if (percent < 0 || percent > 100) {
+      throw new Error("Bad percent value")
+    }
+    this.currentTime = this.duration! * (percent / 100)
   }
 }
 

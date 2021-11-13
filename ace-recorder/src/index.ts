@@ -435,7 +435,7 @@ export class AcePlayer extends EventEmitter {
   private timer?: ReturnType<typeof setTimeout>
   private timerStarted: number | undefined
   private startTime?: number
-  private traceTime = 0
+  private _currentTime = 0
   private currentIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
   private onExternalChange?: (externalChange: ExternalChange) => void
@@ -455,7 +455,7 @@ export class AcePlayer extends EventEmitter {
     this._trace = trace
     this.traceTimes = this._trace.records.map((record) => {
       return {
-        complete: AceRecord.guard(record),
+        complete: Complete.guard(record),
         offset: new Date(record.timestamp).valueOf() - trace.startTime.valueOf(),
       }
     })
@@ -472,8 +472,7 @@ export class AcePlayer extends EventEmitter {
     renderer.$cursorLayer.setBlinking(true)
     renderer.$cursorLayer.element.style.opacity = 1
 
-    this.startTime = new Date().valueOf() - this.traceTime
-    console.log("Start")
+    this.startTime = new Date().valueOf() - this._currentTime
     this.next()
   }
 
@@ -492,8 +491,8 @@ export class AcePlayer extends EventEmitter {
       throw new Error("Timer shouldn't fire when trace is empty")
     }
     const aceRecord = this._trace.records[this.currentIndex]
-    this.traceTime = this.traceTimes[this.currentIndex].offset
-    this.emit("timestamp", this.traceTime)
+    this._currentTime = this.traceTimes[this.currentIndex].offset
+    this.emit("timestamp", this._currentTime)
     if (ExternalChange.guard(aceRecord) && this.onExternalChange) {
       this.onExternalChange(aceRecord)
     } else {
@@ -513,14 +512,14 @@ export class AcePlayer extends EventEmitter {
       }, delay)
     } else {
       this.emit("ended")
-      this.traceTime = 0
+      this._currentTime = 0
       this.currentIndex = 0
     }
   }
 
   public pause() {
     if (this.timerStarted) {
-      this.traceTime += new Date().valueOf() - this.timerStarted!
+      this._currentTime += new Date().valueOf() - this.timerStarted!
     }
     this.clearTimeout()
 
@@ -529,93 +528,23 @@ export class AcePlayer extends EventEmitter {
     renderer.$cursorLayer.setBlinking(this.wasBlinking)
     renderer.$cursorLayer.isVisible = this.wasVisible
   }
-}
-/*
-export interface AceReplayer {
-  promise: Promise<void>
-  stop: () => void
-}
-export interface ReplayOptions {
-  start?: number
-  seek?: boolean
-  onExternalChange?: (externalChange: ExternalChange) => void
-}
-export const replay: (
-  editor: Ace.Editor,
-  trace: AceRecord[],
-  options?: ReplayOptions,
-  events?: EventEmitter.Emitter
-) => AceReplayer = (editor, trace, options = { start: 0, seek: false }, events) => {
-  const replayer: AceReplayer = {} as AceReplayer
 
-  let cancelled = false
-  let resolve: (value: void) => void
-  replayer.promise = new Promise((_resolve) => {
-    resolve = _resolve
-  })
-
-  Promise.resolve().then(async () => {
-    const start = options.start || 0
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const renderer = editor.renderer as any
-    const wasVisible = renderer.$cursorLayer.isVisible
-    renderer.$cursorLayer.isVisible = true
-    const wasBlinking = renderer.$cursorLayer.isBlinking
-    renderer.$cursorLayer.setBlinking(true)
-    const previousOpacity = renderer.$cursorLayer.element.style.opacity
-    renderer.$cursorLayer.element.style.opacity = 1
-
-    const startTime = new Date().valueOf()
-    const traceStartTime = new Date(trace[0].timestamp).valueOf()
-
-    let startIndex = 0
-    if (start > 0) {
-      let i = 0
-      for (; i < trace.length; i++) {
-        const record = trace[i]
-        const currentTime = new Date(record.timestamp).valueOf() - traceStartTime
-        if (currentTime < start && Complete.guard(record)) {
-          startIndex = i
+  public set currentTime(currentTime: number) {
+    this.startTime = new Date().valueOf() - currentTime
+    let newCurrentIndex = -1
+    for (let i = 0; i < this.traceTimes.length; i++) {
+      const traceTime = this.traceTimes[i]
+      if (traceTime.complete) {
+        if (traceTime.offset > currentTime) {
+          break
         }
+        newCurrentIndex = i
       }
     }
-
-    if (options.seek) {
-      applyAceRecord(editor, trace[startIndex])
-      return resolve()
-    }
-
-    for (let i = startIndex; i < trace.length && !cancelled; i++) {
-      const aceRecord = trace[i]
-      events?.emit("timestamp", aceRecord.timestamp)
-      if (ExternalChange.guard(aceRecord) && options.onExternalChange) {
-        options.onExternalChange(aceRecord)
-      } else {
-        applyAceRecord(editor, aceRecord)
-      }
-      if (trace[i + 1]) {
-        const traceNextTime = new Date(trace[i + 1].timestamp).valueOf()
-        const nextTime = startTime + (traceNextTime - (traceStartTime + start))
-        const delay = nextTime - new Date().valueOf()
-        if (delay > 0) {
-          await sleep(delay)
-        }
-      }
-    }
-
-    renderer.$cursorLayer.element.style.opacity = previousOpacity
-    renderer.$cursorLayer.setBlinking(wasBlinking)
-    renderer.$cursorLayer.isVisible = wasVisible
-
-    resolve()
-  })
-  replayer.stop = () => {
-    cancelled = true
+    this.currentIndex = newCurrentIndex
+    this._currentTime = currentTime
   }
-  return replayer
 }
-*/
 
 export class RecordReplayer extends EventEmitter {
   private recorder: AceRecorder
@@ -651,6 +580,7 @@ export class RecordReplayer extends EventEmitter {
       throw new Error("Not recording")
     }
     this._trace = this.recorder.stop()
+    this.player.trace = this._trace
     this.state = "paused"
     this.emit("content", this._trace)
   }
@@ -665,7 +595,6 @@ export class RecordReplayer extends EventEmitter {
     if (this._state !== "paused") {
       throw new Error("No content or already playing or recording")
     }
-    this.player.trace = this._trace!
     this.player.play()
     this.state = "playing"
   }
@@ -690,9 +619,15 @@ export class RecordReplayer extends EventEmitter {
   }
   public get duration() {
     if (this._state === "empty") {
-      throw new Error("No audio loaded")
+      throw new Error("No trace loaded")
     }
     return this._trace!.duration
+  }
+  public set currentTime(currentTime: number) {
+    if (this._state === "empty") {
+      throw new Error("No trace loaded")
+    }
+    this.player.currentTime = currentTime
   }
 }
 export namespace RecordReplayer {

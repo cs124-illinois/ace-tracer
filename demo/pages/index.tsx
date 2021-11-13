@@ -18,72 +18,97 @@ const PlayerControls: React.FC<{
     audioreplayer?.on("state", (s) => setState(s))
     aceaudioreplayer?.on("state", (s) => setState(s))
   }, [])
+  const [value, setValue] = useState(0)
+  const handleChange = useCallback((event) => {
+    if (aceaudioreplayer) {
+      aceaudioreplayer.percent = event.target.value
+    }
+    setValue(event.target.value)
+  }, [])
+  useEffect(() => {
+    if (state === "empty") {
+      setValue(0)
+    }
+  }, [state])
+
   return (
-    <div style={{ display: "flex", width: "100%", flexDirection: "row", alignItems: "center" }}>
-      <button
-        disabled={state === "empty" || state === "playing" || state === "recording"}
-        onClick={() => {
-          acereplayer?.play()
-          audioreplayer?.play()
-          aceaudioreplayer?.play()
-        }}
-      >
-        Play
-      </button>
-      <button
-        disabled={state !== "empty"}
-        onClick={() => {
-          acereplayer?.startRecording()
-          audioreplayer?.startRecording()
-          aceaudioreplayer?.startRecording()
-        }}
-      >
-        Record
-      </button>
-      <button
-        disabled={state !== "recording" && state !== "playing"}
-        onClick={() => {
-          if (state === "recording") {
-            acereplayer?.stopRecording()
-            audioreplayer?.stopRecording()
-            aceaudioreplayer?.stopRecording()
-          } else {
-            acereplayer?.pause()
-            audioreplayer?.pause()
-            aceaudioreplayer?.pause()
-          }
-        }}
-      >
-        Stop
-      </button>
-      <button
-        disabled={state === "empty" || state === "playing" || state === "recording"}
-        onClick={() => {
-          acereplayer?.clear()
-          audioreplayer?.clear()
-          aceaudioreplayer?.clear()
-        }}
-      >
-        Clear
-      </button>
-      <button
-        disabled={state === "empty" || state === "playing" || state === "recording"}
-        onClick={async () => {
-          let trace = acereplayer?.trace
-          let audio = await audioreplayer?.base64
-          if (aceaudioreplayer) {
-            let { trace: t, audio: a } = await aceaudioreplayer?.content
-            trace = t
-            audio = a
-          }
-          console.log({
-            ...(trace && { trace }),
-            ...(audio && { audio }),
-          })
-        }}
-      >
-        Log
-      </button>
+    <div>
+      <div style={{ display: "flex", width: "100%", flexDirection: "row", alignItems: "center" }}>
+        <button
+          disabled={state === "empty" || state === "playing" || state === "recording"}
+          onClick={() => {
+            acereplayer?.play()
+            audioreplayer?.play()
+            aceaudioreplayer?.play()
+          }}
+        >
+          Play
+        </button>
+        <button
+          disabled={state !== "empty"}
+          onClick={() => {
+            acereplayer?.startRecording()
+            audioreplayer?.startRecording()
+            aceaudioreplayer?.startRecording()
+          }}
+        >
+          Record
+        </button>
+        <button
+          disabled={state !== "recording" && state !== "playing"}
+          onClick={() => {
+            if (state === "recording") {
+              acereplayer?.stopRecording()
+              audioreplayer?.stopRecording()
+              aceaudioreplayer?.stopRecording()
+            } else {
+              acereplayer?.pause()
+              audioreplayer?.pause()
+              aceaudioreplayer?.pause()
+            }
+          }}
+        >
+          Stop
+        </button>
+        <button
+          disabled={state === "empty" || state === "playing" || state === "recording"}
+          onClick={() => {
+            acereplayer?.clear()
+            audioreplayer?.clear()
+            aceaudioreplayer?.clear()
+          }}
+        >
+          Clear
+        </button>
+        <button
+          disabled={state === "empty" || state === "playing" || state === "recording"}
+          onClick={async () => {
+            let trace = acereplayer?.trace
+            let audio = await audioreplayer?.base64
+            if (aceaudioreplayer) {
+              let { trace: t, audio: a } = await aceaudioreplayer?.content
+              trace = t
+              audio = a
+            }
+            console.log({
+              ...(trace && { trace }),
+              ...(audio && { audio }),
+            })
+          }}
+        >
+          Log
+        </button>
+      </div>
+      <input
+        disabled={state === "empty" || state === "recording"}
+        type="range"
+        min="0"
+        max="100"
+        step="1"
+        onChange={handleChange}
+        value={value}
+        style={{ width: "100%" }}
+      />
     </div>
   )
 }
