@@ -77,7 +77,7 @@ export const urlToBase64 = async (url: string): Promise<string | undefined> => {
   const blob = await fetch(url).then((r) => r.blob())
   return new Promise((resolve, _) => {
     const reader = new FileReader()
-    reader.onloadend = () => resolve(reader.result?.toString())
+    reader.onloadend = () => resolve(reader.result?.toString().split(",")[1])
     reader.readAsDataURL(blob)
   })
 }
@@ -159,6 +159,7 @@ export class RecordReplayer extends EventEmitter {
     }
     this.setPlayer()
     this.player!.src = src
+    this.player!.load()
     this.state = src === "" ? "empty" : "paused"
   }
   public get duration() {
@@ -166,6 +167,18 @@ export class RecordReplayer extends EventEmitter {
       throw new Error("No audio loaded")
     }
     return this.player!.duration
+  }
+  public get currentTime() {
+    if (this._state === "empty") {
+      throw new Error("No audio loaded")
+    }
+    return this.player!.currentTime
+  }
+  public set currentTime(currentTime: number) {
+    if (this._state === "empty") {
+      throw new Error("No audio loaded")
+    }
+    this.player!.currentTime = currentTime
   }
   public async srcBase64() {
     if (!this.player || this.player.src === "") {
