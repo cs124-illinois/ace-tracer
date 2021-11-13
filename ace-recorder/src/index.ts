@@ -185,6 +185,25 @@ export const AceRecord = Union(
 )
 export type AceRecord = Static<typeof AceRecord>
 
+export const AceTraceContent = RuntypeRecord({
+  records: Array(AceRecord),
+  duration: Number,
+  startTime: AceTimestamp,
+})
+export class AceTrace {
+  records: AceRecord[]
+  duration: number
+  startTime: Date
+  constructor(records: AceRecord[]) {
+    if (records.length === 0) {
+      throw new Error("Empty trace")
+    }
+    this.records = records
+    this.startTime = new Date(records[0].timestamp)
+    this.duration = new Date(records.slice(-1)[0].timestamp).valueOf() - new Date(records[0].timestamp).valueOf()
+  }
+}
+
 export const applyAceRecord = (editor: Ace.Editor, aceRecord: AceRecord): void => {
   if (Complete.guard(aceRecord)) {
     applyComplete(editor, aceRecord)
@@ -390,14 +409,14 @@ export class AceRecorder {
       })
     )
   }
-  public stop() {
+  public stop(): AceTrace {
     if (!this.recording) {
       throw new Error("Not recording")
     }
     this.timer && clearInterval(this.timer)
     this.streamer?.stop()
     this.records.push(getComplete(this.editor))
-    return [...this.records]
+    return new AceTrace([...this.records])
   }
 }
 
@@ -412,7 +431,7 @@ export class AcePlayer extends EventEmitter {
   private wasVisible: boolean
   private wasBlinking: boolean
   private previousOpacity: number
-  private _src: AceRecord[] = []
+  private _trace: AceTrace | undefined
   private timer?: ReturnType<typeof setTimeout>
   private timerStarted: number | undefined
   private startTime?: number
@@ -432,20 +451,19 @@ export class AcePlayer extends EventEmitter {
     this.wasBlinking = renderer.$cursorLayer.isBlinking
     this.previousOpacity = renderer.$cursorLayer.element.style.opacity
   }
-  public set src(src: AceRecord[]) {
-    if (src.length === 0) {
-      throw new Error("Empty source")
-    }
-    this._src = src
-    const traceStartTime = new Date(this._src[0].timestamp).valueOf()
-    this.traceTimes = this._src.map((record) => {
-      return { complete: AceRecord.guard(record), offset: new Date(record.timestamp).valueOf() - traceStartTime }
+  public set trace(trace: AceTrace) {
+    this._trace = trace
+    this.traceTimes = this._trace.records.map((record) => {
+      return {
+        complete: AceRecord.guard(record),
+        offset: new Date(record.timestamp).valueOf() - trace.startTime.valueOf(),
+      }
     })
   }
 
   public play() {
-    if (!this._src) {
-      throw new Error("No source loaded")
+    if (!this._trace) {
+      throw new Error("No trace loaded")
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -455,14 +473,25 @@ export class AcePlayer extends EventEmitter {
     renderer.$cursorLayer.element.style.opacity = 1
 
     this.startTime = new Date().valueOf() - this.traceTime
+    console.log("Start")
     this.next()
   }
 
-  private next() {
-    this.timer && clearTimeout(this.timer)
-    this.timerStarted = undefined
+  private clearTimeout() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = undefined
+      this.timerStarted = undefined
+    }
+  }
 
-    const aceRecord = this._src[this.currentIndex]
+  private next() {
+    this.clearTimeout()
+
+    if (!this._trace) {
+      throw new Error("Timer shouldn't fire when trace is empty")
+    }
+    const aceRecord = this._trace.records[this.currentIndex]
     this.traceTime = this.traceTimes[this.currentIndex].offset
     this.emit("timestamp", this.traceTime)
     if (ExternalChange.guard(aceRecord) && this.onExternalChange) {
@@ -472,10 +501,13 @@ export class AcePlayer extends EventEmitter {
     }
 
     this.currentIndex++
-    if (this._src[this.currentIndex]) {
+    if (this._trace.records[this.currentIndex]) {
       const nextTime = this.startTime! + this.traceTimes[this.currentIndex].offset
       this.timerStarted = new Date().valueOf()
       const delay = Math.max(nextTime - this.timerStarted, 0)
+      if (isNaN(delay)) {
+        throw new Error("Bad delay")
+      }
       this.timer = setTimeout(() => {
         this.next()
       }, delay)
@@ -487,10 +519,10 @@ export class AcePlayer extends EventEmitter {
   }
 
   public pause() {
-    if (this.timer) {
-      clearTimeout(this.timer)
+    if (this.timerStarted) {
       this.traceTime += new Date().valueOf() - this.timerStarted!
     }
+    this.clearTimeout()
 
     const renderer = this.editor.renderer as any
     renderer.$cursorLayer.element.style.opacity = this.previousOpacity
@@ -589,7 +621,7 @@ export class RecordReplayer extends EventEmitter {
   private recorder: AceRecorder
   private player: AcePlayer
   private _state: RecordReplayer.State = "empty"
-  private _trace: AceRecord[] = []
+  private _trace: AceTrace | undefined
 
   constructor(editor: Ace.Editor) {
     super()
@@ -633,24 +665,34 @@ export class RecordReplayer extends EventEmitter {
     if (this._state !== "paused") {
       throw new Error("No content or already playing or recording")
     }
-    this.player.src = this._trace!
+    this.player.trace = this._trace!
     this.player.play()
     this.state = "playing"
   }
   public clear() {
     this.player.pause()
-    this._trace = []
+    this._trace = undefined
     this.state = "empty"
   }
-  public get content() {
+  public get trace() {
     return this._trace
   }
-  public set content(src: AceRecord[]) {
+  public set trace(trace: AceTrace | undefined) {
     if (this._state === "playing" || this._state === "recording") {
       throw new Error("Currently playing or recording")
     }
-    this._trace = src
-    this.state = src.length === 0 ? "empty" : "paused"
+    if (trace === undefined) {
+      this.clear()
+    } else {
+      this._trace = trace
+      this.state = "paused"
+    }
+  }
+  public get duration() {
+    if (this._state === "empty") {
+      throw new Error("No audio loaded")
+    }
+    return this._trace!.duration
   }
 }
 export namespace RecordReplayer {

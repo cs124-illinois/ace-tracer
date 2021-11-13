@@ -1,5 +1,5 @@
 {
-  "name": "@cs124/audio-recorder",
+  "name": "@cs124/aceaudio-recorder",
   "version": "2021.11.1",
   "license": "MIT",
   "main": "dist/index.js",
@@ -13,11 +13,13 @@
     "watch": "rimraf dist && tsc -w"
   },
   "types": "dist/index.d.ts",
-  "dependencies": {
-    "ts-ebml": "^2.0.2"
+  "peerDependencies": {
+    "@cs124/ace-recorder": ">= 2021",
+    "@cs124/audio-recorder": ">= 2021"
   },
   "devDependencies": {
-    "@types/dom-mediacapture-record": "^1.0.11",
+    "@cs124/ace-recorder": "^2021.11.1",
+    "@cs124/audio-recorder": "^2021.11.1",
     "@typescript-eslint/eslint-plugin": "5.3.1",
     "@typescript-eslint/parser": "5.3.1",
     "eslint": "8.2.0",
@@ -26,6 +28,7 @@
     "prettier": "2.4.1",
     "prettier-package-json": "2.6.0",
     "prettier-plugin-organize-imports": "2.3.4",
+    "react-ace": "^9.5.0",
     "rimraf": "3.0.2",
     "typescript": "4.4.4"
   }

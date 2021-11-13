@@ -1,5 +1,5 @@
 {
-  "name": "@cs124/ace-tracer",
+  "name": "@cs124/ace-recorder",
   "version": "2021.11.1",
   "license": "MIT",
   "main": "dist/index.js",
@@ -20,7 +20,6 @@
     "runtypes": ">= 6"
   },
   "devDependencies": {
-    "@types/event-emitter": "^0.3.3",
     "@types/throttle-debounce": "2.1.0",
     "@typescript-eslint/eslint-plugin": "5.3.1",
     "@typescript-eslint/parser": "5.3.1",

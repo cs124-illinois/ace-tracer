@@ -37,15 +37,15 @@ export class AudioRecorder {
   recording = false
   private chunks: Blob[] = []
   private resolver: (value: string) => void = () => {}
-  private waiter: Promise<string> = new Promise((resolve) => {
-    resolve("")
+  private waiter: Promise<string | undefined> = new Promise((resolve) => {
+    resolve(undefined)
   })
 
   public async start() {
     this.audioRecorder = new MediaRecorder(await navigator.mediaDevices.getUserMedia({ audio: true }))
     this.recording = true
     this.chunks = []
-    this.waiter = new Promise<string>((resolve) => {
+    this.waiter = new Promise<string | undefined>((resolve) => {
       this.resolver = resolve
     })
     this.audioRecorder.addEventListener("dataavailable", async ({ data }) => {
@@ -55,15 +55,21 @@ export class AudioRecorder {
         this.resolver(window.URL.createObjectURL(new Blob(this.chunks)))
       }
     })
-    try {
-      this.audioRecorder.start()
-    } catch (err) {
-      console.log(err)
+
+    let resolver: (value: unknown) => void
+    const waitForStart = new Promise((resolve) => {
+      resolver = resolve
+    })
+    const listener = () => {
+      resolver(undefined)
     }
+    this.audioRecorder?.addEventListener("start", listener)
+    this.audioRecorder.start()
+    return waitForStart
   }
-  public async stop() {
+  public async stop(): Promise<string | undefined> {
     if (!this.recording || !this.audioRecorder || this.audioRecorder.state === "inactive") {
-      return ""
+      return undefined
     }
     this.recording = false
     this.audioRecorder.stop()
@@ -73,11 +79,11 @@ export class AudioRecorder {
   }
 }
 
-export const urlToBase64 = async (url: string): Promise<string | undefined> => {
+export const urlToBase64 = async (url: string): Promise<string> => {
   const blob = await fetch(url).then((r) => r.blob())
   return new Promise((resolve, _) => {
     const reader = new FileReader()
-    reader.onloadend = () => resolve(reader.result?.toString().split(",")[1])
+    reader.onloadend = () => resolve(reader.result!.toString().split(",")[1])
     reader.readAsDataURL(blob)
   })
 }
@@ -118,12 +124,25 @@ export class RecordReplayer extends EventEmitter {
     if (this._state !== "recording") {
       throw new Error("Not recording")
     }
-    const url = await this.recorder.stop()
+    const recording = await this.recorder.stop()
     this.setPlayer()
-    this.player!.src = url
-    if (url !== "") {
+    this.player!.src = recording || ""
+
+    let resolver: (value: unknown) => void
+    const waitForDuration = new Promise((resolve) => {
+      resolver = resolve
+    })
+    const listener = () => {
+      resolver(undefined)
+    }
+    this.player?.addEventListener("loadeddata", listener)
+    this.player!.load()
+    await waitForDuration
+    this.player?.removeEventListener("loadeddata", listener)
+
+    if (recording) {
       this.state = "paused"
-      this.emit("content", url)
+      this.emit("content", recording)
     } else {
       this.state = "empty"
     }
@@ -180,7 +199,7 @@ export class RecordReplayer extends EventEmitter {
     }
     this.player!.currentTime = currentTime
   }
-  public get content() {
+  public get base64(): Promise<string> {
     if (!this.player || this.player.src === "") {
       throw new Error("Source is empty")
     }
