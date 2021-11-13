@@ -180,11 +180,11 @@ export class RecordReplayer extends EventEmitter {
     }
     this.player!.currentTime = currentTime
   }
-  public async srcBase64() {
+  public get content() {
     if (!this.player || this.player.src === "") {
       throw new Error("Source is empty")
     }
-    return await urlToBase64(this.player.src)
+    return urlToBase64(this.player.src)
   }
 }
 

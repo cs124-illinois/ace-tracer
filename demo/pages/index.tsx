@@ -1,7 +1,7 @@
 import { AceRecord, AceStreamer, RecordReplayer as AceRecordReplayer } from "@cs124/ace-tracer"
 import { RecordReplayer as AudioRecordReplayer } from "@cs124/audio-recorder"
 import dynamic from "next/dynamic"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Timer from "react-compound-timer"
 
 const AceEditor = dynamic(() => import("react-ace"), { ssr: false })
@@ -61,8 +61,8 @@ const PlayerControls: React.FC<{ acereplayer?: AceRecordReplayer; audioreplayer?
       <button
         disabled={state === "empty" || state === "playing" || state === "recording"}
         onClick={async () => {
-          const trace = acereplayer?.src
-          const audio = await audioreplayer?.srcBase64()
+          const trace = acereplayer?.content
+          const audio = await audioreplayer?.content
           console.log({
             ...(trace && { trace }),
             ...(audio && { audio }),
@@ -82,12 +82,43 @@ const WithAudioRecord: React.FC = () => {
   useEffect(() => {
     audioReplayer.current?.on("state", (s) => setState(s))
   }, [])
+  useEffect(() => {
+    fetch(`/api/`)
+      .then((r) => r.json())
+      .then((response) => {
+        console.log(response)
+      })
+  }, [])
+
+  const [uploading, setUploading] = useState(false)
+  const upload = useCallback(async () => {
+    setUploading(true)
+    const trace = aceReplayer!.content
+    const audio = await audioReplayer.current!.content
+    fetch(`/api/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({ trace, audio }),
+    }).finally(() => {
+      setUploading(false)
+    })
+  }, [])
 
   return (
     <>
       <h2>Single Editor Record and Replay Demo (With Audio)</h2>
       <p>Use the record button to start recording, and replay to replay when you are finished.</p>
       {aceReplayer && <PlayerControls acereplayer={aceReplayer} audioreplayer={audioReplayer.current} />}
+      {aceReplayer && audioReplayer.current && (
+        <button
+          onClick={upload}
+          disabled={uploading || state === "empty" || state === "playing" || state === "recording"}
+        >
+          Upload
+        </button>
+      )}
       <div style={{ display: "flex" }}>
         {state === "recording" && (
           <Timer>

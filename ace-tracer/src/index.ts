@@ -642,10 +642,10 @@ export class RecordReplayer extends EventEmitter {
     this._trace = []
     this.state = "empty"
   }
-  public get src() {
+  public get content() {
     return this._trace
   }
-  public set src(src: AceRecord[]) {
+  public set content(src: AceRecord[]) {
     if (this._state === "playing" || this._state === "recording") {
       throw new Error("Currently playing or recording")
     }
