@@ -117,6 +117,7 @@ export class RecordReplayer extends EventEmitter {
     }
     this.player = new Audio()
     this.player.addEventListener("ended", () => {
+      this.emit("ended")
       this.pause()
     })
   }

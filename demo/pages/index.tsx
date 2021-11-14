@@ -17,17 +17,31 @@ const PlayerControls: React.FC<{
     acereplayer?.on("state", (s) => setState(s))
     audioreplayer?.on("state", (s) => setState(s))
     aceaudioreplayer?.on("state", (s) => setState(s))
+    aceaudioreplayer?.on("ended", () => {
+      aceaudioreplayer.currentTime = 0
+      setValue(0)
+    })
   }, [])
   const [value, setValue] = useState(0)
   const handleChange = useCallback((event) => {
     if (aceaudioreplayer) {
       aceaudioreplayer.percent = event.target.value
+      aceaudioreplayer.sync()
     }
     setValue(event.target.value)
   }, [])
+  const timer = useRef<ReturnType<typeof setInterval>>()
   useEffect(() => {
     if (state === "empty") {
       setValue(0)
+    }
+    if (state === "playing") {
+      timer.current = setInterval(() => {
+        const percent = aceaudioreplayer?.percent!
+        setValue(percent)
+      }, 100)
+    } else {
+      timer.current && clearInterval(timer.current)
     }
   }, [state])
 

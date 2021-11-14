@@ -9,6 +9,7 @@
     "eslint": "eslint src/**",
     "ncu": "ncu",
     "prepublish": "rimraf dist && tsc",
+    "start": "yarn watch",
     "prettier": "prettier -w --plugin=prettier-plugin-organize-imports . && prettier-package-json --write",
     "watch": "tsc -w"
   },

@@ -437,8 +437,10 @@ export class AcePlayer extends EventEmitter {
   private startTime?: number
   private _currentTime = 0
   private currentIndex = 0
+  private endIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
   private onExternalChange?: (externalChange: ExternalChange) => void
+  public playing = false
 
   public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
     super()
@@ -453,6 +455,7 @@ export class AcePlayer extends EventEmitter {
   }
   public set trace(trace: AceTrace) {
     this._trace = trace
+    this.endIndex = trace.records.length
     this.traceTimes = this._trace.records.map((record) => {
       return {
         complete: Complete.guard(record),
@@ -474,6 +477,7 @@ export class AcePlayer extends EventEmitter {
 
     this.startTime = new Date().valueOf() - this._currentTime
     this.next()
+    this.playing = true
   }
 
   private clearTimeout() {
@@ -482,6 +486,34 @@ export class AcePlayer extends EventEmitter {
       this.timer = undefined
       this.timerStarted = undefined
     }
+  }
+
+  public sync(now = new Date().valueOf()) {
+    if (!this._trace) {
+      throw new Error("Can't sync without trace")
+    }
+    let nextWait = -1
+    let i
+    for (i = this.currentIndex; i < this.endIndex; i++) {
+      nextWait = this.startTime! + this.traceTimes[i].offset - now
+      if (nextWait > 0) {
+        break
+      }
+      const aceRecord = this._trace.records[i]
+      if (ExternalChange.guard(aceRecord) && this.onExternalChange) {
+        this.onExternalChange(aceRecord)
+      } else {
+        applyAceRecord(this.editor, aceRecord)
+      }
+    }
+    if (this.currentIndex !== this.endIndex && i === this.endIndex) {
+      if (this.playing) {
+        this.emit("ended")
+        this.playing = false
+      }
+    }
+    this.currentIndex = i
+    return nextWait
   }
 
   private next() {
@@ -498,22 +530,15 @@ export class AcePlayer extends EventEmitter {
     } else {
       applyAceRecord(this.editor, aceRecord)
     }
-
     this.currentIndex++
-    if (this._trace.records[this.currentIndex]) {
-      const nextTime = this.startTime! + this.traceTimes[this.currentIndex].offset
-      this.timerStarted = new Date().valueOf()
-      const delay = Math.max(nextTime - this.timerStarted, 0)
-      if (isNaN(delay)) {
-        throw new Error("Bad delay")
-      }
+
+    const now = new Date().valueOf()
+    const nextWait = this.sync(now)
+    if (nextWait > 0) {
+      this.timerStarted = now
       this.timer = setTimeout(() => {
         this.next()
-      }, delay)
-    } else {
-      this.emit("ended")
-      this._currentTime = 0
-      this.currentIndex = 0
+      }, nextWait)
     }
   }
 
@@ -522,11 +547,20 @@ export class AcePlayer extends EventEmitter {
       this._currentTime += new Date().valueOf() - this.timerStarted!
     }
     this.clearTimeout()
+    this.playing = false
 
     const renderer = this.editor.renderer as any
     renderer.$cursorLayer.element.style.opacity = this.previousOpacity
     renderer.$cursorLayer.setBlinking(this.wasBlinking)
     renderer.$cursorLayer.isVisible = this.wasVisible
+  }
+
+  public get currentTime() {
+    if (this.playing) {
+      return new Date().valueOf() - this.startTime!
+    } else {
+      return this._currentTime
+    }
   }
 
   public set currentTime(currentTime: number) {
@@ -557,6 +591,7 @@ export class RecordReplayer extends EventEmitter {
     this.recorder = new AceRecorder(editor)
     this.player = new AcePlayer(editor)
     this.player.addListener("ended", () => {
+      this.emit("ended")
       this.pause()
     })
     this.emit("state", "empty")
@@ -593,10 +628,14 @@ export class RecordReplayer extends EventEmitter {
   }
   public play() {
     if (this._state !== "paused") {
-      throw new Error("No content or already playing or recording")
+      throw new Error(`No content or already playing or recording: ${this._state}`)
     }
     this.player.play()
     this.state = "playing"
+  }
+  public sync() {
+    this.notEmpty()
+    this.player.sync()
   }
   public clear() {
     this.player.pause()
@@ -618,16 +657,27 @@ export class RecordReplayer extends EventEmitter {
     }
   }
   public get duration() {
-    if (this._state === "empty") {
-      throw new Error("No trace loaded")
-    }
+    this.notEmpty()
     return this._trace!.duration
   }
+  public get currentTime() {
+    this.notEmpty()
+    return this.player.currentTime
+  }
   public set currentTime(currentTime: number) {
+    this.notEmpty()
+    this.player.currentTime = currentTime
+  }
+  public addExternalChange(change: Record<string, unknown>) {
+    if (this._state !== "recording") {
+      throw new Error("Not recording")
+    }
+    this.recorder.addExternalChange(change)
+  }
+  private notEmpty() {
     if (this._state === "empty") {
       throw new Error("No trace loaded")
     }
-    this.player.currentTime = currentTime
   }
 }
 export namespace RecordReplayer {
