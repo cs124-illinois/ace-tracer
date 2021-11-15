@@ -436,6 +436,7 @@ export class AcePlayer extends EventEmitter {
   private timerStarted: number | undefined
   private startTime?: number
   private _currentTime = 0
+  private syncTime?: number
   private currentIndex = 0
   private endIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
@@ -475,9 +476,10 @@ export class AcePlayer extends EventEmitter {
     renderer.$cursorLayer.setBlinking(true)
     renderer.$cursorLayer.element.style.opacity = 1
 
-    this.startTime = new Date().valueOf() - this._currentTime
-    this.next()
+    this.syncTime = new Date().valueOf()
+    this.startTime = this.syncTime - this._currentTime
     this.playing = true
+    this.next(false)
   }
 
   private clearTimeout() {
@@ -488,14 +490,14 @@ export class AcePlayer extends EventEmitter {
     }
   }
 
-  public sync(now = new Date().valueOf()) {
+  public sync() {
     if (!this._trace) {
       throw new Error("Can't sync without trace")
     }
     let nextWait = -1
     let i
     for (i = this.currentIndex; i < this.endIndex; i++) {
-      nextWait = this.startTime! + this.traceTimes[i].offset - now
+      nextWait = this.startTime! + this.traceTimes[i].offset - this.syncTime!
       if (nextWait > 0) {
         break
       }
@@ -506,22 +508,32 @@ export class AcePlayer extends EventEmitter {
         applyAceRecord(this.editor, aceRecord)
       }
     }
-    if (this.currentIndex !== this.endIndex && i === this.endIndex) {
+    const previousIndex = this.currentIndex
+    this.currentIndex = i
+    if (previousIndex !== this.endIndex && i === this.endIndex) {
       if (this.playing) {
-        this.emit("ended")
         this.playing = false
+        this.emit("ended")
       }
     }
-    this.currentIndex = i
     return nextWait
   }
 
-  private next() {
-    this.clearTimeout()
-
+  private next(sync = true) {
     if (!this._trace) {
       throw new Error("Timer shouldn't fire when trace is empty")
     }
+    if (!this.playing) {
+      return
+    }
+    this.clearTimeout()
+    const now = new Date().valueOf()
+    if (sync) {
+      this.syncTime = now
+      this._currentTime = now - this.startTime!
+    }
+
+    /*
     const aceRecord = this._trace.records[this.currentIndex]
     this._currentTime = this.traceTimes[this.currentIndex].offset
     this.emit("timestamp", this._currentTime)
@@ -531,11 +543,11 @@ export class AcePlayer extends EventEmitter {
       applyAceRecord(this.editor, aceRecord)
     }
     this.currentIndex++
+    */
 
-    const now = new Date().valueOf()
-    const nextWait = this.sync(now)
+    const nextWait = this.sync()
     if (nextWait > 0) {
-      this.timerStarted = now
+      this.timerStarted = new Date().valueOf()
       this.timer = setTimeout(() => {
         this.next()
       }, nextWait)
@@ -544,7 +556,7 @@ export class AcePlayer extends EventEmitter {
 
   public pause() {
     if (this.timerStarted) {
-      this._currentTime += new Date().valueOf() - this.timerStarted!
+      this._currentTime += new Date().valueOf() - this.timerStarted
     }
     this.clearTimeout()
     this.playing = false
@@ -564,7 +576,8 @@ export class AcePlayer extends EventEmitter {
   }
 
   public set currentTime(currentTime: number) {
-    this.startTime = new Date().valueOf() - currentTime
+    this.syncTime = new Date().valueOf()
+    this.startTime = this.syncTime - currentTime
     let newCurrentIndex = -1
     for (let i = 0; i < this.traceTimes.length; i++) {
       const traceTime = this.traceTimes[i]

@@ -130,7 +130,6 @@ const PlayerControls: React.FC<{
         step="1"
         onChange={handleChange}
         onMouseDown={() => {
-          console.log(`Down`)
           if (state === "playing" && !wasPlaying) {
             setWasPlaying(true)
             aceaudioreplayer?.pause()
