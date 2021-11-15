@@ -13,12 +13,14 @@ const PlayerControls: React.FC<{
   aceaudioreplayer?: AceAudioRecordReplayer
 }> = ({ acereplayer, audioreplayer, aceaudioreplayer }) => {
   const [state, setState] = useState<AceRecordReplayer.State>("empty")
+  const [wasPlaying, setWasPlaying] = useState(false)
   useEffect(() => {
     acereplayer?.on("state", (s) => setState(s))
     audioreplayer?.on("state", (s) => setState(s))
     aceaudioreplayer?.on("state", (s) => setState(s))
     aceaudioreplayer?.on("ended", () => {
       aceaudioreplayer.currentTime = 0
+      aceaudioreplayer.sync()
       setValue(0)
     })
   }, [])
@@ -49,14 +51,20 @@ const PlayerControls: React.FC<{
     <div>
       <div style={{ display: "flex", width: "100%", flexDirection: "row", alignItems: "center" }}>
         <button
-          disabled={state === "empty" || state === "playing" || state === "recording"}
+          disabled={state === "empty" || state === "recording"}
           onClick={() => {
-            acereplayer?.play()
-            audioreplayer?.play()
-            aceaudioreplayer?.play()
+            if (state === "paused") {
+              acereplayer?.play()
+              audioreplayer?.play()
+              aceaudioreplayer?.play()
+            } else {
+              acereplayer?.pause()
+              audioreplayer?.pause()
+              aceaudioreplayer?.pause()
+            }
           }}
         >
-          Play
+          {state === "paused" ? <>Play</> : <>Pause</>}
         </button>
         <button
           disabled={state !== "empty"}
@@ -76,9 +84,10 @@ const PlayerControls: React.FC<{
               audioreplayer?.stopRecording()
               aceaudioreplayer?.stopRecording()
             } else {
-              acereplayer?.pause()
-              audioreplayer?.pause()
-              aceaudioreplayer?.pause()
+              acereplayer?.stop()
+              audioreplayer?.stop()
+              aceaudioreplayer?.stop()
+              setValue(0)
             }
           }}
         >
@@ -120,6 +129,19 @@ const PlayerControls: React.FC<{
         max="100"
         step="1"
         onChange={handleChange}
+        onMouseDown={() => {
+          console.log(`Down`)
+          if (state === "playing" && !wasPlaying) {
+            setWasPlaying(true)
+            aceaudioreplayer?.pause()
+          }
+        }}
+        onMouseUp={() => {
+          if (wasPlaying) {
+            aceaudioreplayer?.play()
+          }
+          setWasPlaying(false)
+        }}
         value={value}
         style={{ width: "100%" }}
       />

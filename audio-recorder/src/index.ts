@@ -155,6 +155,13 @@ export class RecordReplayer extends EventEmitter {
     this.player?.pause()
     this.state = "paused"
   }
+  public stop() {
+    if (this._state !== "playing") {
+      throw new Error("Not playing")
+    }
+    this.pause()
+    this.currentTime = 0
+  }
   public play() {
     if (this._state !== "paused") {
       throw new Error("No content or already playing or recording")

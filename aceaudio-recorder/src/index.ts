@@ -1,4 +1,4 @@
-import { AceTrace, RecordReplayer as AceRecordReplayer } from "@cs124/ace-recorder"
+import { AceTrace, ExternalChange, RecordReplayer as AceRecordReplayer } from "@cs124/ace-recorder"
 import { RecordReplayer as AudioRecordReplayer } from "@cs124/audio-recorder"
 import type { Ace } from "ace-builds"
 import EventEmitter from "events"
@@ -8,18 +8,19 @@ export class RecordReplayer extends EventEmitter {
   private audioRecordReplayer = new AudioRecordReplayer()
   private _state: RecordReplayer.State = "empty"
   public duration: number | undefined
+  private pausing = false
 
-  public constructor(editor: Ace.Editor) {
+  public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
     super()
-    this.aceRecordReplayer = new AceRecordReplayer(editor)
+    this.aceRecordReplayer = new AceRecordReplayer(editor, onExternalChange)
     this.aceRecordReplayer.addListener("state", (state) => {
-      if (state === "paused" && this._state === "playing") {
+      if (state === "paused" && this._state === "playing" && !this.pausing) {
         this.audioRecordReplayer.state === "playing" && this.audioRecordReplayer.pause()
         this.state = "paused"
       }
     })
     this.audioRecordReplayer.addListener("state", (state) => {
-      if (state === "paused" && this._state === "playing") {
+      if (state === "paused" && this._state === "playing" && !this.pausing) {
         this.aceRecordReplayer.state === "playing" && this.aceRecordReplayer.pause()
         this.state = "paused"
       }
@@ -75,8 +76,20 @@ export class RecordReplayer extends EventEmitter {
     if (this._state !== "playing") {
       throw new Error("Not playing")
     }
+    this.pausing = true
     this.aceRecordReplayer.pause()
     this.audioRecordReplayer.pause()
+    this.pausing = false
+    this.state = "paused"
+  }
+  public stop() {
+    if (this._state !== "playing") {
+      throw new Error("Not playing")
+    }
+    this.pausing = true
+    this.aceRecordReplayer.stop()
+    this.audioRecordReplayer.stop()
+    this.pausing = false
     this.state = "paused"
   }
   public play() {

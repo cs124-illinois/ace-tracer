@@ -586,10 +586,10 @@ export class RecordReplayer extends EventEmitter {
   private _state: RecordReplayer.State = "empty"
   private _trace: AceTrace | undefined
 
-  constructor(editor: Ace.Editor) {
+  constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
     super()
     this.recorder = new AceRecorder(editor)
-    this.player = new AcePlayer(editor)
+    this.player = new AcePlayer(editor, onExternalChange)
     this.player.addListener("ended", () => {
       this.emit("ended")
       this.pause()
@@ -625,6 +625,14 @@ export class RecordReplayer extends EventEmitter {
     }
     this.player.pause()
     this.state = "paused"
+  }
+  public stop() {
+    if (this._state !== "playing") {
+      throw new Error("Not playing")
+    }
+    this.pause()
+    this.player.currentTime = 0
+    this.player.sync()
   }
   public play() {
     if (this._state !== "paused") {
