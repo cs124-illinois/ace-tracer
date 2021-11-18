@@ -17,6 +17,10 @@ const PlayerControls: React.FC<{
   useEffect(() => {
     acereplayer?.on("state", (s) => setState(s))
     audioreplayer?.on("state", (s) => setState(s))
+    audioreplayer?.on("ended", () => {
+      audioreplayer.currentTime = 0
+      setValue(0)
+    })
     aceaudioreplayer?.on("state", (s) => setState(s))
     aceaudioreplayer?.on("ended", () => {
       aceaudioreplayer.currentTime = 0
@@ -29,6 +33,8 @@ const PlayerControls: React.FC<{
     if (aceaudioreplayer) {
       aceaudioreplayer.percent = event.target.value
       aceaudioreplayer.sync()
+    } else if (audioreplayer) {
+      audioreplayer.percent = event.target.value
     }
     setValue(event.target.value)
   }, [])
@@ -39,8 +45,13 @@ const PlayerControls: React.FC<{
     }
     if (state === "playing") {
       timer.current = setInterval(() => {
-        const percent = aceaudioreplayer?.percent!
-        setValue(percent)
+        let percent
+        if (aceaudioreplayer) {
+          percent = aceaudioreplayer.percent!
+        } else if (audioreplayer) {
+          percent = audioreplayer.percent
+        }
+        percent && setValue(percent)
       }, 100)
     } else {
       timer.current && clearInterval(timer.current)
@@ -322,6 +333,7 @@ export default function Home() {
       <p>
         Visit the <a href="https://github.com/cs124-illinois/ace-tracer">project homepage</a>
       </p>
+      <AudioRecord />
       <WithAudioRecord />
       <SingleEditorStream />
     </>

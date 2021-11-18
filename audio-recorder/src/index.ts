@@ -92,6 +92,7 @@ export class RecordReplayer extends EventEmitter {
   private recorder = new AudioRecorder()
   private player: HTMLAudioElement | undefined
   private _state: RecordReplayer.State = "empty"
+  private startTime?: number
 
   public constructor() {
     super()
@@ -117,8 +118,10 @@ export class RecordReplayer extends EventEmitter {
     }
     this.player = new Audio()
     this.player.addEventListener("ended", () => {
-      this.emit("ended")
-      this.pause()
+      if (this._state === "playing") {
+        this.emit("ended")
+        this.pause()
+      }
     })
   }
   public async stopRecording() {
@@ -153,6 +156,7 @@ export class RecordReplayer extends EventEmitter {
       throw new Error("Not playing")
     }
     this.player?.pause()
+    this.startTime = undefined
     this.state = "paused"
   }
   public stop() {
@@ -162,13 +166,25 @@ export class RecordReplayer extends EventEmitter {
     this.pause()
     this.currentTime = 0
   }
-  public play() {
+  public async play() {
     if (this._state !== "paused") {
       throw new Error("No content or already playing or recording")
     }
     this.setPlayer()
+
+    let resolver: (value: unknown) => void
+    const waitForStart = new Promise((resolve) => {
+      resolver = resolve
+    })
+    const listener = () => {
+      this.state = "playing"
+      this.startTime = new Date().valueOf() - this.currentTime * 1000
+      resolver(undefined)
+    }
+    this.player!.addEventListener("playing", listener)
     this.player!.play()
-    this.state = "playing"
+
+    return waitForStart
   }
   public clear() {
     if (this.player) {
@@ -190,28 +206,41 @@ export class RecordReplayer extends EventEmitter {
     this.state = src === "" ? "empty" : "paused"
   }
   public get duration() {
-    if (this._state === "empty") {
-      throw new Error("No audio loaded")
-    }
+    this.notEmpty()
     return this.player!.duration
   }
   public get currentTime() {
-    if (this._state === "empty") {
-      throw new Error("No audio loaded")
+    this.notEmpty()
+    const playTime = new Date().valueOf() - this.startTime!
+    const audioTime = this.player!.currentTime * 1000
+    if (Math.abs(playTime - audioTime) > 100) {
+      console.warn(`Audio replay times have diverged: ${playTime} audio: ${audioTime}`)
     }
-    return this.player!.currentTime
+    return audioTime / 1000
   }
   public set currentTime(currentTime: number) {
-    if (this._state === "empty") {
-      throw new Error("No audio loaded")
-    }
+    this.notEmpty()
     this.player!.currentTime = currentTime
+    if (this.state === "playing") {
+      this.startTime = new Date().valueOf() - currentTime * 1000
+    }
+  }
+  public get percent() {
+    this.notEmpty()
+    return (this.currentTime / this.player!.duration) * 100
+  }
+  public set percent(percent: number) {
+    this.notEmpty()
+    this.currentTime = (this.player!.duration * percent) / 100
   }
   public get base64(): Promise<string> {
-    if (!this.player || this.player.src === "") {
-      throw new Error("Source is empty")
+    this.notEmpty()
+    return urlToBase64(this.player!.src)
+  }
+  private notEmpty() {
+    if (this._state === "empty") {
+      throw new Error("No trace loaded")
     }
-    return urlToBase64(this.player.src)
   }
 }
 

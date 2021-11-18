@@ -9,6 +9,7 @@ export class RecordReplayer extends EventEmitter {
   private _state: RecordReplayer.State = "empty"
   public duration: number | undefined
   private pausing = false
+  private started?: number
 
   public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
     super()
@@ -80,6 +81,7 @@ export class RecordReplayer extends EventEmitter {
     this.aceRecordReplayer.pause()
     this.audioRecordReplayer.pause()
     this.pausing = false
+    this.started = undefined
     this.state = "paused"
   }
   public stop() {
@@ -90,14 +92,16 @@ export class RecordReplayer extends EventEmitter {
     this.aceRecordReplayer.stop()
     this.audioRecordReplayer.stop()
     this.pausing = false
+    this.started = undefined
     this.state = "paused"
   }
-  public play() {
+  public async play() {
     if (this._state !== "paused") {
       throw new Error(`No content or already playing or recording: ${this._state}`)
     }
+    await this.audioRecordReplayer.play()
     this.aceRecordReplayer.play()
-    this.audioRecordReplayer.play()
+    this.started = new Date().valueOf()
     this.state = "playing"
   }
   public clear() {
@@ -116,10 +120,11 @@ export class RecordReplayer extends EventEmitter {
   }
   public get currentTime() {
     this.notEmpty()
+    const playTime = new Date().valueOf() - this.started!
     const aceTime = this.aceRecordReplayer.currentTime
     const audioTime = this.audioRecordReplayer.currentTime * 1000
     if (Math.abs(aceTime - audioTime) > 100) {
-      throw new Error(`Current times have diverged: ${aceTime} ${audioTime}`)
+      console.warn(`Ace and audio times have diverged: ${playTime} ace: ${aceTime} audio: ${audioTime}`)
     }
     return Math.min(aceTime, audioTime)
   }

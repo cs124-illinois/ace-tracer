@@ -440,6 +440,7 @@ export class AcePlayer extends EventEmitter {
   private currentIndex = 0
   private endIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
+  private traceIndex: Record<number, number> = {}
   private onExternalChange?: (externalChange: ExternalChange) => void
   public playing = false
 
@@ -457,11 +458,17 @@ export class AcePlayer extends EventEmitter {
   public set trace(trace: AceTrace) {
     this._trace = trace
     this.endIndex = trace.records.length
-    this.traceTimes = this._trace.records.map((record) => {
-      return {
-        complete: Complete.guard(record),
-        offset: new Date(record.timestamp).valueOf() - trace.startTime.valueOf(),
+    let currentIndex = 0
+    this.traceTimes = this._trace.records.map((record, i) => {
+      const complete = Complete.guard(record)
+      const offset = new Date(record.timestamp).valueOf() - trace.startTime.valueOf()
+      const index = Math.ceil(offset / 1000)
+      if (complete) {
+        for (; currentIndex <= index; currentIndex++) {
+          this.traceIndex[currentIndex] = i
+        }
       }
+      return { complete, offset }
     })
   }
 
@@ -476,6 +483,7 @@ export class AcePlayer extends EventEmitter {
     renderer.$cursorLayer.setBlinking(true)
     renderer.$cursorLayer.element.style.opacity = 1
 
+    this.currentTime = this._currentTime
     this.syncTime = new Date().valueOf()
     this.startTime = this.syncTime - this._currentTime
     this.playing = true
@@ -510,11 +518,9 @@ export class AcePlayer extends EventEmitter {
     }
     const previousIndex = this.currentIndex
     this.currentIndex = i
-    if (previousIndex !== this.endIndex && i === this.endIndex) {
-      if (this.playing) {
-        this.playing = false
-        this.emit("ended")
-      }
+    if (this.playing && previousIndex !== this.endIndex && i === this.endIndex) {
+      this.playing = false
+      this.emit("ended")
     }
     return nextWait
   }
@@ -532,18 +538,6 @@ export class AcePlayer extends EventEmitter {
       this.syncTime = now
       this._currentTime = now - this.startTime!
     }
-
-    /*
-    const aceRecord = this._trace.records[this.currentIndex]
-    this._currentTime = this.traceTimes[this.currentIndex].offset
-    this.emit("timestamp", this._currentTime)
-    if (ExternalChange.guard(aceRecord) && this.onExternalChange) {
-      this.onExternalChange(aceRecord)
-    } else {
-      applyAceRecord(this.editor, aceRecord)
-    }
-    this.currentIndex++
-    */
 
     const nextWait = this.sync()
     if (nextWait > 0) {
@@ -579,7 +573,15 @@ export class AcePlayer extends EventEmitter {
     this.syncTime = new Date().valueOf()
     this.startTime = this.syncTime - currentTime
     let newCurrentIndex = -1
-    for (let i = 0; i < this.traceTimes.length; i++) {
+    const floorValue = Math.floor(currentTime / 1000)
+    const startIndex = this.traceIndex[floorValue]
+    if (startIndex === undefined) {
+      throw new Error(`Couldn't find index for ${floorValue}`)
+    }
+    if (this.traceTimes[startIndex].offset > currentTime) {
+      throw new Error(`Bad index value: ${startIndex}`)
+    }
+    for (let i = startIndex; i < this.traceTimes.length; i++) {
       const traceTime = this.traceTimes[i]
       if (traceTime.complete) {
         if (traceTime.offset > currentTime) {
@@ -604,8 +606,10 @@ export class RecordReplayer extends EventEmitter {
     this.recorder = new AceRecorder(editor)
     this.player = new AcePlayer(editor, onExternalChange)
     this.player.addListener("ended", () => {
-      this.emit("ended")
-      this.pause()
+      if (this._state === "playing") {
+        this.emit("ended")
+        this.pause()
+      }
     })
     this.emit("state", "empty")
   }
