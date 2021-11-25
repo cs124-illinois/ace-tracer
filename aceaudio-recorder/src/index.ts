@@ -1,4 +1,4 @@
-import { AceTrace, ExternalChange, RecordReplayer as AceRecordReplayer } from "@cs124/ace-recorder"
+import { AceTrace, AceRecord, RecordReplayer as AceRecordReplayer } from "@cs124/ace-recorder"
 import { RecordReplayer as AudioRecordReplayer } from "@cs124/audio-recorder"
 import type { Ace } from "ace-builds"
 import EventEmitter from "events"
@@ -9,11 +9,16 @@ export class RecordReplayer extends EventEmitter {
   private _state: RecordReplayer.State = "empty"
   public duration: number | undefined
   private pausing = false
-  private started?: number
+  private debug = false
 
-  public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
+  public constructor(
+    editor: Ace.Editor,
+    onExternalChange?: (externalChange: AceRecord) => void,
+    labelSession?: () => string,
+    debug = false
+  ) {
     super()
-    this.aceRecordReplayer = new AceRecordReplayer(editor, onExternalChange)
+    this.aceRecordReplayer = new AceRecordReplayer(editor, onExternalChange, labelSession)
     this.aceRecordReplayer.addListener("state", (state) => {
       if (state === "paused" && this._state === "playing" && !this.pausing) {
         this.audioRecordReplayer.state === "playing" && this.audioRecordReplayer.pause()
@@ -36,6 +41,13 @@ export class RecordReplayer extends EventEmitter {
         this.emit("ended")
       }
     })
+    this.aceRecordReplayer.addListener("completeRecord", () => {
+      this.emit("completeRecord")
+    })
+    this.aceRecordReplayer.addListener("record", (record) => {
+      this.emit("record", record)
+    })
+    this.debug = debug
     this.emit("state", "empty")
   }
   public get state() {
@@ -81,7 +93,6 @@ export class RecordReplayer extends EventEmitter {
     this.aceRecordReplayer.pause()
     this.audioRecordReplayer.pause()
     this.pausing = false
-    this.started = undefined
     this.state = "paused"
   }
   public stop() {
@@ -92,7 +103,6 @@ export class RecordReplayer extends EventEmitter {
     this.aceRecordReplayer.stop()
     this.audioRecordReplayer.stop()
     this.pausing = false
-    this.started = undefined
     this.state = "paused"
   }
   public async play() {
@@ -101,7 +111,6 @@ export class RecordReplayer extends EventEmitter {
     }
     await this.audioRecordReplayer.play()
     this.aceRecordReplayer.play()
-    this.started = new Date().valueOf()
     this.state = "playing"
   }
   public clear() {
@@ -120,13 +129,14 @@ export class RecordReplayer extends EventEmitter {
   }
   public get currentTime() {
     this.notEmpty()
-    const playTime = new Date().valueOf() - this.started!
-    const aceTime = this.aceRecordReplayer.currentTime
     const audioTime = this.audioRecordReplayer.currentTime * 1000
-    if (Math.abs(aceTime - audioTime) > 100) {
-      console.warn(`Ace and audio times have diverged: ${playTime} ace: ${aceTime} audio: ${audioTime}`)
+    const aceTime = this.aceRecordReplayer.currentTime
+    if (this.debug) {
+      console.debug(Math.round(Math.abs(audioTime - aceTime)))
+    } else {
+      this.aceRecordReplayer.currentTime = audioTime
     }
-    return Math.min(aceTime, audioTime)
+    return audioTime
   }
   public set currentTime(currentTime: number) {
     this.notEmpty()
@@ -135,7 +145,7 @@ export class RecordReplayer extends EventEmitter {
   }
   public get percent() {
     this.notEmpty()
-    return this.currentTime / this.duration! * 100
+    return (this.currentTime / this.duration!) * 100
   }
   public set percent(percent: number) {
     this.notEmpty()
@@ -154,6 +164,19 @@ export class RecordReplayer extends EventEmitter {
     if (this._state === "empty") {
       throw new Error("No trace loaded")
     }
+  }
+  public get playbackRate(): number {
+    return this.audioRecordReplayer!.playbackRate
+  }
+  public set playbackRate(playbackRate: number) {
+    this.audioRecordReplayer!.playbackRate = playbackRate
+    this.aceRecordReplayer!.playbackRate = playbackRate
+  }
+  public addCompleteRecord() {
+    if (this._state !== "recording") {
+      throw new Error("Not recording")
+    }
+    this.aceRecordReplayer.addCompleteRecord()
   }
 }
 

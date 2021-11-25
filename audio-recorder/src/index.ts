@@ -92,7 +92,7 @@ export class RecordReplayer extends EventEmitter {
   private recorder = new AudioRecorder()
   private player: HTMLAudioElement | undefined
   private _state: RecordReplayer.State = "empty"
-  private startTime?: number
+  private _playbackRate: number = 1
 
   public constructor() {
     super()
@@ -156,7 +156,6 @@ export class RecordReplayer extends EventEmitter {
       throw new Error("Not playing")
     }
     this.player?.pause()
-    this.startTime = undefined
     this.state = "paused"
   }
   public stop() {
@@ -178,11 +177,11 @@ export class RecordReplayer extends EventEmitter {
     })
     const listener = () => {
       this.state = "playing"
-      this.startTime = new Date().valueOf() - this.currentTime * 1000
       resolver(undefined)
     }
     this.player!.addEventListener("playing", listener)
     this.player!.play()
+    this.player!.playbackRate = this._playbackRate
 
     return waitForStart
   }
@@ -211,19 +210,11 @@ export class RecordReplayer extends EventEmitter {
   }
   public get currentTime() {
     this.notEmpty()
-    const playTime = new Date().valueOf() - this.startTime!
-    const audioTime = this.player!.currentTime * 1000
-    if (Math.abs(playTime - audioTime) > 100) {
-      console.warn(`Audio replay times have diverged: ${playTime} audio: ${audioTime}`)
-    }
-    return audioTime / 1000
+    return this.player!.currentTime
   }
   public set currentTime(currentTime: number) {
     this.notEmpty()
     this.player!.currentTime = currentTime
-    if (this.state === "playing") {
-      this.startTime = new Date().valueOf() - currentTime * 1000
-    }
   }
   public get percent() {
     this.notEmpty()
@@ -241,6 +232,12 @@ export class RecordReplayer extends EventEmitter {
     if (this._state === "empty") {
       throw new Error("No trace loaded")
     }
+  }
+  public get playbackRate() {
+    return this._playbackRate
+  }
+  public set playbackRate(playbackRate: number) {
+    this._playbackRate = playbackRate
   }
 }
 

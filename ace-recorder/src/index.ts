@@ -168,6 +168,16 @@ export const WindowSizeChange = RuntypeRecord({
 })
 export type WindowSizeChange = Static<typeof WindowSizeChange>
 
+export const SessionChange = RuntypeRecord({
+  type: Literal("sessionchange"),
+  timestamp: AceTimestamp,
+}).And(
+  Partial({
+    name: String,
+  })
+)
+export type SessionChange = Static<typeof SessionChange>
+
 export const ExternalChange = RuntypeRecord({
   type: Literal("external"),
   timestamp: AceTimestamp,
@@ -181,6 +191,7 @@ export const AceRecord = Union(
   CursorChange,
   ScrollChange,
   WindowSizeChange,
+  SessionChange,
   ExternalChange
 )
 export type AceRecord = Static<typeof AceRecord>
@@ -229,15 +240,15 @@ export const safeChangeValue = (editor: Ace.Editor, value: string): void => {
   editor.session.selection.fromJSON(position)
 }
 
-// const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
 export class AceStreamer {
   private editor: Ace.Editor
   private _stop: () => void = () => {}
   running = false
+  private labelSession?: () => string
 
-  public constructor(editor: Ace.Editor) {
+  public constructor(editor: Ace.Editor, labelSession?: () => string) {
     this.editor = editor
+    this.labelSession = labelSession
   }
 
   public start(callback: (record: AceRecord) => void) {
@@ -354,11 +365,43 @@ export class AceStreamer {
       )
     })
 
+    const changeSessionListener = ({ session, oldSession }: { session: any; oldSession: any }) => {
+      oldSession.removeEventListener("change", changeListener)
+      oldSession.removeEventListener("changeScrollTop", scrollListener)
+      oldSession.removeEventListener("changeScrollTop", windowSizeListener)
+
+      callback(
+        SessionChange.check({
+          type: "sessionchange",
+          timestamp: new Date(),
+          ...(this.labelSession && { name: this.labelSession() }),
+        })
+      )
+      callback(getComplete(this.editor))
+
+      session.addEventListener("change", changeListener)
+      session.addEventListener("changeScrollTop", scrollListener)
+      session.addEventListener("changeScrollTop", windowSizeListener)
+    }
+
+    callback(getComplete(this.editor))
+    if (this.labelSession) {
+      callback(
+        SessionChange.check({
+          type: "sessionchange",
+          timestamp: new Date(),
+          ...(this.labelSession && { name: this.labelSession() }),
+        })
+      )
+    }
+
     this.editor.session.addEventListener("change", changeListener)
     this.editor.addEventListener("changeSelection", selectionListener)
     this.editor.addEventListener("changeSelection", cursorListener)
     this.editor.session.addEventListener("changeScrollTop", scrollListener)
     this.editor.session.addEventListener("changeScrollTop", windowSizeListener)
+
+    this.editor.addEventListener("changeSession", changeSessionListener)
 
     this.running = true
 
@@ -367,6 +410,8 @@ export class AceStreamer {
       this.editor.removeEventListener("changeSelection", selectionListener)
       this.editor.removeEventListener("changeSelection", cursorListener)
       this.editor.session.removeEventListener("changeScrollTop", scrollListener)
+      this.editor.session.removeEventListener("changeScrollTop", windowSizeListener)
+      callback(getComplete(this.editor))
     }
   }
 
@@ -378,45 +423,61 @@ export class AceStreamer {
   }
 }
 
-export class AceRecorder {
+export class AceRecorder extends EventEmitter {
   private editor: Ace.Editor
   private streamer: AceStreamer
   recording = false
   private records: AceRecord[] = []
   private timer: ReturnType<typeof setInterval> | undefined
 
-  public constructor(editor: Ace.Editor) {
+  public constructor(editor: Ace.Editor, labelSession?: () => string) {
+    super()
     this.editor = editor
-    this.streamer = new AceStreamer(editor)
+    this.streamer = new AceStreamer(editor, labelSession)
   }
-
   public start(options?: AceRecorder.Options) {
     const interval = options?.interval || 1000
-    this.records = [getComplete(this.editor)]
-    this.streamer.start((record: AceRecord) => this.records.push(record))
-    this.timer = setInterval(() => this.records.push(getComplete(this.editor)), interval)
+    this.records = []
+    this.records = []
+
+    this.streamer.start((record: AceRecord) => {
+      this.records.push(record)
+      this.emit("record", record)
+    })
+    // this.timer = setInterval(() => this.addCompleteRecord(), interval)
     this.recording = true
   }
   public addExternalChange(change: Record<string, unknown>) {
     if (!this.recording) {
       throw new Error("Not recording")
     }
-    this.records.push(
-      ExternalChange.check({
-        ...change,
-        type: "external",
-        timestamp: new Date(),
-      })
-    )
+    if (change.type) {
+      throw new Error("type in external changes is overwritten")
+    }
+    const record = ExternalChange.check({
+      ...change,
+      type: "external",
+      timestamp: new Date(),
+    })
+    this.records.push(record)
+    this.emit("record", record)
   }
-  public stop(): AceTrace {
+  public stop() {
     if (!this.recording) {
       throw new Error("Not recording")
     }
     this.timer && clearInterval(this.timer)
     this.streamer?.stop()
-    this.records.push(getComplete(this.editor))
     return new AceTrace([...this.records])
+  }
+  public addCompleteRecord() {
+    if (!this.recording) {
+      throw new Error("Not recording")
+    }
+    const record = getComplete(this.editor)
+    this.records.push(record)
+    this.emit("record", record)
+    this.emit("completeRecord")
   }
 }
 
@@ -441,10 +502,11 @@ export class AcePlayer extends EventEmitter {
   private endIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
   private traceIndex: Record<number, number> = {}
-  private onExternalChange?: (externalChange: ExternalChange) => void
+  private onExternalChange?: (externalChange: AceRecord) => void
   public playing = false
+  private _playbackRate: number
 
-  public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
+  public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: AceRecord) => void) {
     super()
     this.editor = editor
     this.onExternalChange = onExternalChange
@@ -454,22 +516,28 @@ export class AcePlayer extends EventEmitter {
     this.wasVisible = renderer.$cursorLayer.isVisible
     this.wasBlinking = renderer.$cursorLayer.isBlinking
     this.previousOpacity = renderer.$cursorLayer.element.style.opacity
+    this._playbackRate = 1
   }
   public set trace(trace: AceTrace) {
     this._trace = trace
     this.endIndex = trace.records.length
-    let currentIndex = 0
     this.traceTimes = this._trace.records.map((record, i) => {
       const complete = Complete.guard(record)
       const offset = new Date(record.timestamp).valueOf() - trace.startTime.valueOf()
       const index = Math.ceil(offset / 1000)
       if (complete) {
-        for (; currentIndex <= index; currentIndex++) {
-          this.traceIndex[currentIndex] = i
-        }
+        this.traceIndex[index] = i
       }
       return { complete, offset }
     })
+    let lastIndex = 0
+    for (var i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
+      if (this.traceIndex[i]) {
+        lastIndex = i
+      } else {
+        this.traceIndex[i] = lastIndex
+      }
+    }
   }
 
   public play() {
@@ -485,7 +553,7 @@ export class AcePlayer extends EventEmitter {
 
     this.currentTime = this._currentTime
     this.syncTime = new Date().valueOf()
-    this.startTime = this.syncTime - this._currentTime
+    this.startTime = this.syncTime - this._currentTime / this.playbackRate
     this.playing = true
     this.next(false)
   }
@@ -505,12 +573,12 @@ export class AcePlayer extends EventEmitter {
     let nextWait = -1
     let i
     for (i = this.currentIndex; i < this.endIndex; i++) {
-      nextWait = this.startTime! + this.traceTimes[i].offset - this.syncTime!
+      nextWait = this.startTime! + this.traceTimes[i].offset / this.playbackRate - this.syncTime!
       if (nextWait > 0) {
         break
       }
       const aceRecord = this._trace.records[i]
-      if (ExternalChange.guard(aceRecord) && this.onExternalChange) {
+      if ((ExternalChange.guard(aceRecord) || SessionChange.guard(aceRecord)) && this.onExternalChange) {
         this.onExternalChange(aceRecord)
       } else {
         applyAceRecord(this.editor, aceRecord)
@@ -536,7 +604,7 @@ export class AcePlayer extends EventEmitter {
     const now = new Date().valueOf()
     if (sync) {
       this.syncTime = now
-      this._currentTime = now - this.startTime!
+      this._currentTime = (now - this.startTime!) * this._playbackRate
     }
 
     const nextWait = this.sync()
@@ -548,22 +616,24 @@ export class AcePlayer extends EventEmitter {
     }
   }
 
-  public pause() {
+  public pause(reset = true) {
     if (this.timerStarted) {
-      this._currentTime += new Date().valueOf() - this.timerStarted
+      this._currentTime += (new Date().valueOf() - this.timerStarted) * this.playbackRate
     }
     this.clearTimeout()
     this.playing = false
 
-    const renderer = this.editor.renderer as any
-    renderer.$cursorLayer.element.style.opacity = this.previousOpacity
-    renderer.$cursorLayer.setBlinking(this.wasBlinking)
-    renderer.$cursorLayer.isVisible = this.wasVisible
+    if (reset) {
+      const renderer = this.editor.renderer as any
+      renderer.$cursorLayer.element.style.opacity = this.previousOpacity
+      renderer.$cursorLayer.setBlinking(this.wasBlinking)
+      renderer.$cursorLayer.isVisible = this.wasVisible
+    }
   }
 
   public get currentTime() {
     if (this.playing) {
-      return new Date().valueOf() - this.startTime!
+      return (new Date().valueOf() - this.startTime!) * this.playbackRate
     } else {
       return this._currentTime
     }
@@ -571,7 +641,7 @@ export class AcePlayer extends EventEmitter {
 
   public set currentTime(currentTime: number) {
     this.syncTime = new Date().valueOf()
-    this.startTime = this.syncTime - currentTime
+    this.startTime = this.syncTime - currentTime / this.playbackRate
     let newCurrentIndex = -1
     const floorValue = Math.floor(currentTime / 1000)
     const startIndex = this.traceIndex[floorValue]
@@ -593,6 +663,19 @@ export class AcePlayer extends EventEmitter {
     this.currentIndex = newCurrentIndex
     this._currentTime = currentTime
   }
+  public get playbackRate() {
+    return this._playbackRate
+  }
+  public set playbackRate(playbackRate: number) {
+    const wasPlaying = this.playing
+    if (this.playing) {
+      this.pause(false)
+    }
+    this._playbackRate = playbackRate
+    if (wasPlaying) {
+      this.play()
+    }
+  }
 }
 
 export class RecordReplayer extends EventEmitter {
@@ -601,15 +684,21 @@ export class RecordReplayer extends EventEmitter {
   private _state: RecordReplayer.State = "empty"
   private _trace: AceTrace | undefined
 
-  constructor(editor: Ace.Editor, onExternalChange?: (externalChange: ExternalChange) => void) {
+  constructor(editor: Ace.Editor, onExternalChange?: (externalChange: AceRecord) => void, labelSession?: () => string) {
     super()
-    this.recorder = new AceRecorder(editor)
+    this.recorder = new AceRecorder(editor, labelSession)
     this.player = new AcePlayer(editor, onExternalChange)
     this.player.addListener("ended", () => {
       if (this._state === "playing") {
         this.emit("ended")
         this.pause()
       }
+    })
+    this.recorder.addListener("completeRecord", () => {
+      this.emit("completeRecord")
+    })
+    this.recorder.addListener("record", (record) => {
+      this.emit("record", record)
     })
     this.emit("state", "empty")
   }
@@ -698,6 +787,18 @@ export class RecordReplayer extends EventEmitter {
       throw new Error("Not recording")
     }
     this.recorder.addExternalChange(change)
+  }
+  public addCompleteRecord() {
+    if (this._state !== "recording") {
+      throw new Error("Not recording")
+    }
+    this.recorder.addCompleteRecord()
+  }
+  public get playbackRate(): number {
+    return this.player!.playbackRate
+  }
+  public set playbackRate(playbackRate: number) {
+    this.player!.playbackRate = playbackRate
   }
   private notEmpty() {
     if (this._state === "empty") {

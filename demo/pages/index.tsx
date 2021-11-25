@@ -4,7 +4,6 @@ import { RecordReplayer as AudioRecordReplayer } from "@cs124/audio-recorder"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Timer from "react-compound-timer"
-
 const AceEditor = dynamic(() => import("react-ace"), { ssr: false })
 
 const PlayerControls: React.FC<{
@@ -227,7 +226,96 @@ const WithAudioRecord: React.FC = () => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
         }}
         onLoad={(ace) => {
-          setAceAudioReplayer(new AceAudioRecordReplayer(ace))
+          const aceAudioRecorder = new AceAudioRecordReplayer(ace, undefined, undefined, true)
+          aceAudioRecorder.playbackRate = 2
+          setAceAudioReplayer(aceAudioRecorder)
+        }}
+      />
+    </>
+  )
+}
+
+const MultiWithAudioRecord: React.FC = () => {
+  const [records, setRecords] = useState<AceRecord[]>([])
+  const [aceAudioReplayer, setAceAudioReplayer] = useState<AceAudioRecordReplayer | undefined>(undefined)
+  const aceEditor = useRef<any>()
+  const aceSessions = useRef<Record<string, any>>({})
+  const [state, setState] = useState<AudioRecordReplayer.State>("empty")
+  const [active, setActive] = useState<string>()
+  const savedActive = useRef<string>()
+  useEffect(() => {
+    aceAudioReplayer?.on("state", (s) => setState(s))
+  }, [aceAudioReplayer])
+  useEffect(() => {
+    if (!active) {
+      return
+    }
+    savedActive.current = active
+    if (state !== "playing") {
+      aceEditor.current.setSession(aceSessions.current[active])
+    }
+  }, [active])
+
+  return (
+    <>
+      <h2>Single Editor Record and Replay Demo (With Audio)</h2>
+      <p>Use the record button to start recording, and replay to replay when you are finished.</p>
+      {aceAudioReplayer && <PlayerControls aceaudioreplayer={aceAudioReplayer} />}
+      {aceAudioReplayer && (
+        <div style={{ display: "flex", flexDirection: "row", marginBottom: 8 }}>
+          <button onClick={() => setActive("Main.java")}>
+            <kbd style={{ fontWeight: active === "Main.java" ? "bold" : "inherit" }}>Main.java</kbd>
+          </button>
+          <button onClick={() => setActive("Another.java")}>
+            <kbd style={{ fontWeight: active === "Another.java" ? "bold" : "inherit" }}>Another.java</kbd>
+          </button>
+        </div>
+      )}
+      <div style={{ display: "flex" }}>
+        {state === "recording" && (
+          <Timer>
+            {() => (
+              <>
+                <Timer.Minutes />:<Timer.Seconds />
+              </>
+            )}
+          </Timer>
+        )}
+      </div>
+      <AceEditor
+        mode="java"
+        theme="github"
+        width="100%"
+        height="16rem"
+        minLines={16}
+        maxLines={Infinity}
+        showPrintMargin={false}
+        onBeforeLoad={(ace) => {
+          ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
+          aceSessions.current["Main.java"] = ace.createEditSession("", "ace/mode/java" as any)
+          aceSessions.current["Another.java"] = ace.createEditSession("", "ace/mode/java" as any)
+        }}
+        onLoad={(ace) => {
+          const aceAudioRecorder = new AceAudioRecordReplayer(
+            ace,
+            (record: AceRecord) => {
+              if (record.type === "sessionchange" && record.name) {
+                setActive(record.name)
+              }
+            },
+            () => {
+              return savedActive.current!
+            }
+          )
+          aceAudioRecorder.addListener("record", (record) => {
+            console.log(record)
+            // setRecords((records) => [record, ...records])
+          })
+          // aceAudioRecorder.playbackRate = 2
+          setAceAudioReplayer(aceAudioRecorder)
+          ace.setSession(aceSessions.current["Main.java"])
+          setActive("Main.java")
+          aceEditor.current = ace
         }}
       />
     </>
@@ -333,8 +421,8 @@ export default function Home() {
       <p>
         Visit the <a href="https://github.com/cs124-illinois/ace-tracer">project homepage</a>
       </p>
+      <MultiWithAudioRecord />
       <AudioRecord />
-      <WithAudioRecord />
       <SingleEditorStream />
     </>
   )
