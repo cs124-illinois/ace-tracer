@@ -1,4 +1,4 @@
-import { AceTrace, AceRecord, RecordReplayer as AceRecordReplayer } from "@cs124/ace-recorder"
+import { AceRecord, AceTrace, RecordReplayer as AceRecordReplayer } from "@cs124/ace-recorder"
 import { RecordReplayer as AudioRecordReplayer } from "@cs124/audio-recorder"
 import type { Ace } from "ace-builds"
 import EventEmitter from "events"
@@ -11,14 +11,13 @@ export class RecordReplayer extends EventEmitter {
   private pausing = false
   private debug = false
 
-  public constructor(
-    editor: Ace.Editor,
-    onExternalChange?: (externalChange: AceRecord) => void,
-    labelSession?: () => string,
-    debug = false
-  ) {
+  public constructor(editor: Ace.Editor, options: RecordReplayer.Options) {
     super()
-    this.aceRecordReplayer = new AceRecordReplayer(editor, onExternalChange, labelSession)
+    this.aceRecordReplayer = new AceRecordReplayer(editor, {
+      onExternalChange: options?.onExternalChange,
+      labelSession: options?.labelSession,
+      getSession: options?.getSession,
+    })
     this.aceRecordReplayer.addListener("state", (state) => {
       if (state === "paused" && this._state === "playing" && !this.pausing) {
         this.audioRecordReplayer.state === "playing" && this.audioRecordReplayer.pause()
@@ -47,7 +46,7 @@ export class RecordReplayer extends EventEmitter {
     this.aceRecordReplayer.addListener("record", (record) => {
       this.emit("record", record)
     })
-    this.debug = debug
+    this.debug = options.debug || false
     this.emit("state", "empty")
   }
   public get state() {
@@ -183,4 +182,10 @@ export class RecordReplayer extends EventEmitter {
 export namespace RecordReplayer {
   export type State = "empty" | "paused" | "recording" | "playing"
   export type Content = { audio: string; trace: AceTrace }
+  export type Options = {
+    onExternalChange?: (externalChange: AceRecord) => void | boolean
+    labelSession?: () => string
+    getSession?: (name: string) => Ace.EditSession
+    debug?: boolean
+  }
 }

@@ -226,7 +226,7 @@ const WithAudioRecord: React.FC = () => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
         }}
         onLoad={(ace) => {
-          const aceAudioRecorder = new AceAudioRecordReplayer(ace, undefined, undefined, true)
+          const aceAudioRecorder = new AceAudioRecordReplayer(ace, { debug: true })
           aceAudioRecorder.playbackRate = 2
           setAceAudioReplayer(aceAudioRecorder)
         }}
@@ -251,9 +251,7 @@ const MultiWithAudioRecord: React.FC = () => {
       return
     }
     savedActive.current = active
-    if (state !== "playing") {
-      aceEditor.current.setSession(aceSessions.current[active])
-    }
+    aceEditor.current.setSession(aceSessions.current[active])
   }, [active])
 
   return (
@@ -296,17 +294,16 @@ const MultiWithAudioRecord: React.FC = () => {
           aceSessions.current["Another.java"] = ace.createEditSession("", "ace/mode/java" as any)
         }}
         onLoad={(ace) => {
-          const aceAudioRecorder = new AceAudioRecordReplayer(
-            ace,
-            (record: AceRecord) => {
-              if (record.type === "sessionchange" && record.name) {
-                setActive(record.name)
-              }
-            },
-            () => {
+          const aceAudioRecorder = new AceAudioRecordReplayer(ace, {
+            labelSession: () => {
               return savedActive.current!
-            }
-          )
+            },
+            getSession: (name) => {
+              setActive(name)
+              return aceSessions.current[name]!
+            },
+          })
+
           aceAudioRecorder.addListener("record", (record) => {
             console.log(record)
             // setRecords((records) => [record, ...records])

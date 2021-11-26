@@ -43,42 +43,56 @@ export const Complete = RuntypeRecord({
     top: Number,
     left: Number,
   }),
-})
+  window: RuntypeRecord({
+    top: Number,
+    bottom: Number,
+  }),
+}).And(
+  Partial({
+    sessionName: String,
+  })
+)
+
 export type Complete = Static<typeof Complete>
 
-export const getComplete = (editor: Ace.Editor): Complete =>
+export const getComplete = (editor: Ace.Editor, labelSession?: () => string): Complete =>
   Complete.check({
     type: "complete",
     timestamp: new Date(),
     focused: editor.isFocused(),
-    value: editor.getValue(),
-    selection: editor.selection.getRange(),
-    cursor: editor.selection.getCursor(),
+    value: editor.session.getValue(),
+    selection: editor.session.selection.getRange(),
+    cursor: editor.session.selection.getCursor(),
     scroll: {
-      top: editor.renderer.getScrollTop(),
-      left: editor.renderer.getScrollLeft(),
+      top: editor.session.getScrollTop(),
+      left: editor.session.getScrollLeft(),
     },
+    window: {
+      top: editor.renderer.getScrollTopRow(),
+      bottom: editor.renderer.getScrollBottomRow(),
+    },
+    ...(labelSession && { sessionName: labelSession() }),
   })
 
-export const applyComplete = (editor: Ace.Editor, complete: Complete, valueOnly = false): void => {
-  if (editor.getValue() !== complete.value) {
-    safeChangeValue(editor, complete.value)
+export const applyComplete = (session: Ace.EditSession, complete: Complete, valueOnly = false): void => {
+  if (session.getValue() !== complete.value) {
+    safeChangeSessionValue(session, complete.value)
   }
   if (valueOnly) {
     return
   }
   const { row, column } = complete.cursor
-  editor.selection.moveCursorTo(row, column)
+  session.selection.moveCursorTo(row, column)
 
   const { start, end } = complete.selection
-  editor.selection.setSelectionRange({
+  session.selection.setSelectionRange({
     start: { row: start.row, column: start.column },
     end: { row: end.row, column: end.column },
   })
 
   const { top, left } = complete.scroll
-  editor.renderer.scrollToY(top)
-  editor.renderer.scrollToX(left)
+  session.setScrollTop(top)
+  session.setScrollLeft(left)
 }
 
 export const Delta = RuntypeRecord({
@@ -96,7 +110,7 @@ export const Delta = RuntypeRecord({
 )
 export type Delta = Static<typeof Delta>
 
-export const applyDelta = (editor: Ace.Editor, delta: Delta): void => editor.session.getDocument().applyDelta(delta)
+export const applyDelta = (session: Ace.EditSession, delta: Delta): void => session.getDocument().applyDelta(delta)
 
 export const Selection = RuntypeRecord({
   start: EditorLocation,
@@ -119,8 +133,8 @@ export const SelectionChange = RuntypeRecord({
 })
 export type SelectionChange = Static<typeof SelectionChange>
 
-export const applySelectionChange = (editor: Ace.Editor, selectionChange: SelectionChange): void =>
-  editor.selection.setSelectionRange(selectionChange)
+export const applySelectionChange = (session: Ace.EditSession, selectionChange: SelectionChange): void =>
+  session.selection.setSelectionRange(selectionChange)
 
 export const CursorChange = RuntypeRecord({
   type: Literal("cursorchange"),
@@ -130,8 +144,8 @@ export const CursorChange = RuntypeRecord({
 })
 export type CursorChange = Static<typeof CursorChange>
 
-export const applyCursorChange = (editor: Ace.Editor, cursorChange: CursorChange): void =>
-  editor.selection.moveCursorTo(cursorChange.location.row, cursorChange.location.column)
+export const applyCursorChange = (session: Ace.EditSession, cursorChange: CursorChange): void =>
+  session.selection.moveCursorTo(cursorChange.location.row, cursorChange.location.column)
 
 export const ScrollPosition = RuntypeRecord({
   top: Number,
@@ -148,9 +162,9 @@ export const ScrollChange = RuntypeRecord({
 })
 export type ScrollChange = Static<typeof ScrollChange>
 
-export const applyScrollChange = (editor: Ace.Editor, scrollChange: ScrollChange): void => {
-  editor.renderer.scrollToY(scrollChange.top)
-  editor.renderer.scrollToX(scrollChange.left)
+export const applyScrollChange = (session: Ace.EditSession, scrollChange: ScrollChange): void => {
+  session.setScrollTop(scrollChange.top)
+  session.setScrollLeft(scrollChange.left)
 }
 
 export const WindowSize = RuntypeRecord({
@@ -168,16 +182,6 @@ export const WindowSizeChange = RuntypeRecord({
 })
 export type WindowSizeChange = Static<typeof WindowSizeChange>
 
-export const SessionChange = RuntypeRecord({
-  type: Literal("sessionchange"),
-  timestamp: AceTimestamp,
-}).And(
-  Partial({
-    name: String,
-  })
-)
-export type SessionChange = Static<typeof SessionChange>
-
 export const ExternalChange = RuntypeRecord({
   type: Literal("external"),
   timestamp: AceTimestamp,
@@ -191,7 +195,6 @@ export const AceRecord = Union(
   CursorChange,
   ScrollChange,
   WindowSizeChange,
-  SessionChange,
   ExternalChange
 )
 export type AceRecord = Static<typeof AceRecord>
@@ -205,6 +208,7 @@ export class AceTrace {
   records: AceRecord[]
   duration: number
   startTime: Date
+  sessionChanges: boolean
   constructor(records: AceRecord[]) {
     if (records.length === 0) {
       throw new Error("Empty trace")
@@ -212,20 +216,23 @@ export class AceTrace {
     this.records = records
     this.startTime = new Date(records[0].timestamp)
     this.duration = new Date(records.slice(-1)[0].timestamp).valueOf() - new Date(records[0].timestamp).valueOf()
+    this.sessionChanges = !!records.find((record) => {
+      Complete.guard(record) && !!record.sessionName
+    })
   }
 }
 
-export const applyAceRecord = (editor: Ace.Editor, aceRecord: AceRecord): void => {
+export const applyAceRecord = (session: Ace.EditSession, aceRecord: AceRecord): void => {
   if (Complete.guard(aceRecord)) {
-    applyComplete(editor, aceRecord)
+    applyComplete(session, aceRecord)
   } else if (Delta.guard(aceRecord)) {
-    applyDelta(editor, aceRecord)
+    applyDelta(session, aceRecord)
   } else if (SelectionChange.guard(aceRecord)) {
-    applySelectionChange(editor, aceRecord)
+    applySelectionChange(session, aceRecord)
   } else if (CursorChange.guard(aceRecord)) {
-    applyCursorChange(editor, aceRecord)
+    applyCursorChange(session, aceRecord)
   } else if (ScrollChange.guard(aceRecord)) {
-    applyScrollChange(editor, aceRecord)
+    applyScrollChange(session, aceRecord)
   }
 }
 
@@ -238,6 +245,12 @@ export const safeChangeValue = (editor: Ace.Editor, value: string): void => {
   const position = editor.session.selection.toJSON()
   editor.setValue(value)
   editor.session.selection.fromJSON(position)
+}
+
+export const safeChangeSessionValue = (session: Ace.EditSession, value: string): void => {
+  const position = session.selection.toJSON()
+  session.setValue(value)
+  session.selection.fromJSON(position)
 }
 
 export class AceStreamer {
@@ -370,30 +383,18 @@ export class AceStreamer {
       oldSession.removeEventListener("changeScrollTop", scrollListener)
       oldSession.removeEventListener("changeScrollTop", windowSizeListener)
 
-      callback(
-        SessionChange.check({
-          type: "sessionchange",
-          timestamp: new Date(),
-          ...(this.labelSession && { name: this.labelSession() }),
-        })
-      )
-      callback(getComplete(this.editor))
+      if (!this.labelSession) {
+        throw new Error("Must provide a labelSession method if switching sessions during recording")
+      }
+
+      callback(getComplete(this.editor, this.labelSession))
 
       session.addEventListener("change", changeListener)
       session.addEventListener("changeScrollTop", scrollListener)
       session.addEventListener("changeScrollTop", windowSizeListener)
     }
 
-    callback(getComplete(this.editor))
-    if (this.labelSession) {
-      callback(
-        SessionChange.check({
-          type: "sessionchange",
-          timestamp: new Date(),
-          ...(this.labelSession && { name: this.labelSession() }),
-        })
-      )
-    }
+    callback(getComplete(this.editor, this.labelSession))
 
     this.editor.session.addEventListener("change", changeListener)
     this.editor.addEventListener("changeSelection", selectionListener)
@@ -411,7 +412,7 @@ export class AceStreamer {
       this.editor.removeEventListener("changeSelection", cursorListener)
       this.editor.session.removeEventListener("changeScrollTop", scrollListener)
       this.editor.session.removeEventListener("changeScrollTop", windowSizeListener)
-      callback(getComplete(this.editor))
+      callback(getComplete(this.editor, this.labelSession))
     }
   }
 
@@ -429,13 +430,15 @@ export class AceRecorder extends EventEmitter {
   recording = false
   private records: AceRecord[] = []
   private timer: ReturnType<typeof setInterval> | undefined
+  private labelSession?: () => string
 
-  public constructor(editor: Ace.Editor, labelSession?: () => string) {
+  public constructor(editor: Ace.Editor, options?: AceRecorder.Options) {
     super()
     this.editor = editor
-    this.streamer = new AceStreamer(editor, labelSession)
+    this.streamer = new AceStreamer(editor, options?.labelSession)
+    this.labelSession = options?.labelSession
   }
-  public start(options?: AceRecorder.Options) {
+  public start(options?: AceRecorder.StartOptions) {
     const interval = options?.interval || 1000
     this.records = []
     this.records = []
@@ -444,7 +447,7 @@ export class AceRecorder extends EventEmitter {
       this.records.push(record)
       this.emit("record", record)
     })
-    // this.timer = setInterval(() => this.addCompleteRecord(), interval)
+    this.timer = setInterval(() => {}, interval) // this.addCompleteRecord(), interval)
     this.recording = true
   }
   public addExternalChange(change: Record<string, unknown>) {
@@ -474,7 +477,7 @@ export class AceRecorder extends EventEmitter {
     if (!this.recording) {
       throw new Error("Not recording")
     }
-    const record = getComplete(this.editor)
+    const record = getComplete(this.editor, this.labelSession)
     this.records.push(record)
     this.emit("record", record)
     this.emit("completeRecord")
@@ -483,6 +486,9 @@ export class AceRecorder extends EventEmitter {
 
 export module AceRecorder {
   export type Options = {
+    labelSession?: () => string
+  }
+  export type StartOptions = {
     interval?: number
   }
 }
@@ -502,14 +508,17 @@ export class AcePlayer extends EventEmitter {
   private endIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
   private traceIndex: Record<number, number> = {}
-  private onExternalChange?: (externalChange: AceRecord) => void
+  private onExternalChange?: (externalChange: AceRecord) => boolean | void
+  private getSession?: (name: string) => Ace.EditSession
   public playing = false
   private _playbackRate: number
+  private _currentSession?: Ace.EditSession
 
-  public constructor(editor: Ace.Editor, onExternalChange?: (externalChange: AceRecord) => void) {
+  public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
     super()
     this.editor = editor
-    this.onExternalChange = onExternalChange
+    this.onExternalChange = options?.onExternalChange
+    this.getSession = options?.getSession
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = this.editor.renderer as any
@@ -530,6 +539,9 @@ export class AcePlayer extends EventEmitter {
       }
       return { complete, offset }
     })
+    if (!this._trace.sessionChanges) {
+      this._currentSession = this.editor.session
+    }
     let lastIndex = 0
     for (var i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
       if (this.traceIndex[i]) {
@@ -578,10 +590,15 @@ export class AcePlayer extends EventEmitter {
         break
       }
       const aceRecord = this._trace.records[i]
-      if ((ExternalChange.guard(aceRecord) || SessionChange.guard(aceRecord)) && this.onExternalChange) {
-        this.onExternalChange(aceRecord)
-      } else {
-        applyAceRecord(this.editor, aceRecord)
+      let apply: boolean = true
+      if (this.onExternalChange) {
+        apply = this.onExternalChange(aceRecord) ?? true
+      }
+      if (apply !== false) {
+        if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
+          this._currentSession = this.getSession!(aceRecord.sessionName)
+        }
+        applyAceRecord(this._currentSession!, aceRecord)
       }
     }
     const previousIndex = this.currentIndex
@@ -678,16 +695,26 @@ export class AcePlayer extends EventEmitter {
   }
 }
 
+export module AcePlayer {
+  export type Options = {
+    onExternalChange?: (externalChange: AceRecord) => boolean | void
+    getSession?: (name: string) => Ace.EditSession
+  }
+}
+
 export class RecordReplayer extends EventEmitter {
   private recorder: AceRecorder
   private player: AcePlayer
   private _state: RecordReplayer.State = "empty"
   private _trace: AceTrace | undefined
 
-  constructor(editor: Ace.Editor, onExternalChange?: (externalChange: AceRecord) => void, labelSession?: () => string) {
+  constructor(editor: Ace.Editor, options?: RecordReplayer.Options) {
     super()
-    this.recorder = new AceRecorder(editor, labelSession)
-    this.player = new AcePlayer(editor, onExternalChange)
+    this.recorder = new AceRecorder(editor, { labelSession: options?.labelSession })
+    this.player = new AcePlayer(editor, {
+      onExternalChange: options?.onExternalChange,
+      getSession: options?.getSession,
+    })
     this.player.addListener("ended", () => {
       if (this._state === "playing") {
         this.emit("ended")
@@ -709,7 +736,7 @@ export class RecordReplayer extends EventEmitter {
     this._state = state
     this.emit("state", this._state)
   }
-  public startRecording(options?: AceRecorder.Options) {
+  public startRecording(options?: AceRecorder.StartOptions) {
     if (this._state === "playing" || this._state === "recording") {
       throw new Error("Still playing or recording")
     }
@@ -808,4 +835,9 @@ export class RecordReplayer extends EventEmitter {
 }
 export namespace RecordReplayer {
   export type State = "empty" | "paused" | "recording" | "playing"
+  export type Options = {
+    onExternalChange?: (externalChange: AceRecord) => void | boolean
+    labelSession?: () => string
+    getSession?: (name: string) => Ace.EditSession
+  }
 }
