@@ -88,10 +88,10 @@ export const urlToBase64 = async (url: string): Promise<string> => {
   })
 }
 
-export class RecordReplayer extends EventEmitter {
+export class AudioRecordReplayer extends EventEmitter {
   private recorder = new AudioRecorder()
   private player: HTMLAudioElement | undefined
-  private _state: RecordReplayer.State = "empty"
+  private _state: AudioRecordReplayer.State = "empty"
   private _playbackRate: number = 1
 
   public constructor() {
@@ -101,7 +101,7 @@ export class RecordReplayer extends EventEmitter {
   public get state() {
     return this._state
   }
-  private set state(state: RecordReplayer.State) {
+  private set state(state: AudioRecordReplayer.State) {
     this._state = state
     this.emit("state", this._state)
   }
@@ -241,6 +241,6 @@ export class RecordReplayer extends EventEmitter {
   }
 }
 
-export namespace RecordReplayer {
+export namespace AudioRecordReplayer {
   export type State = "empty" | "paused" | "recording" | "playing"
 }

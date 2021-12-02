@@ -11,16 +11,18 @@
     "prepublish": "rimraf dist && tsc",
     "start": "yarn watch",
     "prettier": "prettier -w --plugin=prettier-plugin-organize-imports . && prettier-package-json --write",
-    "watch": "rimraf dist && tsc -w"
+    "watch": "tsc -w"
   },
   "types": "dist/index.d.ts",
+  "dependencies": {
+    "throttle-debounce": "^3.0.1",
+    "ts-ebml": "^2.0.2"
+  },
   "peerDependencies": {
-    "@cs124/ace-recorder": ">= 2021",
-    "@cs124/audio-recorder": ">= 2021"
+    "runtypes": ">= 6"
   },
   "devDependencies": {
-    "@cs124/ace-recorder": "^2021.11.1",
-    "@cs124/audio-recorder": "^2021.11.1",
+    "@types/throttle-debounce": "2.1.0",
     "@typescript-eslint/eslint-plugin": "5.4.0",
     "@typescript-eslint/parser": "5.4.0",
     "eslint": "8.3.0",
@@ -31,6 +33,7 @@
     "prettier-plugin-organize-imports": "2.3.4",
     "react-ace": "^9.5.0",
     "rimraf": "3.0.2",
+    "runtypes": "6.5.0",
     "typescript": "4.5.2"
   }
 }

@@ -1,7 +1,6 @@
-import { AceRecord, AceTrace, RecordReplayer as AceRecordReplayer } from "@cs124/ace-recorder"
-import { RecordReplayer as AudioRecordReplayer } from "@cs124/audio-recorder"
 import type { Ace } from "ace-builds"
 import EventEmitter from "events"
+import { AceRecord, AceRecordReplayer, AceTrace, AudioRecordReplayer } from "."
 
 export class RecordReplayer extends EventEmitter {
   private aceRecordReplayer
@@ -17,6 +16,7 @@ export class RecordReplayer extends EventEmitter {
       onExternalChange: options?.onExternalChange,
       labelSession: options?.labelSession,
       getSession: options?.getSession,
+      replayEditor: options?.replayEditor,
     })
     this.aceRecordReplayer.addListener("state", (state) => {
       if (state === "paused" && this._state === "playing" && !this.pausing) {
@@ -177,6 +177,12 @@ export class RecordReplayer extends EventEmitter {
     }
     this.aceRecordReplayer.addCompleteRecord()
   }
+  public get scrollToCursor() {
+    return this.aceRecordReplayer.scrollToCursor
+  }
+  public set scrollToCursor(scrollToCursor: boolean) {
+    this.aceRecordReplayer.scrollToCursor = scrollToCursor
+  }
 }
 
 export namespace RecordReplayer {
@@ -187,5 +193,6 @@ export namespace RecordReplayer {
     labelSession?: () => string
     getSession?: (name: string) => Ace.EditSession
     debug?: boolean
+    replayEditor?: Ace.Editor
   }
 }

@@ -14,8 +14,6 @@
   },
   "dependencies": {
     "@cs124/aceaudio-recorder": "2021.11.1",
-    "@cs124/ace-recorder": "2021.11.1",
-    "@cs124/audio-recorder": "2021.11.1",
     "glob-promise": "^4.2.2",
     "lodash": "^4.17.21",
     "next": "12.0.4",

@@ -74,13 +74,11 @@ export const getComplete = (editor: Ace.Editor, labelSession?: () => string): Co
     ...(labelSession && { sessionName: labelSession() }),
   })
 
-export const applyComplete = (session: Ace.EditSession, complete: Complete, valueOnly = false): void => {
+export const applyComplete = (session: Ace.EditSession, complete: Complete, setScroll = true): void => {
   if (session.getValue() !== complete.value) {
     safeChangeSessionValue(session, complete.value)
   }
-  if (valueOnly) {
-    return
-  }
+
   const { row, column } = complete.cursor
   session.selection.moveCursorTo(row, column)
 
@@ -90,9 +88,12 @@ export const applyComplete = (session: Ace.EditSession, complete: Complete, valu
     end: { row: end.row, column: end.column },
   })
 
-  const { top, left } = complete.scroll
-  session.setScrollTop(top)
-  session.setScrollLeft(left)
+  if (setScroll) {
+    const { top, left } = complete.scroll
+    console.log(`applyComplete setScrollTop ${top}`)
+    session.setScrollTop(top)
+    session.setScrollLeft(left)
+  }
 }
 
 export const Delta = RuntypeRecord({
@@ -222,9 +223,9 @@ export class AceTrace {
   }
 }
 
-export const applyAceRecord = (session: Ace.EditSession, aceRecord: AceRecord): void => {
+export const applyAceRecord = (session: Ace.EditSession, aceRecord: AceRecord, applyScroll = true): void => {
   if (Complete.guard(aceRecord)) {
-    applyComplete(session, aceRecord)
+    applyComplete(session, aceRecord, applyScroll)
   } else if (Delta.guard(aceRecord)) {
     applyDelta(session, aceRecord)
   } else if (SelectionChange.guard(aceRecord)) {
@@ -447,7 +448,9 @@ export class AceRecorder extends EventEmitter {
       this.records.push(record)
       this.emit("record", record)
     })
-    this.timer = setInterval(() => {}, interval) // this.addCompleteRecord(), interval)
+    this.timer = setInterval(() => {
+      this.addCompleteRecord()
+    }, interval) // this.addCompleteRecord(), interval)
     this.recording = true
   }
   public addExternalChange(change: Record<string, unknown>) {
@@ -513,6 +516,7 @@ export class AcePlayer extends EventEmitter {
   public playing = false
   private _playbackRate: number
   private _currentSession?: Ace.EditSession
+  private _scrollToCursor = false
 
   public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
     super()
@@ -598,7 +602,14 @@ export class AcePlayer extends EventEmitter {
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
           this._currentSession = this.getSession!(aceRecord.sessionName)
         }
-        applyAceRecord(this._currentSession!, aceRecord)
+        if (!(this._scrollToCursor && ScrollPosition.guard(aceRecord))) {
+          applyAceRecord(this._currentSession!, aceRecord, !this._scrollToCursor)
+        }
+        if (this._scrollToCursor) {
+          this.editor.renderer.scrollCursorIntoView(this._currentSession?.selection.getCursor()!)
+          const currentLocation = this._currentSession?.selection.getCursor()!
+          console.log(`setScrollTop ${currentLocation.row}`)
+        }
       }
     }
     const previousIndex = this.currentIndex
@@ -693,6 +704,12 @@ export class AcePlayer extends EventEmitter {
       this.play()
     }
   }
+  public set scrollToCursor(scrollToCursor: boolean) {
+    this._scrollToCursor = scrollToCursor
+  }
+  public get scrollToCursor() {
+    return this._scrollToCursor
+  }
 }
 
 export module AcePlayer {
@@ -702,16 +719,16 @@ export module AcePlayer {
   }
 }
 
-export class RecordReplayer extends EventEmitter {
+export class AceRecordReplayer extends EventEmitter {
   private recorder: AceRecorder
   private player: AcePlayer
-  private _state: RecordReplayer.State = "empty"
+  private _state: AceRecordReplayer.State = "empty"
   private _trace: AceTrace | undefined
 
-  constructor(editor: Ace.Editor, options?: RecordReplayer.Options) {
+  constructor(editor: Ace.Editor, options?: AceRecordReplayer.Options) {
     super()
     this.recorder = new AceRecorder(editor, { labelSession: options?.labelSession })
-    this.player = new AcePlayer(editor, {
+    this.player = new AcePlayer(options?.replayEditor ?? editor, {
       onExternalChange: options?.onExternalChange,
       getSession: options?.getSession,
     })
@@ -732,7 +749,7 @@ export class RecordReplayer extends EventEmitter {
   public get state() {
     return this._state
   }
-  private set state(state: RecordReplayer.State) {
+  private set state(state: AceRecordReplayer.State) {
     this._state = state
     this.emit("state", this._state)
   }
@@ -832,12 +849,19 @@ export class RecordReplayer extends EventEmitter {
       throw new Error("No trace loaded")
     }
   }
+  public get scrollToCursor() {
+    return this.player.scrollToCursor
+  }
+  public set scrollToCursor(scrollToCursor: boolean) {
+    this.player.scrollToCursor = scrollToCursor
+  }
 }
-export namespace RecordReplayer {
+export namespace AceRecordReplayer {
   export type State = "empty" | "paused" | "recording" | "playing"
   export type Options = {
     onExternalChange?: (externalChange: AceRecord) => void | boolean
     labelSession?: () => string
     getSession?: (name: string) => Ace.EditSession
+    replayEditor?: Ace.Editor
   }
 }
