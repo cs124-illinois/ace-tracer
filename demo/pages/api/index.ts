@@ -3,13 +3,13 @@ import glob from "glob-promise"
 import sortBy from "lodash/sortBy"
 import type { NextApiRequest, NextApiResponse } from "next"
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+const route = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "POST") {
     const timestamp = new Date().valueOf()
     const { trace, audio } = request.body
     await fs.writeFile(`public/${timestamp}.json`, JSON.stringify(trace))
     await fs.writeFile(`public/${timestamp}.webm`, Buffer.from(audio, "base64"), "binary")
-    return response.redirect('/')
+    return response.redirect("/")
   } else if (request.method === "GET") {
     const filenames = sortBy(
       await glob(`public/*`),
@@ -20,7 +20,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     for (const filename of filenames) {
       const timestamp = filename.split(".")[0]
       if (!traces[timestamp]) {
-        traces[timestamp] = { audio: []}
+        traces[timestamp] = { audio: [] }
       }
       if (filename.split(".")[1] === "json") {
         traces[timestamp].trace = `/${filename}`
@@ -31,3 +31,4 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json(Object.values(traces))
   }
 }
+export default route
