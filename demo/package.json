@@ -25,7 +25,7 @@
     "runtypes": "6.5.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.177",
+    "@types/lodash": "^4.14.178",
     "@types/react": "17.0.37",
     "@types/styled-components": "^5.1.17",
     "eslint": "^8.4.1",

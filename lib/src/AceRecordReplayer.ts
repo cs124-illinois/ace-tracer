@@ -13,9 +13,8 @@ export class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
   constructor(editor: Ace.Editor, options?: AceRecordReplayer.Options) {
     super(options?.replayEditor ?? editor, {
       onExternalChange: options?.onExternalChange,
-      getSession: options?.getSession,
     })
-    this.recorder = new AceRecorder(editor, { labelSession: options?.labelSession })
+    this.recorder = new AceRecorder(editor)
   }
   public set state(state: RecordReplayerState) {
     if (state === this._state) {
@@ -60,18 +59,16 @@ export class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
     this.emitter.addListener("state", listener)
   }
   public get percent() {
-    return this.currentTime / this.duration * 100
+    return (this.currentTime / this.duration) * 100
   }
   public set percent(percent: number) {
-    this.currentTime = this.duration * percent / 100
+    this.currentTime = (this.duration * percent) / 100
   }
 }
 
 export namespace AceRecordReplayer {
   export type Options = {
     onExternalChange?: (externalChange: AceRecord) => void | boolean
-    labelSession?: () => string
-    getSession?: (name: string) => Ace.EditSession
     replayEditor?: Ace.Editor
   }
 }

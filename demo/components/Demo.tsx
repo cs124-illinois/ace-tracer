@@ -1,4 +1,4 @@
-import { Ace, AceRecord, Complete, RecordReplayer, urlToBase64 } from "@cs124/aceaudio-recorder"
+import RecordReplayer, { Ace, AceRecord, Complete, urlToBase64 } from "@cs124/aceaudio-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
 import AceEditor from "react-ace"
 import Timer from "react-compound-timer"
@@ -16,9 +16,6 @@ const Demo: React.FC = () => {
   const [active, setActive] = useState<string>()
   const savedActive = useRef<string>()
 
-  const recordSessions = useRef<Record<string, Ace.EditSession>>({})
-  const replaySessions = useRef<Record<string, Ace.EditSession>>({})
-
   useEffect(() => {
     recordReplayer?.addStateListener((s) => setState(s))
   }, [recordReplayer])
@@ -34,9 +31,6 @@ const Demo: React.FC = () => {
   useEffect(() => {
     if (state === "empty") {
       setRecords([])
-      Object.values(replaySessions.current).forEach((session) => {
-        session.setValue("")
-      })
     }
   }, [state])
 
@@ -45,12 +39,10 @@ const Demo: React.FC = () => {
       return
     }
     savedActive.current = active
-    if (state === "recording") {
-      recordEditor.current?.setSession(recordSessions.current[active])
-    } else if (state === "playing") {
-      replayEditor.current?.setSession(replaySessions.current[active])
+    if (state !== "playing") {
+      recordReplayer?.ace.recorder.setSession(active)
     }
-  }, [active, state])
+  }, [active, state, recordReplayer])
 
   const [uploading, setUploading] = useState(false)
   const upload = useCallback(async () => {
@@ -77,18 +69,15 @@ const Demo: React.FC = () => {
     }
     const newRecordReplayer = new RecordReplayer(recordEditor.current, {
       replayEditor: replayEditor.current,
-      labelSession: () => {
-        return savedActive.current!
-      },
-      getSession: (name) => {
-        setActive(name)
-        return replaySessions.current[name]!
-      },
     })
     // aceAudioRecorder.scrollToCursor = true
     newRecordReplayer.ace.recorder.addListener("record", (record) => {
       setRecords((records) => [record, ...records])
     })
+    newRecordReplayer.ace.recorder.addSessions([
+      { name: "Main.java", contents: "", mode: "ace/mode/java" },
+      { name: "Another.java", contents: "", mode: "ace/mode/java" },
+    ])
     setRecordReplayer(newRecordReplayer)
   }, [])
 
@@ -128,13 +117,13 @@ const Demo: React.FC = () => {
         showPrintMargin={false}
         onBeforeLoad={(ace) => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
-          recordSessions.current["Main.java"] = ace.createEditSession("", "ace/mode/java" as any)
-          recordSessions.current["Another.java"] = ace.createEditSession("", "ace/mode/java" as any)
+          // recordSessions.current["Main.java"] = ace.createEditSession("", "ace/mode/java" as any)
+          // recordSessions.current["Another.java"] = ace.createEditSession("", "ace/mode/java" as any)
         }}
         onLoad={(ace) => {
           recordEditor.current = ace
           finishInitialization()
-          ace.setSession(recordSessions.current["Main.java"])
+          // ace.setSession(recordSessions.current["Main.java"])
           setActive("Main.java")
         }}
       />
@@ -158,12 +147,9 @@ const Demo: React.FC = () => {
         showPrintMargin={false}
         onBeforeLoad={(ace) => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
-          replaySessions.current["Main.java"] = ace.createEditSession("", "ace/mode/java" as any)
-          replaySessions.current["Another.java"] = ace.createEditSession("", "ace/mode/java" as any)
         }}
         onLoad={(ace) => {
           replayEditor.current = ace
-          ace.setSession(replaySessions.current["Main.java"])
           finishInitialization()
         }}
       />

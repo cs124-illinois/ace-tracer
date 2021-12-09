@@ -57,7 +57,7 @@ export const Complete = RuntypeRecord({
 
 export type Complete = Static<typeof Complete>
 
-export const getComplete = (editor: Ace.Editor, reason: string, labelSession?: () => string): Complete => {
+export const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
   const renderer = editor.renderer as any
   const { width, height } = renderer.$size
   return Complete.check({
@@ -79,7 +79,7 @@ export const getComplete = (editor: Ace.Editor, reason: string, labelSession?: (
       lineHeight: renderer.$textLayer.getLineHeight(),
     },
     reason,
-    ...(labelSession && { sessionName: labelSession() }),
+    ...(sessionName && { sessionName }),
   })
 }
 
@@ -193,6 +193,13 @@ export const WindowSizeChange = RuntypeRecord({
 })
 export type WindowSizeChange = Static<typeof WindowSizeChange>
 
+export const SessionInfo = RuntypeRecord({
+  name: String,
+  contents: String,
+  mode: String,
+})
+export type SessionInfo = Static<typeof SessionInfo>
+
 export const ExternalChange = RuntypeRecord({
   type: Literal("external"),
   timestamp: AceTimestamp,
@@ -214,22 +221,35 @@ export const AceTraceContent = RuntypeRecord({
   records: Array(AceRecord),
   duration: Number,
   startTime: AceTimestamp,
-})
+  sessionInfo: Array(SessionInfo),
+}).And(
+  Partial({
+    sessionName: String,
+  })
+)
 export class AceTrace {
   records: AceRecord[]
   duration: number
   startTime: Date
-  sessionChanges: boolean
-  constructor(records: AceRecord[]) {
+  sessionInfo: SessionInfo[]
+  sessionName?: string
+
+  constructor(records: AceRecord[], sessionInfo: SessionInfo[], sessionName?: string) {
     if (records.length === 0) {
       throw new Error("Empty trace")
     }
     this.records = records
     this.startTime = new Date(records[0].timestamp)
     this.duration = new Date(records.slice(-1)[0].timestamp).valueOf() - new Date(records[0].timestamp).valueOf()
-    this.sessionChanges = !!records.find((record) => {
-      Complete.guard(record) && !!record.sessionName
-    })
+    if (sessionInfo.find(({ name }) => !name)) {
+      throw new Error("Session names must not be blank")
+    }
+    if (!sessionInfo.find(({ name }) => name === sessionName)) {
+      throw new Error("Must set sessionName when trace includes multiple sessions")
+    }
+    this.sessionInfo = sessionInfo
+    this.sessionName = sessionName
+    AceTraceContent.check(this)
   }
 }
 

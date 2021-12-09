@@ -1,10 +1,10 @@
 export type { Ace } from "ace-builds"
-export * from "./AceAudioRecorder"
 export * from "./AcePlayer"
 export * from "./AceRecorder"
 export * from "./AceRecordReplayer"
 export * from "./AceStreamer"
 export * from "./AudioRecorder"
 export * from "./AudioRecordReplayer"
-export * from "./RecordReplayer"
 export * from "./types"
+import { RecordReplayer } from "./RecordReplayer"
+export default RecordReplayer

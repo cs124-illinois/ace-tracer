@@ -20,9 +20,11 @@
     "whatwg-mimetype": "^3.0.0"
   },
   "peerDependencies": {
+    "ace-builds": "^1.4.13",
     "runtypes": ">= 6"
   },
   "devDependencies": {
+    "ace-builds": "^1.4.13",
     "@types/howler": "^2.2.4",
     "@types/throttle-debounce": "2.1.0",
     "@types/whatwg-mimetype": "^2.1.1",

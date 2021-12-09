@@ -21,11 +21,10 @@ export class AceStreamer {
   private editor: Ace.Editor
   private _stop: () => void = () => {}
   running = false
-  private labelSession?: () => string
+  public sessionName?: string
 
-  public constructor(editor: Ace.Editor, labelSession?: () => string) {
+  public constructor(editor: Ace.Editor) {
     this.editor = editor
-    this.labelSession = labelSession
   }
 
   public start(callback: (record: AceRecord) => void) {
@@ -157,30 +156,35 @@ export class AceStreamer {
       )
     })
 
-    const changeSessionListener = ({ session, oldSession }: { session: any; oldSession: any }) => {
+    const changeSessionListener = ({
+      session,
+      oldSession,
+    }: {
+      session: Ace.EditSession
+      oldSession: Ace.EditSession
+    }) => {
       oldSession.removeEventListener("change", changeListener)
       oldSession.removeEventListener("changeScrollTop", scrollListener)
       oldSession.removeEventListener("changeScrollTop", windowSizeListener)
 
-      if (!this.labelSession) {
-        throw new Error("Must provide a labelSession method if switching sessions during recording")
+      if (!this.sessionName) {
+        throw new Error("Must set sessionName if switching sessions during recording")
       }
 
-      callback(getComplete(this.editor, "session", this.labelSession))
+      callback(getComplete(this.editor, "session", this.sessionName))
 
       session.addEventListener("change", changeListener)
       session.addEventListener("changeScrollTop", scrollListener)
       session.addEventListener("changeScrollTop", windowSizeListener)
     }
 
-    callback(getComplete(this.editor, "start", this.labelSession))
+    callback(getComplete(this.editor, "start", this.sessionName))
 
     this.editor.session.addEventListener("change", changeListener)
     this.editor.addEventListener("changeSelection", selectionListener)
     this.editor.addEventListener("changeSelection", cursorListener)
     this.editor.session.addEventListener("changeScrollTop", scrollListener)
     this.editor.renderer.addEventListener("changeScrollTop", windowSizeListener) // change to resize
-
     this.editor.addEventListener("changeSession", changeSessionListener)
 
     this.running = true
@@ -191,7 +195,9 @@ export class AceStreamer {
       this.editor.removeEventListener("changeSelection", cursorListener)
       this.editor.session.removeEventListener("changeScrollTop", scrollListener)
       this.editor.session.removeEventListener("changeScrollTop", windowSizeListener)
-      callback(getComplete(this.editor, "end", this.labelSession))
+      this.editor.removeEventListener("changeSession", changeSessionListener)
+      callback(getComplete(this.editor, "end", this.sessionName))
+      this.running = false
     }
   }
 

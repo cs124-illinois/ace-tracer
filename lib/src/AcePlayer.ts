@@ -1,5 +1,5 @@
-import { Ace } from "ace-builds"
-import { AceRecord, AceTrace, applyAceRecord, Complete, ScrollPosition } from "."
+import ace, { Ace } from "ace-builds"
+import { AceRecord, AceTrace, applyAceRecord, Complete, ScrollPosition } from "./types"
 
 export class AcePlayer {
   private editor: Ace.Editor
@@ -17,16 +17,15 @@ export class AcePlayer {
   private traceTimes: { complete: boolean; offset: number }[] = []
   private traceIndex: Record<number, number> = {}
   private onExternalChange?: (externalChange: AceRecord) => boolean | void
-  private getSession?: (name: string) => Ace.EditSession
   public playing = false
   private _playbackRate: number
   private _currentSession?: Ace.EditSession
   private _scrollToCursor = false
+  private sessionMap: Record<string, Ace.EditSession> = {}
 
   public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
     this.editor = editor
     this.onExternalChange = options?.onExternalChange
-    this.getSession = options?.getSession
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = this.editor.renderer as any
@@ -51,7 +50,14 @@ export class AcePlayer {
       }
       return { complete, offset }
     })
-    if (!this._trace.sessionChanges) {
+
+    if (this._trace.sessionName) {
+      this.sessionMap = {}
+      for (const { name, contents, mode } of this._trace.sessionInfo) {
+        this.sessionMap[name] = ace.createEditSession(contents, mode as any)
+      }
+      this._currentSession = this.sessionMap[this._trace.sessionName]
+    } else {
       this._currentSession = this.editor.session
     }
     let lastIndex = 0
@@ -108,7 +114,7 @@ export class AcePlayer {
       }
       if (apply !== false) {
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
-          this._currentSession = this.getSession!(aceRecord.sessionName)
+          this._currentSession = this.sessionMap[aceRecord.sessionName]
         }
         if (!(this._scrollToCursor && ScrollPosition.guard(aceRecord))) {
           applyAceRecord(this.editor!, aceRecord, !this._scrollToCursor)
@@ -222,6 +228,5 @@ export class AcePlayer {
 export module AcePlayer {
   export type Options = {
     onExternalChange?: (externalChange: AceRecord) => boolean | void
-    getSession?: (name: string) => Ace.EditSession
   }
 }

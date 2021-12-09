@@ -150,6 +150,16 @@ export class RecordReplayer implements IRecordReplayer {
   }
 }
 
+export namespace RecordReplayer {
+  export type State = "empty" | "paused" | "recording" | "loading" | "playing"
+  export type Content = { audio: string; trace: AceTrace }
+  export type Options = {
+    onExternalChange?: (externalChange: AceRecord) => void | boolean
+    debug?: boolean
+    replayEditor?: Ace.Editor
+  }
+}
+
 /*
 export class RecordReplayer extends EventEmitter {
   private _ace
@@ -329,15 +339,3 @@ export class RecordReplayer extends EventEmitter {
   }
 }
 */
-
-export namespace RecordReplayer {
-  export type State = "empty" | "paused" | "recording" | "loading" | "playing"
-  export type Content = { audio: string; trace: AceTrace }
-  export type Options = {
-    onExternalChange?: (externalChange: AceRecord) => void | boolean
-    labelSession?: () => string
-    getSession?: (name: string) => Ace.EditSession
-    debug?: boolean
-    replayEditor?: Ace.Editor
-  }
-}
