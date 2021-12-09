@@ -1,4 +1,4 @@
-import { Ace, AceRecord, Complete, RecordReplayer } from "@cs124/aceaudio-recorder"
+import { Ace, AceRecord, Complete, RecordReplayer, urlToBase64 } from "@cs124/aceaudio-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
 import AceEditor from "react-ace"
 import Timer from "react-compound-timer"
@@ -58,7 +58,8 @@ const Demo: React.FC = () => {
       return
     }
     setUploading(true)
-    const { ace, audio } = await recordReplayer.src
+    const { ace, audio: audioURL } = recordReplayer.src
+    const audio = await urlToBase64(audioURL)
     fetch(`/api/`, {
       method: "POST",
       headers: {

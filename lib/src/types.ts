@@ -42,8 +42,11 @@ export const Complete = RuntypeRecord({
     left: Number,
   }),
   window: RuntypeRecord({
-    top: Number,
-    bottom: Number,
+    width: Number,
+    height: Number,
+    rows: Number,
+    fontSize: Number,
+    lineHeight: Number,
   }),
   reason: Union(Literal("start"), Literal("timer"), Literal("end"), Literal("manual"), Literal("session")),
 }).And(
@@ -54,8 +57,10 @@ export const Complete = RuntypeRecord({
 
 export type Complete = Static<typeof Complete>
 
-export const getComplete = (editor: Ace.Editor, reason: string, labelSession?: () => string): Complete =>
-  Complete.check({
+export const getComplete = (editor: Ace.Editor, reason: string, labelSession?: () => string): Complete => {
+  const renderer = editor.renderer as any
+  const { width, height } = renderer.$size
+  return Complete.check({
     type: "complete",
     timestamp: new Date(),
     focused: editor.isFocused(),
@@ -63,16 +68,20 @@ export const getComplete = (editor: Ace.Editor, reason: string, labelSession?: (
     selection: editor.session.selection.getRange(),
     cursor: editor.session.selection.getCursor(),
     scroll: {
-      top: editor.session.getScrollTop(),
-      left: editor.session.getScrollLeft(),
+      top: editor.renderer.getScrollTop(),
+      left: editor.renderer.getScrollLeft(),
     },
     window: {
-      top: editor.renderer.getScrollTopRow(),
-      bottom: editor.renderer.getScrollBottomRow(),
+      width,
+      height,
+      rows: editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
+      fontSize: parseInt(editor.getFontSize()),
+      lineHeight: renderer.$textLayer.getLineHeight(),
     },
     reason,
     ...(labelSession && { sessionName: labelSession() }),
   })
+}
 
 export const applyComplete = (session: Ace.EditSession, complete: Complete, setScroll = true): void => {
   if (session.getValue() !== complete.value) {
@@ -162,13 +171,17 @@ export const ScrollChange = RuntypeRecord({
 })
 export type ScrollChange = Static<typeof ScrollChange>
 
-export const applyScrollChange = (session: Ace.EditSession, scrollChange: ScrollChange): void => {
-  session.setScrollTop(scrollChange.top)
-  session.setScrollLeft(scrollChange.left)
+export const applyScrollChange = (renderer: Ace.VirtualRenderer, scrollChange: ScrollChange): void => {
+  renderer.scrollToY(scrollChange.top)
+  renderer.scrollToX(scrollChange.left)
 }
 
 export const WindowSize = RuntypeRecord({
+  width: Number,
+  height: Number,
   rows: Number,
+  fontSize: Number,
+  lineHeight: Number,
 })
 export type WindowSize = Static<typeof WindowSize>
 
@@ -220,17 +233,17 @@ export class AceTrace {
   }
 }
 
-export const applyAceRecord = (session: Ace.EditSession, aceRecord: AceRecord, applyScroll = true): void => {
+export const applyAceRecord = (editor: Ace.Editor, aceRecord: AceRecord, applyScroll = true): void => {
   if (Complete.guard(aceRecord)) {
-    applyComplete(session, aceRecord, applyScroll)
+    applyComplete(editor.session, aceRecord, applyScroll)
   } else if (Delta.guard(aceRecord)) {
-    applyDelta(session, aceRecord)
+    applyDelta(editor.session, aceRecord)
   } else if (SelectionChange.guard(aceRecord)) {
-    applySelectionChange(session, aceRecord)
+    applySelectionChange(editor.session, aceRecord)
   } else if (CursorChange.guard(aceRecord)) {
-    applyCursorChange(session, aceRecord)
+    applyCursorChange(editor.session, aceRecord)
   } else if (ScrollChange.guard(aceRecord)) {
-    applyScrollChange(session, aceRecord)
+    applyScrollChange(editor.renderer, aceRecord)
   }
 }
 

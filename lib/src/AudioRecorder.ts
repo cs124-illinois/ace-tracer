@@ -60,12 +60,9 @@ export class AudioRecorder {
   public get src() {
     return this.blob && URL.createObjectURL(this.blob)
   }
-  public get base64() {
-    return urlToBase64(this.src!)
-  }
 }
 
-const urlToBase64 = async (url: string): Promise<string> => {
+export const urlToBase64 = async (url: string): Promise<string> => {
   const blob = await fetch(url).then((r) => r.blob())
   return new Promise((resolve, _) => {
     const reader = new FileReader()

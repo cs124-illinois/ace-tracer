@@ -57,6 +57,9 @@ export class AudioRecordReplayer implements IRecordReplayer {
     this.player.src = src
     this.player.load()
   }
+  public get src() {
+    return this.player.src
+  }
   public addStateListener(listener: (state: RecordReplayerState) => void) {
     this.emitter.addListener("state", listener)
   }

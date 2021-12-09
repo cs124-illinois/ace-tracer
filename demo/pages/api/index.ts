@@ -6,8 +6,8 @@ import type { NextApiRequest, NextApiResponse } from "next"
 const route = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "POST") {
     const timestamp = new Date().valueOf()
-    const { trace, audio } = request.body
-    await fs.writeFile(`public/${timestamp}.json`, JSON.stringify(trace))
+    const { ace, audio } = request.body
+    await fs.writeFile(`public/${timestamp}.json`, JSON.stringify(ace))
     await fs.writeFile(`public/${timestamp}.webm`, Buffer.from(audio, "base64"), "binary")
     return response.redirect("/")
   } else if (request.method === "GET") {

@@ -111,7 +111,7 @@ export class AcePlayer {
           this._currentSession = this.getSession!(aceRecord.sessionName)
         }
         if (!(this._scrollToCursor && ScrollPosition.guard(aceRecord))) {
-          applyAceRecord(this._currentSession!, aceRecord, !this._scrollToCursor)
+          applyAceRecord(this.editor!, aceRecord, !this._scrollToCursor)
         }
         if (this._scrollToCursor) {
           this.editor.renderer.scrollCursorIntoView(this._currentSession?.selection.getCursor()!)

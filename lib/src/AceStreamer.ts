@@ -116,17 +116,34 @@ export class AceStreamer {
       )
     })
 
+    const renderer = this.editor.renderer as any
+    const { width, height } = renderer.$size
     let lastWindowSize = WindowSize.check({
-      rows: this.editor.renderer.getScrollTopRow() - this.editor.renderer.getScrollBottomRow(),
+      width,
+      height,
+      rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+      fontSize: parseInt(this.editor.getFontSize()),
+      lineHeight: renderer.$textLayer.getLineHeight(),
     })
     const windowSizeListener = throttle(100, () => {
       if (!this.running) {
         return
       }
+      const { width, height } = renderer.$size
       const windowSize = WindowSize.check({
-        rows: this.editor.renderer.getScrollTopRow() - this.editor.renderer.getScrollBottomRow(),
+        width,
+        height,
+        rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+        fontSize: parseInt(this.editor.getFontSize()),
+        lineHeight: renderer.$textLayer.getLineHeight(),
       })
-      if (windowSize.rows === lastWindowSize.rows) {
+      if (
+        windowSize.width === lastWindowSize.width &&
+        windowSize.height === lastWindowSize.height &&
+        windowSize.rows === lastWindowSize.rows &&
+        windowSize.fontSize === lastWindowSize.fontSize &&
+        windowSize.lineHeight === lastWindowSize.lineHeight
+      ) {
         return
       }
       lastWindowSize = windowSize
@@ -162,7 +179,7 @@ export class AceStreamer {
     this.editor.addEventListener("changeSelection", selectionListener)
     this.editor.addEventListener("changeSelection", cursorListener)
     this.editor.session.addEventListener("changeScrollTop", scrollListener)
-    this.editor.session.addEventListener("changeScrollTop", windowSizeListener)
+    this.editor.renderer.addEventListener("changeScrollTop", windowSizeListener) // change to resize
 
     this.editor.addEventListener("changeSession", changeSessionListener)
 
