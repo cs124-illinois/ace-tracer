@@ -1,10 +1,10 @@
-import RecordReplayer, { Ace, AceRecord, Complete, urlToBase64 } from "@cs124/aceaudio-recorder"
+import RecordReplayer, { Ace, AceRecord, AceTrace, AceTraceContent, Complete, urlToBase64 } from "@cs124/aceaudio-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
 import AceEditor from "react-ace"
 import Timer from "react-compound-timer"
 import PlayerControls from "../components/PlayerControls"
 
-type recording = {
+type Recording = {
   name: string
   stem: string
   audio: string[]
@@ -15,10 +15,10 @@ const RECORDINGS = [
     stem: "helloworld",
     audio: ["webm", "mp4"],
   },
-] as recording[]
+] as Recording[]
 
 const Demo: React.FC = () => {
-  const [trace, setTrace] = useState<recording | undefined>()
+  const [recording, setRecording] = useState<Recording | undefined>()
   const [records, setRecords] = useState<AceRecord[]>([])
 
   const recordEditor = useRef<Ace.Editor>()
@@ -38,8 +38,10 @@ const Demo: React.FC = () => {
     if (state === "empty") {
       setRecords([])
       setReplayActive(undefined)
+    } else if (state === "recording") {
+      setRecording(undefined)
     }
-  }, [state])
+  }, [state, recordReplayer])
 
   const [uploading, setUploading] = useState(false)
   const upload = useCallback(async () => {
@@ -83,19 +85,28 @@ const Demo: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (!recordReplayer) {
+    recordReplayer?.ace.recorder.setSession(active)
+  }, [active, recordReplayer])
+
+  useEffect(() => {
+    if (!recording || !recordReplayer) {
       return
     }
-    recordReplayer.ace.recorder.setSession(active)
-  }, [active, recordReplayer])
+    fetch(`/${recording.stem}.json`)
+      .then((r) => r.json())
+      .then((t) => {
+        const ace = AceTraceContent.check(t) as AceTrace
+        recordReplayer!.src = { ace, audio: `${process.env.NEXT_PUBLIC_BASE_PATH ?? "/"}${recording.stem}.mp4` }
+      })
+  }, [recording, recordReplayer])
 
   return (
     <>
       <p>Use the record button to start recording, and play to replay when you are finished.</p>
       <select
         id="language"
-        onChange={(e) => setTrace(RECORDINGS.find(({ stem }) => stem === e.target.value))}
-        value={trace?.stem}
+        onChange={(e) => setRecording(RECORDINGS.find(({ stem }) => stem === e.target.value))}
+        value={recording?.stem ?? ""}
       >
         <option value="" key=""></option>
         {RECORDINGS.map(({ name, stem }) => (

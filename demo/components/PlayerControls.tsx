@@ -1,4 +1,4 @@
-import { IRecordReplayer, RecordReplayerState } from "@cs124/aceaudio-recorder"
+import { IRecordReplayer } from "@cs124/aceaudio-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 const PlayerControls: React.FC<{
@@ -6,7 +6,7 @@ const PlayerControls: React.FC<{
 }> = ({ recordReplayer }) => {
   const [wasPlaying, setWasPlaying] = useState(false)
 
-  const [state, setState] = useState<RecordReplayerState>("paused")
+  const [state, setState] = useState<IRecordReplayer.State>("paused")
   useEffect(() => {
     recordReplayer.addStateListener((s) => setState(s))
   }, [recordReplayer])

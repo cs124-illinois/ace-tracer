@@ -77,6 +77,9 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
       this.state = "empty"
     }
   }
+  public get src() {
+    return super.src
+  }
 }
 
 namespace AceRecordReplayer {

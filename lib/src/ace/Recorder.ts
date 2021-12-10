@@ -11,11 +11,11 @@ export interface AceRecorderEvents {
 class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEvents>) {
   private editor: Ace.Editor
   private streamer: AceStreamer
-  recording = false
+  public recording = false
   private records: AceRecord[] = []
   private timer?: ReturnType<typeof setInterval>
   private options?: AceRecorder.Options
-  src?: AceTrace
+  public src?: AceTrace
   private sessionMap: Record<string, { session: Ace.EditSession; mode: string }> = {}
   private sessionName?: string
   private startSession?: string

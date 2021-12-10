@@ -63,9 +63,9 @@ class AudioRecordReplayer implements IRecordReplayer {
     this.player.src = src
     if (src !== "") {
       this.player.load()
-      this.state = "empty"
-    } else {
       this.state = "paused"
+    } else {
+      this.state = "empty"
     }
   }
   public get src() {

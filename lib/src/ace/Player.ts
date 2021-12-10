@@ -50,7 +50,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     this.endIndex = trace.records.length
     this.traceTimes = this._trace.records.map((record, i) => {
       const complete = Complete.guard(record)
-      const offset = new Date(record.timestamp).valueOf() - trace.startTime.valueOf()
+      const offset = new Date(record.timestamp).valueOf() - new Date(trace.startTime).valueOf()
       const index = Math.ceil(offset / 1000)
       if (complete) {
         this.traceIndex[index] = i
