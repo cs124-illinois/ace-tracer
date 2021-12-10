@@ -4,29 +4,34 @@ import AceEditor from "react-ace"
 import Timer from "react-compound-timer"
 import PlayerControls from "../components/PlayerControls"
 
+type recording = {
+  name: string
+  stem: string
+  audio: string[]
+}
+const RECORDINGS = [
+  {
+    name: "Hello, world!",
+    stem: "helloworld",
+    audio: ["webm", "mp4"],
+  },
+] as recording[]
+
 const Demo: React.FC = () => {
+  const [trace, setTrace] = useState<recording | undefined>()
   const [records, setRecords] = useState<AceRecord[]>([])
 
   const recordEditor = useRef<Ace.Editor>()
   const replayEditor = useRef<Ace.Editor>()
 
   const [recordReplayer, setRecordReplayer] = useState<RecordReplayer | undefined>(undefined)
-  const [state, setState] = useState<RecordReplayer.State>("empty")
+  const [state, setState] = useState<RecordReplayer.State>("paused")
 
   const [active, setActive] = useState<string>()
-  const savedActive = useRef<string>()
 
   useEffect(() => {
     recordReplayer?.addStateListener((s) => setState(s))
   }, [recordReplayer])
-
-  useEffect(() => {
-    fetch(`/api/`)
-      .then((r) => r.json())
-      .then((response) => {
-        console.log(response)
-      })
-  }, [])
 
   useEffect(() => {
     if (state === "empty") {
@@ -34,19 +39,9 @@ const Demo: React.FC = () => {
     }
   }, [state])
 
-  useEffect(() => {
-    if (!active) {
-      return
-    }
-    savedActive.current = active
-    if (state !== "playing") {
-      recordReplayer?.ace.recorder.setSession(active)
-    }
-  }, [active, state, recordReplayer])
-
   const [uploading, setUploading] = useState(false)
   const upload = useCallback(async () => {
-    if (!recordReplayer) {
+    if (!recordReplayer || !recordReplayer.src) {
       return
     }
     setUploading(true)
@@ -70,7 +65,7 @@ const Demo: React.FC = () => {
     const newRecordReplayer = new RecordReplayer(recordEditor.current, {
       replayEditor: replayEditor.current,
     })
-    // aceAudioRecorder.scrollToCursor = true
+    newRecordReplayer.ace.scrollToCursor = true
     newRecordReplayer.ace.recorder.addListener("record", (record) => {
       setRecords((records) => [record, ...records])
     })
@@ -84,6 +79,18 @@ const Demo: React.FC = () => {
   return (
     <>
       <p>Use the record button to start recording, and play to replay when you are finished.</p>
+      <select
+        id="language"
+        onChange={(e) => setTrace(RECORDINGS.find(({ stem }) => stem === e.target.value))}
+        value={trace?.stem}
+      >
+        <option value="" key=""></option>
+        {RECORDINGS.map(({ name, stem }) => (
+          <option key={stem} value={stem}>
+            {name}
+          </option>
+        ))}
+      </select>
       {recordReplayer && (
         <>
           <PlayerControls recordReplayer={recordReplayer} />
@@ -117,13 +124,10 @@ const Demo: React.FC = () => {
         showPrintMargin={false}
         onBeforeLoad={(ace) => {
           ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
-          // recordSessions.current["Main.java"] = ace.createEditSession("", "ace/mode/java" as any)
-          // recordSessions.current["Another.java"] = ace.createEditSession("", "ace/mode/java" as any)
         }}
         onLoad={(ace) => {
           recordEditor.current = ace
           finishInitialization()
-          // ace.setSession(recordSessions.current["Main.java"])
           setActive("Main.java")
         }}
       />

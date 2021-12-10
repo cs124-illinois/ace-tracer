@@ -15,9 +15,9 @@ import {
   selectionIsEmpty,
   WindowSize,
   WindowSizeChange,
-} from "."
+} from "../types"
 
-export class AceStreamer {
+class AceStreamer {
   private editor: Ace.Editor
   private _stop: () => void = () => {}
   running = false
@@ -208,3 +208,5 @@ export class AceStreamer {
     this._stop()
   }
 }
+
+export default AceStreamer

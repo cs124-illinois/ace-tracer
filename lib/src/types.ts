@@ -284,13 +284,15 @@ export const safeChangeSessionValue = (session: Ace.EditSession, value: string):
   session.selection.fromJSON(position)
 }
 
-export type RecordReplayerState = "paused" | "playing" | "recording"
+export type RecordReplayerState = "empty" | "paused" | "playing" | "recording"
 
 export interface IRecordReplayer {
   state: RecordReplayerState
   src: unknown | undefined
   currentTime: number
+  playbackRate: number
   percent: number
+  readonly duration: number
   play: () => Promise<void>
   pause: () => void
   record: () => Promise<void>

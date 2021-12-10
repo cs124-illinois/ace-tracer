@@ -1,7 +1,7 @@
 import ace, { Ace } from "ace-builds"
-import { AceRecord, AceTrace, applyAceRecord, Complete, ScrollPosition } from "./types"
+import { AceRecord, AceTrace, applyAceRecord, Complete, ScrollPosition } from "../types"
 
-export class AcePlayer {
+class AcePlayer {
   private editor: Ace.Editor
   private wasVisible: boolean
   private wasBlinking: boolean
@@ -225,8 +225,9 @@ export class AcePlayer {
   }
 }
 
-export module AcePlayer {
+module AcePlayer {
   export type Options = {
     onExternalChange?: (externalChange: AceRecord) => boolean | void
   }
 }
+export default AcePlayer

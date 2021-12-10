@@ -1,13 +1,13 @@
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import type TypedEmitter from "typed-emitter"
-import { AceStreamer } from "./AceStreamer"
-import { AceRecord, AceTrace, ExternalChange, getComplete, SessionInfo } from "./types"
+import { AceRecord, AceTrace, ExternalChange, getComplete, SessionInfo } from "../types"
+import AceStreamer from "./Streamer"
 
 export interface AceRecorderEvents {
   record: (record: AceRecord) => void
 }
-export class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEvents>) {
+class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEvents>) {
   private editor: Ace.Editor
   private streamer: AceStreamer
   recording = false
@@ -96,9 +96,11 @@ export class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceReco
   }
 }
 
-export module AceRecorder {
+module AceRecorder {
   export type Session = { name: string; contents: string; mode: string }
   export type Options = {
     completeInterval?: number
   }
 }
+
+export default AceRecorder
