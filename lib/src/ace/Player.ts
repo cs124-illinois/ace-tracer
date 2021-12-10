@@ -1,8 +1,13 @@
 import ace, { Ace } from "ace-builds"
+import EventEmitter from "events"
+import type TypedEmitter from "typed-emitter"
 import { CursorChange, Delta, ScrollChange, SelectionChange } from ".."
 import { AceRecord, AceTrace, Complete, ScrollPosition } from "../types"
 
-class AcePlayer {
+export interface AcePlayerEvents {
+  record: (record: AceRecord) => void
+}
+class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>) {
   private editor: Ace.Editor
   private wasVisible: boolean
   private wasBlinking: boolean
@@ -17,7 +22,7 @@ class AcePlayer {
   private endIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
   private traceIndex: Record<number, number> = {}
-  private onExternalChange?: (externalChange: AceRecord) => boolean | void
+  private filterRecord?: (record: AceRecord) => boolean
   public playing = false
   private _playbackRate: number
   private _currentSession?: Ace.EditSession
@@ -25,8 +30,9 @@ class AcePlayer {
   private sessionMap: Record<string, Ace.EditSession> = {}
 
   public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
+    super()
     this.editor = editor
-    this.onExternalChange = options?.onExternalChange
+    this.filterRecord = options?.filterRecord
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = this.editor.renderer as any
@@ -110,16 +116,14 @@ class AcePlayer {
         break
       }
       const aceRecord = this._trace.records[i]
-      let apply = true
-      if (this.onExternalChange) {
-        apply = this.onExternalChange(aceRecord) ?? true
-      }
+      const apply = this.filterRecord ? this.filterRecord(aceRecord) : true
       if (apply !== false) {
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
           this._currentSession = this.sessionMap[aceRecord.sessionName]
         }
         if (!(this._scrollToCursor && ScrollPosition.guard(aceRecord))) {
           applyAceRecord(this.editor!, aceRecord, !this._scrollToCursor)
+          this.emit("record", aceRecord)
         }
         if (this._scrollToCursor) {
           this.editor.renderer.scrollCursorIntoView(this._currentSession!.selection.getCursor()!)
@@ -230,7 +234,7 @@ class AcePlayer {
 
 module AcePlayer {
   export type Options = {
-    onExternalChange?: (externalChange: AceRecord) => boolean | void
+    filterRecord?: (record: AceRecord) => boolean
   }
 }
 export default AcePlayer

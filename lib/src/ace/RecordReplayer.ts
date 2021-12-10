@@ -12,7 +12,7 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
 
   constructor(editor: Ace.Editor, options?: AceRecordReplayer.Options) {
     super(options?.replayEditor ?? editor, {
-      onExternalChange: options?.onExternalChange,
+      filterRecord: options?.filterRecord,
     })
     this.recorder = new AceRecorder(editor)
   }
@@ -81,7 +81,7 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
 
 namespace AceRecordReplayer {
   export type Options = {
-    onExternalChange?: (externalChange: AceRecord) => void | boolean
+    filterRecord?: (record: AceRecord) => boolean
     replayEditor?: Ace.Editor
   }
 }

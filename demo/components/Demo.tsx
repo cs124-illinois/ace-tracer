@@ -28,6 +28,7 @@ const Demo: React.FC = () => {
   const [state, setState] = useState<RecordReplayer.State>("paused")
 
   const [active, setActive] = useState<string>("Main.java")
+  const [replayActive, setReplayActive] = useState<string | undefined>()
 
   useEffect(() => {
     recordReplayer?.addStateListener((s) => setState(s))
@@ -36,6 +37,7 @@ const Demo: React.FC = () => {
   useEffect(() => {
     if (state === "empty") {
       setRecords([])
+      setReplayActive(undefined)
     }
   }, [state])
 
@@ -68,6 +70,9 @@ const Demo: React.FC = () => {
     newRecordReplayer.ace.scrollToCursor = true
     newRecordReplayer.ace.recorder.addListener("record", (record) => {
       setRecords((records) => [record, ...records])
+    })
+    newRecordReplayer.ace.addListener("record", (record) => {
+      Complete.guard(record) && setReplayActive(record.sessionName)
     })
     newRecordReplayer.ace.recorder.addSessions([
       { name: "Main.java", contents: "", mode: "ace/mode/java" },
@@ -164,6 +169,9 @@ const Demo: React.FC = () => {
           finishInitialization()
         }}
       />
+      <div>
+        <span>{replayActive ?? <>&nbsp;</>}</span>
+      </div>
 
       <div style={{ height: "16rem", overflow: "scroll", marginTop: 8 }}>
         {records

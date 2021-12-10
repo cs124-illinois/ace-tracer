@@ -32,6 +32,15 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.records = []
     this.src = undefined
 
+    if (Object.keys(this.sessionMap).length === 0 || !this.sessionName) {
+      throw new Error("Session information not properly configured")
+    }
+
+    this.sessionInfo = Object.entries(this.sessionMap).map(([name, info]) => {
+      return { name, contents: info.session.getValue(), mode: info.mode }
+    })
+    this.startSession = this.sessionName
+
     this.streamer.start((record: AceRecord) => {
       this.records.push(record)
       this.emit("record", record)
@@ -39,10 +48,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.timer = setInterval(() => {
       this.addCompleteRecord("timer")
     }, interval)
-    this.sessionInfo = Object.entries(this.sessionMap).map(([name, info]) => {
-      return { name, contents: info.session.getValue(), mode: info.mode }
-    })
-    this.startSession = this.sessionName
+
     this.recording = true
   }
   public async stop() {
@@ -95,6 +101,13 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     }
     this.sessionName = this.streamer.sessionName = name
     this.editor.setSession(this.sessionMap[name].session)
+  }
+  public singleSession(session: AceRecorder.Session) {
+    if (Object.keys(this.sessionMap).length > 0) {
+      throw new Error("Session map must be empty when calling singleSession")
+    }
+    this.addSession(session)
+    this.sessionName = session.name
   }
 }
 
