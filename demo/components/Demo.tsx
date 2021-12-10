@@ -1,4 +1,11 @@
-import RecordReplayer, { Ace, AceRecord, AceTrace, AceTraceContent, Complete, urlToBase64 } from "@cs124/aceaudio-recorder"
+import RecordReplayer, {
+  Ace,
+  AceRecord,
+  AceTrace,
+  AceTraceContent,
+  Complete,
+  urlToBase64,
+} from "@cs124/aceaudio-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
 import AceEditor from "react-ace"
 import Timer from "react-compound-timer"
@@ -13,6 +20,16 @@ const RECORDINGS = [
   {
     name: "Hello, world!",
     stem: "helloworld",
+    audio: ["webm", "mp4"],
+  },
+  {
+    name: "Multiple Editors",
+    stem: "multieditor",
+    audio: ["webm", "mp4"],
+  },
+  {
+    name: "Scrolling Demo",
+    stem: "scrolldemo",
     audio: ["webm", "mp4"],
   },
 ] as Recording[]
@@ -92,11 +109,11 @@ const Demo: React.FC = () => {
     if (!recording || !recordReplayer) {
       return
     }
-    fetch(`/${recording.stem}.json`)
+    fetch(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/${recording.stem}.json`)
       .then((r) => r.json())
       .then((t) => {
         const ace = AceTraceContent.check(t) as AceTrace
-        recordReplayer!.src = { ace, audio: `${process.env.NEXT_PUBLIC_BASE_PATH ?? "/"}${recording.stem}.mp4` }
+        recordReplayer!.src = { ace, audio: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/${recording.stem}.mp4` }
       })
   }, [recording, recordReplayer])
 
@@ -118,12 +135,14 @@ const Demo: React.FC = () => {
       {recordReplayer && (
         <>
           <PlayerControls recordReplayer={recordReplayer} />
-          <button
-            onClick={upload}
-            disabled={uploading || state === "empty" || state === "playing" || state === "recording"}
-          >
-            Upload
-          </button>
+          {process.env.NODE_ENV === "development" && (
+            <button
+              onClick={upload}
+              disabled={uploading || state === "empty" || state === "playing" || state === "recording"}
+            >
+              Upload
+            </button>
+          )}
         </>
       )}
       <div style={{ display: "flex" }}>

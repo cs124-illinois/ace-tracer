@@ -25,8 +25,8 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   private filterRecord?: (record: AceRecord) => boolean
   public playing = false
   private _playbackRate: number
-  private _currentSession?: Ace.EditSession
-  private _scrollToCursor = false
+  // private _currentSession?: Ace.EditSession
+  public scrollToCursor = false
   private sessionMap: Record<string, Ace.EditSession> = {}
 
   public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
@@ -64,9 +64,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.sessionMap[name] = ace.createEditSession(contents, mode as any)
       }
-      this._currentSession = this.sessionMap[this._trace.sessionName]
-    } else {
-      this._currentSession = this.editor.session
+      this.editor.setSession(this.sessionMap[this._trace.sessionName])
     }
     let lastIndex = 0
     for (let i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
@@ -119,14 +117,14 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       const apply = this.filterRecord ? this.filterRecord(aceRecord) : true
       if (apply !== false) {
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
-          this._currentSession = this.sessionMap[aceRecord.sessionName]
+          this.editor.setSession(this.sessionMap[aceRecord.sessionName])
         }
-        if (!(this._scrollToCursor && ScrollPosition.guard(aceRecord))) {
-          applyAceRecord(this.editor!, aceRecord, !this._scrollToCursor)
+        if (!(this.scrollToCursor && ScrollPosition.guard(aceRecord))) {
+          applyAceRecord(this.editor!, aceRecord, !this.scrollToCursor)
           this.emit("record", aceRecord)
         }
-        if (this._scrollToCursor) {
-          this.editor.renderer.scrollCursorIntoView(this._currentSession!.selection.getCursor()!)
+        if (this.scrollToCursor) {
+          this.editor.renderer.scrollCursorIntoView(this.editor.session!.selection.getCursor()!)
         }
       }
     }
@@ -223,12 +221,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     if (wasPlaying) {
       this.play()
     }
-  }
-  public set scrollToCursor(scrollToCursor: boolean) {
-    this._scrollToCursor = scrollToCursor
-  }
-  public get scrollToCursor() {
-    return this._scrollToCursor
   }
 }
 
