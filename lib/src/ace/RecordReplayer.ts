@@ -1,12 +1,12 @@
 import { Ace } from "ace-builds"
 import EventEmitter from "events"
-import { AceRecord, AceTrace, IRecordReplayer, RecordReplayerState } from "../types"
+import { AceRecord, AceTrace, IRecordReplayer } from "../types"
 import AcePlayer from "./Player"
 import AceRecorder from "./Recorder"
 
 class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
   public recorder: AceRecorder
-  private _state: RecordReplayerState = "paused"
+  private _state: IRecordReplayer.State = "paused"
   private emitter = new EventEmitter()
   private stopping = false
 
@@ -16,7 +16,7 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
     })
     this.recorder = new AceRecorder(editor)
   }
-  public set state(state: RecordReplayerState) {
+  public set state(state: IRecordReplayer.State) {
     if (state === this._state) {
       return
     }
@@ -57,7 +57,7 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
     this.state = "paused"
     this.stopping = false
   }
-  public addStateListener(listener: (state: RecordReplayerState) => void) {
+  public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
   }
   public get percent() {

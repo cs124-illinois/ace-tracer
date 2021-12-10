@@ -1,11 +1,11 @@
 import EventEmitter from "events"
-import { IRecordReplayer, RecordReplayerState } from ".."
+import { IRecordReplayer } from "../types"
 import AudioRecorder from "./Recorder"
 
 class AudioRecordReplayer implements IRecordReplayer {
   public player: HTMLAudioElement
   public recorder = new AudioRecorder()
-  private _state: RecordReplayerState = "paused"
+  private _state: IRecordReplayer.State = "paused"
   private emitter = new EventEmitter()
   private stopping = false
 
@@ -15,7 +15,7 @@ class AudioRecordReplayer implements IRecordReplayer {
       this.state = "paused"
     })
   }
-  public set state(state: RecordReplayerState) {
+  public set state(state: IRecordReplayer.State) {
     if (state === this._state) {
       return
     }
@@ -71,7 +71,7 @@ class AudioRecordReplayer implements IRecordReplayer {
   public get src() {
     return this.player.src
   }
-  public addStateListener(listener: (state: RecordReplayerState) => void) {
+  public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
   }
   public get currentTime() {

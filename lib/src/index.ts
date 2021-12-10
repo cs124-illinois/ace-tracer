@@ -13,7 +13,7 @@ export default RecordReplayer
 
 export const urlToBase64 = async (url: string): Promise<string> => {
   const blob = await fetch(url).then((r) => r.blob())
-  return new Promise((resolve, _) => {
+  return new Promise((resolve) => {
     const reader = new FileReader()
     reader.onloadend = () => resolve(reader.result!.toString().split(",")[1])
     reader.readAsDataURL(blob)

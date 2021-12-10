@@ -1,4 +1,3 @@
-import type { Ace } from "ace-builds"
 import {
   Array,
   Boolean,
@@ -23,9 +22,6 @@ export const EditorLocation = RuntypeRecord({
   column: Number,
 })
 export type EditorLocation = Static<typeof EditorLocation>
-
-export const compareEditorLocations = (first: EditorLocation, second: EditorLocation): boolean =>
-  first.column === second.column && first.row === second.row
 
 export const Complete = RuntypeRecord({
   type: Literal("complete"),
@@ -54,55 +50,7 @@ export const Complete = RuntypeRecord({
     sessionName: String,
   })
 )
-
 export type Complete = Static<typeof Complete>
-
-export const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
-  const renderer = editor.renderer as any
-  const { width, height } = renderer.$size
-  return Complete.check({
-    type: "complete",
-    timestamp: new Date(),
-    focused: editor.isFocused(),
-    value: editor.session.getValue(),
-    selection: editor.session.selection.getRange(),
-    cursor: editor.session.selection.getCursor(),
-    scroll: {
-      top: editor.renderer.getScrollTop(),
-      left: editor.renderer.getScrollLeft(),
-    },
-    window: {
-      width,
-      height,
-      rows: editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
-      fontSize: parseInt(editor.getFontSize()),
-      lineHeight: renderer.$textLayer.getLineHeight(),
-    },
-    reason,
-    ...(sessionName && { sessionName }),
-  })
-}
-
-export const applyComplete = (session: Ace.EditSession, complete: Complete, setScroll = true): void => {
-  if (session.getValue() !== complete.value) {
-    safeChangeSessionValue(session, complete.value)
-  }
-
-  const { row, column } = complete.cursor
-  session.selection.moveCursorTo(row, column)
-
-  const { start, end } = complete.selection
-  session.selection.setSelectionRange({
-    start: { row: start.row, column: start.column },
-    end: { row: end.row, column: end.column },
-  })
-
-  if (setScroll) {
-    const { top, left } = complete.scroll
-    session.setScrollTop(top)
-    session.setScrollLeft(left)
-  }
-}
 
 export const Delta = RuntypeRecord({
   type: Literal("delta"),
@@ -119,19 +67,11 @@ export const Delta = RuntypeRecord({
 )
 export type Delta = Static<typeof Delta>
 
-export const applyDelta = (session: Ace.EditSession, delta: Delta): void => session.getDocument().applyDelta(delta)
-
 export const Selection = RuntypeRecord({
   start: EditorLocation,
   end: EditorLocation,
 })
 export type Selection = Static<typeof Selection>
-
-export const compareSelections = (first: Selection, second: Selection): boolean =>
-  compareEditorLocations(first.start, second.start) && compareEditorLocations(first.end, second.end)
-
-export const selectionIsEmpty = (selection: Selection): boolean =>
-  selection.start.column === selection.end.column && selection.start.row === selection.end.row
 
 export const SelectionChange = RuntypeRecord({
   type: Literal("selectionchange"),
@@ -142,9 +82,6 @@ export const SelectionChange = RuntypeRecord({
 })
 export type SelectionChange = Static<typeof SelectionChange>
 
-export const applySelectionChange = (session: Ace.EditSession, selectionChange: SelectionChange): void =>
-  session.selection.setSelectionRange(selectionChange)
-
 export const CursorChange = RuntypeRecord({
   type: Literal("cursorchange"),
   timestamp: AceTimestamp,
@@ -152,9 +89,6 @@ export const CursorChange = RuntypeRecord({
   location: EditorLocation,
 })
 export type CursorChange = Static<typeof CursorChange>
-
-export const applyCursorChange = (session: Ace.EditSession, cursorChange: CursorChange): void =>
-  session.selection.moveCursorTo(cursorChange.location.row, cursorChange.location.column)
 
 export const ScrollPosition = RuntypeRecord({
   top: Number,
@@ -170,11 +104,6 @@ export const ScrollChange = RuntypeRecord({
   left: Number,
 })
 export type ScrollChange = Static<typeof ScrollChange>
-
-export const applyScrollChange = (renderer: Ace.VirtualRenderer, scrollChange: ScrollChange): void => {
-  renderer.scrollToY(scrollChange.top)
-  renderer.scrollToX(scrollChange.left)
-}
 
 export const WindowSize = RuntypeRecord({
   width: Number,
@@ -253,41 +182,13 @@ export class AceTrace {
   }
 }
 
-export const applyAceRecord = (editor: Ace.Editor, aceRecord: AceRecord, applyScroll = true): void => {
-  if (Complete.guard(aceRecord)) {
-    applyComplete(editor.session, aceRecord, applyScroll)
-  } else if (Delta.guard(aceRecord)) {
-    applyDelta(editor.session, aceRecord)
-  } else if (SelectionChange.guard(aceRecord)) {
-    applySelectionChange(editor.session, aceRecord)
-  } else if (CursorChange.guard(aceRecord)) {
-    applyCursorChange(editor.session, aceRecord)
-  } else if (ScrollChange.guard(aceRecord)) {
-    applyScrollChange(editor.renderer, aceRecord)
-  }
-}
-
 export const deserializeAceRecordTimestamp = (aceRecord: AceRecord): AceRecord => {
   aceRecord.timestamp = new Date(aceRecord.timestamp)
   return aceRecord
 }
 
-export const safeChangeValue = (editor: Ace.Editor, value: string): void => {
-  const position = editor.session.selection.toJSON()
-  editor.setValue(value)
-  editor.session.selection.fromJSON(position)
-}
-
-export const safeChangeSessionValue = (session: Ace.EditSession, value: string): void => {
-  const position = session.selection.toJSON()
-  session.setValue(value)
-  session.selection.fromJSON(position)
-}
-
-export type RecordReplayerState = "empty" | "paused" | "playing" | "recording"
-
 export interface IRecordReplayer {
-  state: RecordReplayerState
+  state: IRecordReplayer.State
   src: unknown | undefined
   currentTime: number
   playbackRate: number
@@ -297,5 +198,8 @@ export interface IRecordReplayer {
   pause: () => void
   record: () => Promise<void>
   stop: () => Promise<void>
-  addStateListener: (listener: (state: RecordReplayerState) => void) => void
+  addStateListener: (listener: (state: IRecordReplayer.State) => void) => void
+}
+export namespace IRecordReplayer {
+  export type State = "empty" | "paused" | "playing" | "recording"
 }

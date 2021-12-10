@@ -27,7 +27,7 @@ const Demo: React.FC = () => {
   const [recordReplayer, setRecordReplayer] = useState<RecordReplayer | undefined>(undefined)
   const [state, setState] = useState<RecordReplayer.State>("paused")
 
-  const [active, setActive] = useState<string>()
+  const [active, setActive] = useState<string>("Main.java")
 
   useEffect(() => {
     recordReplayer?.addStateListener((s) => setState(s))
@@ -73,8 +73,16 @@ const Demo: React.FC = () => {
       { name: "Main.java", contents: "", mode: "ace/mode/java" },
       { name: "Another.java", contents: "", mode: "ace/mode/java" },
     ])
+    newRecordReplayer.ace.recorder.setSession("Main.java")
     setRecordReplayer(newRecordReplayer)
   }, [])
+
+  useEffect(() => {
+    if (!recordReplayer) {
+      return
+    }
+    recordReplayer.ace.recorder.setSession(active)
+  }, [active, recordReplayer])
 
   return (
     <>
@@ -128,7 +136,6 @@ const Demo: React.FC = () => {
         onLoad={(ace) => {
           recordEditor.current = ace
           finishInitialization()
-          setActive("Main.java")
         }}
       />
       <div style={{ display: "flex", flexDirection: "row", marginBottom: 8 }}>

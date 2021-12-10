@@ -1,5 +1,6 @@
 import ace, { Ace } from "ace-builds"
-import { AceRecord, AceTrace, applyAceRecord, Complete, ScrollPosition } from "../types"
+import { CursorChange, Delta, ScrollChange, SelectionChange } from ".."
+import { AceRecord, AceTrace, Complete, ScrollPosition } from "../types"
 
 class AcePlayer {
   private editor: Ace.Editor
@@ -54,6 +55,7 @@ class AcePlayer {
     if (this._trace.sessionName) {
       this.sessionMap = {}
       for (const { name, contents, mode } of this._trace.sessionInfo) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.sessionMap[name] = ace.createEditSession(contents, mode as any)
       }
       this._currentSession = this.sessionMap[this._trace.sessionName]
@@ -61,7 +63,7 @@ class AcePlayer {
       this._currentSession = this.editor.session
     }
     let lastIndex = 0
-    for (var i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
+    for (let i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
       if (this.traceIndex[i]) {
         lastIndex = i
       } else {
@@ -108,7 +110,7 @@ class AcePlayer {
         break
       }
       const aceRecord = this._trace.records[i]
-      let apply: boolean = true
+      let apply = true
       if (this.onExternalChange) {
         apply = this.onExternalChange(aceRecord) ?? true
       }
@@ -120,7 +122,7 @@ class AcePlayer {
           applyAceRecord(this.editor!, aceRecord, !this._scrollToCursor)
         }
         if (this._scrollToCursor) {
-          this.editor.renderer.scrollCursorIntoView(this._currentSession?.selection.getCursor()!)
+          this.editor.renderer.scrollCursorIntoView(this._currentSession!.selection.getCursor()!)
         }
       }
     }
@@ -160,6 +162,7 @@ class AcePlayer {
     this.playing = false
 
     if (reset) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const renderer = this.editor.renderer as any
       renderer.$cursorLayer.element.style.opacity = this.previousOpacity
       renderer.$cursorLayer.setBlinking(this.wasBlinking)
@@ -231,3 +234,57 @@ module AcePlayer {
   }
 }
 export default AcePlayer
+
+const applyAceRecord = (editor: Ace.Editor, aceRecord: AceRecord, applyScroll = true): void => {
+  if (Complete.guard(aceRecord)) {
+    applyComplete(editor.session, aceRecord, applyScroll)
+  } else if (Delta.guard(aceRecord)) {
+    applyDelta(editor.session, aceRecord)
+  } else if (SelectionChange.guard(aceRecord)) {
+    applySelectionChange(editor.session, aceRecord)
+  } else if (CursorChange.guard(aceRecord)) {
+    applyCursorChange(editor.session, aceRecord)
+  } else if (ScrollChange.guard(aceRecord)) {
+    applyScrollChange(editor.renderer, aceRecord)
+  }
+}
+
+const applyComplete = (session: Ace.EditSession, complete: Complete, setScroll = true): void => {
+  if (session.getValue() !== complete.value) {
+    safeChangeValue(session, complete.value)
+  }
+
+  const { row, column } = complete.cursor
+  session.selection.moveCursorTo(row, column)
+
+  const { start, end } = complete.selection
+  session.selection.setSelectionRange({
+    start: { row: start.row, column: start.column },
+    end: { row: end.row, column: end.column },
+  })
+
+  if (setScroll) {
+    const { top, left } = complete.scroll
+    session.setScrollTop(top)
+    session.setScrollLeft(left)
+  }
+}
+
+const applyDelta = (session: Ace.EditSession, delta: Delta): void => session.getDocument().applyDelta(delta)
+
+const applySelectionChange = (session: Ace.EditSession, selectionChange: SelectionChange): void =>
+  session.selection.setSelectionRange(selectionChange)
+
+const applyCursorChange = (session: Ace.EditSession, cursorChange: CursorChange): void =>
+  session.selection.moveCursorTo(cursorChange.location.row, cursorChange.location.column)
+
+const applyScrollChange = (renderer: Ace.VirtualRenderer, scrollChange: ScrollChange): void => {
+  renderer.scrollToY(scrollChange.top)
+  renderer.scrollToX(scrollChange.left)
+}
+
+const safeChangeValue = (session: Ace.EditSession, value: string): void => {
+  const position = session.selection.toJSON()
+  session.setValue(value)
+  session.selection.fromJSON(position)
+}

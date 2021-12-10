@@ -1,7 +1,8 @@
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import type TypedEmitter from "typed-emitter"
-import { AceRecord, AceTrace, ExternalChange, getComplete, SessionInfo } from "../types"
+import { Complete } from ".."
+import { AceRecord, AceTrace, ExternalChange, SessionInfo } from "../types"
 import AceStreamer from "./Streamer"
 
 export interface AceRecorderEvents {
@@ -67,7 +68,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.records.push(record)
     this.emit("record", record)
   }
-  public addCompleteRecord(reason: string = "manual") {
+  public addCompleteRecord(reason = "manual") {
     if (!this.recording) {
       throw new Error("Not recording")
     }
@@ -80,6 +81,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     if (this.sessionMap[name]) {
       throw new Error(`Session ${name} already exists`)
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.sessionMap[name] = { session: ace.createEditSession(contents, mode as any), mode }
   }
   public addSessions(sessions: AceRecorder.Session[]) {
@@ -101,6 +103,33 @@ module AceRecorder {
   export type Options = {
     completeInterval?: number
   }
+}
+
+const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const renderer = editor.renderer as any
+  const { width, height } = renderer.$size
+  return Complete.check({
+    type: "complete",
+    timestamp: new Date(),
+    focused: editor.isFocused(),
+    value: editor.session.getValue(),
+    selection: editor.session.selection.getRange(),
+    cursor: editor.session.selection.getCursor(),
+    scroll: {
+      top: editor.renderer.getScrollTop(),
+      left: editor.renderer.getScrollLeft(),
+    },
+    window: {
+      width,
+      height,
+      rows: editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
+      fontSize: parseInt(editor.getFontSize()),
+      lineHeight: renderer.$textLayer.getLineHeight(),
+    },
+    reason,
+    ...(sessionName && { sessionName }),
+  })
 }
 
 export default AceRecorder

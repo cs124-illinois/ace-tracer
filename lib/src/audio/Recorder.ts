@@ -4,7 +4,7 @@ import MimeType from "whatwg-mimetype"
 class AudioRecorder {
   private recorder: MediaRecorder | undefined
   private listener: (({ data }: { data: Blob }) => void) | undefined
-  private started: number = 0
+  private started = 0
 
   private chunks: Blob[] = []
   blob: Blob | undefined

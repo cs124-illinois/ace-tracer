@@ -1,13 +1,13 @@
 import EventEmitter from "events"
 import AceRecordReplayer from "./ace/RecordReplayer"
 import AudioRecordReplayer from "./audio/RecordReplayer"
-import { AceTrace, IRecordReplayer, RecordReplayerState } from "./types"
+import { AceTrace, IRecordReplayer } from "./types"
 
 class RecordReplayer implements IRecordReplayer {
   private _ace
   private _audio = new AudioRecordReplayer()
   private emitter = new EventEmitter()
-  private _state: RecordReplayerState = "paused"
+  private _state: IRecordReplayer.State = "paused"
   private readonly tolerance = 0.1
 
   constructor(...a: ConstructorParameters<typeof AceRecordReplayer>) {
@@ -67,7 +67,7 @@ class RecordReplayer implements IRecordReplayer {
   public get state() {
     return this._state
   }
-  private set state(state: RecordReplayerState) {
+  private set state(state: IRecordReplayer.State) {
     if (state === this._state) {
       return
     }
@@ -109,7 +109,7 @@ class RecordReplayer implements IRecordReplayer {
     }
     this.state = "paused"
   }
-  public addStateListener(listener: (state: RecordReplayerState) => void) {
+  public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
   }
   public set src(src: RecordReplayer.Content | undefined) {
@@ -165,7 +165,7 @@ class RecordReplayer implements IRecordReplayer {
 
 namespace RecordReplayer {
   export type Content = { audio: string; ace: AceTrace | undefined }
-  export type State = RecordReplayerState
+  export type State = IRecordReplayer.State
 }
 
 export default RecordReplayer

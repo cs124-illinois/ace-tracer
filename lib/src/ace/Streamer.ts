@@ -1,24 +1,22 @@
 import { Ace } from "ace-builds"
 import { throttle } from "throttle-debounce"
+import { Complete } from ".."
 import {
   AceRecord,
-  compareEditorLocations,
-  compareSelections,
   CursorChange,
   Delta,
   EditorLocation,
-  getComplete,
   ScrollChange,
   ScrollPosition,
   Selection,
   SelectionChange,
-  selectionIsEmpty,
   WindowSize,
   WindowSizeChange,
 } from "../types"
 
 class AceStreamer {
   private editor: Ace.Editor
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private _stop: () => void = () => {}
   running = false
   public sessionName?: string
@@ -115,6 +113,7 @@ class AceStreamer {
       )
     })
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = this.editor.renderer as any
     const { width, height } = renderer.$size
     let lastWindowSize = WindowSize.check({
@@ -210,3 +209,40 @@ class AceStreamer {
 }
 
 export default AceStreamer
+
+const compareEditorLocations = (first: EditorLocation, second: EditorLocation): boolean =>
+  first.column === second.column && first.row === second.row
+
+const compareSelections = (first: Selection, second: Selection): boolean =>
+  compareEditorLocations(first.start, second.start) && compareEditorLocations(first.end, second.end)
+
+const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const renderer = editor.renderer as any
+  const { width, height } = renderer.$size
+  return Complete.check({
+    type: "complete",
+    timestamp: new Date(),
+    focused: editor.isFocused(),
+    value: editor.session.getValue(),
+    selection: editor.session.selection.getRange(),
+    cursor: editor.session.selection.getCursor(),
+    scroll: {
+      top: editor.renderer.getScrollTop(),
+      left: editor.renderer.getScrollLeft(),
+    },
+    window: {
+      width,
+      height,
+      rows: editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
+      fontSize: parseInt(editor.getFontSize()),
+      lineHeight: renderer.$textLayer.getLineHeight(),
+    },
+    reason,
+    ...(sessionName && { sessionName }),
+  })
+}
+
+const selectionIsEmpty = (selection: Selection): boolean =>
+  selection.start.column === selection.end.column && selection.start.row === selection.end.row
+
