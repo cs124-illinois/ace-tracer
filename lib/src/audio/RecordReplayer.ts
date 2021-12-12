@@ -8,6 +8,7 @@ class AudioRecordReplayer implements IRecordReplayer {
   private _state: IRecordReplayer.State = "paused"
   private emitter = new EventEmitter()
   private stopping = false
+  private _playbackRate = 1.0
 
   constructor() {
     this.player = new Audio()
@@ -29,6 +30,7 @@ class AudioRecordReplayer implements IRecordReplayer {
     if (this.state !== "paused") {
       throw new Error("Not paused")
     }
+    this.player.playbackRate = this._playbackRate
     await this.player.play()
     this.state = "playing"
   }
@@ -61,6 +63,7 @@ class AudioRecordReplayer implements IRecordReplayer {
       throw new Error("Can't change src while playing or recording")
     }
     this.player.src = src
+    this.player.playbackRate = this.playbackRate
     if (src !== "") {
       this.player.load()
       this.state = "paused"
@@ -90,6 +93,7 @@ class AudioRecordReplayer implements IRecordReplayer {
     return this.player.playbackRate
   }
   public set playbackRate(playbackRate: number) {
+    this._playbackRate = playbackRate
     this.player.playbackRate = playbackRate
   }
   public get duration() {
