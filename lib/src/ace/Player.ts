@@ -119,11 +119,14 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
           this.editor.setSession(this.sessionMap[aceRecord.sessionName])
         }
-        if (!(this.scrollToCursor && ScrollPosition.guard(aceRecord))) {
+        if (!ScrollPosition.guard(aceRecord) || !(this.scrollToCursor && aceRecord.triggeredByCursorChange)) {
           applyAceRecord(this.editor!, aceRecord, !this.scrollToCursor)
           this.emit("record", aceRecord)
         }
-        if (this.scrollToCursor) {
+        if (
+          (Delta.guard(aceRecord) || CursorChange.guard(aceRecord) || SelectionChange.guard(aceRecord)) &&
+          this.scrollToCursor
+        ) {
           this.editor.renderer.scrollCursorIntoView(this.editor.session!.selection.getCursor()!)
         }
       }

@@ -102,6 +102,7 @@ export const ScrollChange = RuntypeRecord({
   focused: Boolean,
   top: Number,
   left: Number,
+  triggeredByCursorChange: Boolean,
 })
 export type ScrollChange = Static<typeof ScrollChange>
 

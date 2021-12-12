@@ -26,11 +26,59 @@ class AceStreamer {
   }
 
   public start(callback: (record: AceRecord) => void) {
+    let beforeEndOperation = false
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const renderer = this.editor.renderer as any
+    let { width, height } = renderer.$size
+    let lastWindowSize = WindowSize.check({
+      width,
+      height,
+      rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+      fontSize: parseInt(this.editor.getFontSize()),
+      lineHeight: renderer.$textLayer.getLineHeight(),
+    })
+    const windowSizeListener = throttle(100, () => {
+      if (!this.running) {
+        return
+      }
+      beforeEndOperation = false
+      const { width: newWidth, height: newHeight } = renderer.$size
+      const windowSize = WindowSize.check({
+        width: newWidth,
+        height: newHeight,
+        rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+        fontSize: parseInt(this.editor.getFontSize()),
+        lineHeight: renderer.$textLayer.getLineHeight(),
+      })
+      if (
+        windowSize.width === lastWindowSize.width &&
+        windowSize.height === lastWindowSize.height &&
+        windowSize.rows === lastWindowSize.rows &&
+        windowSize.fontSize === lastWindowSize.fontSize &&
+        windowSize.lineHeight === lastWindowSize.lineHeight
+      ) {
+        return
+      }
+      width = newWidth
+      height = newHeight
+      lastWindowSize = windowSize
+      callback(
+        WindowSizeChange.check({
+          type: "windowsizechange",
+          timestamp: new Date(),
+          focused: this.editor.isFocused(),
+          ...windowSize,
+        })
+      )
+    })
+
     let lastValue = this.editor.getValue()
     const changeListener = (delta: { [key: string]: unknown }) => {
       if (!this.running) {
         return
       }
+      beforeEndOperation = false
       if (this.editor.getValue() === lastValue) {
         return
       }
@@ -50,6 +98,7 @@ class AceStreamer {
       if (!this.running) {
         return
       }
+      beforeEndOperation = false
       const selection = Selection.check(this.editor.selection.getRange())
       if (compareSelections(selection, lastSelection) || selectionIsEmpty(selection)) {
         lastSelection = selection
@@ -71,12 +120,14 @@ class AceStreamer {
       if (!this.running) {
         return
       }
+      beforeEndOperation = false
       const cursor = EditorLocation.check(this.editor.selection.getCursor())
       if (compareEditorLocations(cursor, lastCursor) || !selectionIsEmpty(this.editor.selection.getRange())) {
         lastCursor = cursor
         return
       }
       lastCursor = cursor
+
       callback(
         CursorChange.check({
           type: "cursorchange",
@@ -95,62 +146,36 @@ class AceStreamer {
       if (!this.running) {
         return
       }
-      const scroll = ScrollPosition.check({
-        top: this.editor.renderer.getScrollTop(),
-        left: this.editor.renderer.getScrollLeft(),
-      })
+      const triggeredByCursorChange = beforeEndOperation
+      beforeEndOperation = false
+
+      let top = this.editor.renderer.getScrollTop()
+      if (top < 0) {
+        top = 0
+      }
+      if (top > height) {
+        top = height
+      }
+      let left = this.editor.renderer.getScrollLeft()
+      if (left < 0) {
+        left = 0
+      }
+      if (left > width) {
+        left = width
+      }
+      const scroll = ScrollPosition.check({ top, left })
       if (scroll.top === lastScroll.top && scroll.left === lastScroll.left) {
         return
       }
       lastScroll = scroll
+
       callback(
         ScrollChange.check({
           type: "scrollchange",
           timestamp: new Date(),
           focused: this.editor.isFocused(),
+          triggeredByCursorChange,
           ...scroll,
-        })
-      )
-    })
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const renderer = this.editor.renderer as any
-    const { width, height } = renderer.$size
-    let lastWindowSize = WindowSize.check({
-      width,
-      height,
-      rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
-      fontSize: parseInt(this.editor.getFontSize()),
-      lineHeight: renderer.$textLayer.getLineHeight(),
-    })
-    const windowSizeListener = throttle(100, () => {
-      if (!this.running) {
-        return
-      }
-      const { width, height } = renderer.$size
-      const windowSize = WindowSize.check({
-        width,
-        height,
-        rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
-        fontSize: parseInt(this.editor.getFontSize()),
-        lineHeight: renderer.$textLayer.getLineHeight(),
-      })
-      if (
-        windowSize.width === lastWindowSize.width &&
-        windowSize.height === lastWindowSize.height &&
-        windowSize.rows === lastWindowSize.rows &&
-        windowSize.fontSize === lastWindowSize.fontSize &&
-        windowSize.lineHeight === lastWindowSize.lineHeight
-      ) {
-        return
-      }
-      lastWindowSize = windowSize
-      callback(
-        WindowSizeChange.check({
-          type: "windowsizechange",
-          timestamp: new Date(),
-          focused: this.editor.isFocused(),
-          ...windowSize,
         })
       )
     })
@@ -162,6 +187,8 @@ class AceStreamer {
       session: Ace.EditSession
       oldSession: Ace.EditSession
     }) => {
+      beforeEndOperation = false
+
       oldSession.removeEventListener("change", changeListener)
       oldSession.removeEventListener("changeScrollTop", scrollListener)
       oldSession.removeEventListener("changeScrollTop", windowSizeListener)
@@ -177,25 +204,31 @@ class AceStreamer {
       session.addEventListener("changeScrollTop", windowSizeListener)
     }
 
-    callback(getComplete(this.editor, "start", this.sessionName))
+    const beforeEndListener = () => {
+      beforeEndOperation = true
+    }
 
+    callback(getComplete(this.editor, "start", this.sessionName))
     this.editor.session.addEventListener("change", changeListener)
     this.editor.addEventListener("changeSelection", selectionListener)
     this.editor.addEventListener("changeSelection", cursorListener)
     this.editor.session.addEventListener("changeScrollTop", scrollListener)
-    this.editor.renderer.addEventListener("changeScrollTop", windowSizeListener) // change to resize
+    this.editor.renderer.addEventListener("resize", windowSizeListener)
     this.editor.addEventListener("changeSession", changeSessionListener)
+    this.editor.addEventListener("beforeEndOperation", beforeEndListener)
 
     this.running = true
 
     this._stop = () => {
-      this.editor.session.removeEventListener("change", changeListener)
-      this.editor.removeEventListener("changeSelection", selectionListener)
-      this.editor.removeEventListener("changeSelection", cursorListener)
-      this.editor.session.removeEventListener("changeScrollTop", scrollListener)
-      this.editor.session.removeEventListener("changeScrollTop", windowSizeListener)
+      this.editor.removeEventListener("beforeEndOperation", beforeEndListener)
       this.editor.removeEventListener("changeSession", changeSessionListener)
+      this.editor.session.removeEventListener("resize", windowSizeListener)
+      this.editor.session.removeEventListener("changeScrollTop", scrollListener)
+      this.editor.removeEventListener("changeSelection", cursorListener)
+      this.editor.removeEventListener("changeSelection", selectionListener)
+      this.editor.session.removeEventListener("change", changeListener)
       callback(getComplete(this.editor, "end", this.sessionName))
+
       this.running = false
     }
   }
@@ -205,6 +238,8 @@ class AceStreamer {
       throw new Error("Not running")
     }
     this._stop()
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    this._stop = () => {}
   }
 }
 
@@ -245,4 +280,3 @@ const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): 
 
 const selectionIsEmpty = (selection: Selection): boolean =>
   selection.start.column === selection.end.column && selection.start.row === selection.end.row
-
