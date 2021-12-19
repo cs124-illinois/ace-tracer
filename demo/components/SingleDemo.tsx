@@ -7,9 +7,9 @@ import RecordReplayer, {
   urlToBase64,
 } from "@cs124/aceaudio-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
-import AceEditor from "react-ace"
 import Timer from "react-compound-timer"
-import PlayerControls from "../components/PlayerControls"
+import DefaultAceEditor from "./DefaultAceEditor"
+import PlayerControls from "./PlayerControls"
 
 type Recording = {
   name: string
@@ -158,16 +158,7 @@ const Demo: React.FC = () => {
       </div>
 
       <span>Record</span>
-      <AceEditor
-        mode="java"
-        theme="github"
-        width="100%"
-        minLines={4}
-        maxLines={4}
-        showPrintMargin={false}
-        onBeforeLoad={(ace) => {
-          ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
-        }}
+      <DefaultAceEditor
         onLoad={(ace) => {
           recordEditor.current = ace
           finishInitialization()
@@ -183,17 +174,10 @@ const Demo: React.FC = () => {
       </div>
 
       <span>Play</span>
-      <AceEditor
-        mode="java"
-        theme="github"
-        width="100%"
+      <DefaultAceEditor
         readOnly
         minLines={2}
         maxLines={2}
-        showPrintMargin={false}
-        onBeforeLoad={(ace) => {
-          ace.config.set("basePath", `https://cdn.jsdelivr.net/npm/ace-builds@${ace.version}/src-min-noconflict`)
-        }}
         onLoad={(ace) => {
           replayEditor.current = ace
           finishInitialization()

@@ -162,16 +162,16 @@ export class AceTrace {
   duration: number
   startTime: Date
   sessionInfo: SessionInfo[]
-  sessionName?: string
+  sessionName: string
 
-  constructor(records: AceRecord[], sessionInfo: SessionInfo[], sessionName?: string) {
+  constructor(records: AceRecord[], sessionInfo: SessionInfo[], sessionName: string) {
     if (records.length === 0) {
       throw new Error("Empty trace")
     }
     this.records = records
     this.startTime = new Date(records[0].timestamp)
     this.duration = new Date(records.slice(-1)[0].timestamp).valueOf() - new Date(records[0].timestamp).valueOf()
-    if (sessionInfo.find(({ name }) => !name)) {
+    if (sessionInfo.length > 1 && sessionInfo.find(({ name }) => !name)) {
       throw new Error("Session names must not be blank")
     }
     if (!sessionInfo.find(({ name }) => name === sessionName)) {

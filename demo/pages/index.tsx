@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic"
 
-const Demo = dynamic(() => import("../components/Demo"), { ssr: false })
+// const SingleDemo = dynamic(() => import("../components/SingleDemo"), { ssr: false })
+const MultiDemo = dynamic(() => import("../components/MultiDemo"), { ssr: false })
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
         Visit the <a href="https://github.com/cs124-illinois/ace-tracer">project homepage</a>
       </p>
       <h2>Demo</h2>
-      <Demo />
+      <MultiDemo />
     </>
   )
 }

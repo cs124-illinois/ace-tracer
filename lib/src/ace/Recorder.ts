@@ -18,7 +18,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
   public src?: AceTrace
   private sessionMap: Record<string, { session: Ace.EditSession; mode: string }> = {}
   private sessionName?: string
-  private startSession?: string
+  private startSession = ""
   private sessionInfo: SessionInfo[] = []
 
   public constructor(editor: Ace.Editor, options?: AceRecorder.Options) {
@@ -32,14 +32,20 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.records = []
     this.src = undefined
 
-    if (Object.keys(this.sessionMap).length === 0 || !this.sessionName) {
+    if (Object.keys(this.sessionMap).length === 0 && !this.sessionName) {
+      this.sessionMap[""] = {
+        session: this.editor.getSession(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        mode: (this.editor.getSession() as any).$modeId,
+      }
+    } else if (Object.keys(this.sessionMap).length === 0 || !this.sessionName) {
       throw new Error("Session information not properly configured")
     }
 
     this.sessionInfo = Object.entries(this.sessionMap).map(([name, info]) => {
       return { name, contents: info.session.getValue(), mode: info.mode }
     })
-    this.startSession = this.sessionName
+    this.startSession = this.sessionName || ""
 
     this.streamer.start((record: AceRecord) => {
       this.records.push(record)

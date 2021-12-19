@@ -3,12 +3,23 @@ import AceStreamer from "./ace/Streamer"
 import AcePlayer from "./ace/Player"
 import AceRecorder from "./ace/Recorder"
 import AceRecordReplayer from "./ace/RecordReplayer"
+import AceMultiRecordReplayer from "./ace/MultiRecordReplayer"
 import AudioRecorder from "./audio/Recorder"
 import AudioRecordReplayer from "./audio/RecordReplayer"
 import RecordReplayer from "./RecordReplayer"
+import MultiRecordReplayer from "./MultiRecordReplayer"
 export * from "./types"
 export type { Ace } from "ace-builds"
-export { AceStreamer, AcePlayer, AceRecorder, AceRecordReplayer, AudioRecorder, AudioRecordReplayer }
+export {
+  AceStreamer,
+  AcePlayer,
+  AceRecorder,
+  AceRecordReplayer,
+  AceMultiRecordReplayer,
+  AudioRecorder,
+  AudioRecordReplayer,
+  MultiRecordReplayer,
+}
 export default RecordReplayer
 
 export const urlToBase64 = async (url: string): Promise<string> => {
