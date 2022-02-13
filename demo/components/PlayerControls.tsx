@@ -1,4 +1,4 @@
-import { IRecordReplayer } from "@cs124/aceaudio-recorder"
+import { IRecordReplayer } from "@cs124/ace-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 const PlayerControls: React.FC<{

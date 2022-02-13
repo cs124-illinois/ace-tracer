@@ -5,7 +5,7 @@
   "scripts": {
     "build": "next build",
     "deploy": "gh-pages -t -d dist",
-    "eslint": "eslint",
+    "eslint": "eslint pages/** components/**",
     "preexport": "rimraf dist && NEXT_PUBLIC_BASE_PATH=/ace-tracer yarn build",
     "export": "NEXT_PUBLIC_BASE_PATH=/ace-tracer next export -o dist && touch dist/.nojekyll",
     "lint": "next lint",
@@ -14,27 +14,27 @@
     "prettier": "prettier -w --plugin=prettier-plugin-organize-imports . && prettier-package-json --write"
   },
   "dependencies": {
-    "@cs124/aceaudio-recorder": "2021.12.0",
-    "glob-promise": "^4.2.2",
-    "lodash": "^4.17.21",
-    "next": "12.0.7",
+    "@cs124/ace-recorder": "2022.2.0",
+    "glob-promise": "4.2.2",
+    "lodash": "4.17.21",
+    "next": "12.0.10",
     "react": "17.0.2",
     "react-ace": "9.5.0",
-    "react-compound-timer": "^1.2.0",
-    "react-dom": "^17.0.2",
+    "react-compound-timer": "1.2.0",
+    "react-dom": "17.0.2",
     "runtypes": "6.5.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.178",
-    "@types/react": "17.0.37",
-    "@types/styled-components": "^5.1.18",
-    "eslint": "^8.5.0",
-    "eslint-config-next": "12.0.7",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "gh-pages": "^3.2.3",
+    "@types/lodash": "4.14.178",
+    "@types/react": "17.0.39",
+    "@types/styled-components": "5.1.22",
+    "eslint": "8.8.0",
+    "eslint-config-next": "12.0.10",
+    "eslint-plugin-react-hooks": "4.3.0",
+    "gh-pages": "3.2.3",
     "prettier": "2.5.1",
     "prettier-package-json": "2.6.0",
     "prettier-plugin-organize-imports": "2.3.4",
-    "typescript": "4.5.4"
+    "typescript": "4.5.5"
   }
 }
