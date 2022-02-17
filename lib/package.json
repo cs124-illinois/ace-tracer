@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder",
-  "version": "2022.2.4",
+  "version": "2022.2.5",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
