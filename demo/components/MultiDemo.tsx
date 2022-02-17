@@ -11,7 +11,9 @@ const Demo: React.FC = () => {
   const [state, setState] = useState<MultiRecordReplayer.State>("paused")
 
   useEffect(() => {
-    recordReplayer?.addStateListener((s) => setState(s))
+    recordReplayer?.addStateListener((s) => {
+      setState(s)
+    })
   }, [recordReplayer])
 
   const finishInitialization = useCallback(() => {

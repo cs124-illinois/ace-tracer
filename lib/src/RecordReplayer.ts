@@ -104,14 +104,15 @@ class RecordReplayer implements IRecordReplayer {
     if (this.state !== "recording") {
       throw new Error("Not recording")
     }
+    this.hasRecording = true
     await this._audio.stop()
     await this._ace.stop()
     if (Math.abs(this._audio.duration - this._ace.duration) > 100) {
+      this.hasRecording = false
       throw new Error(
         `Recordings do not have equal length: Audio ${this._audio.duration} <-> Ace ${this._ace.duration}`
       )
     }
-    this.hasRecording = true
     this.state = "paused"
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
@@ -123,8 +124,8 @@ class RecordReplayer implements IRecordReplayer {
     }
     this._ace.src = src ? src.ace : undefined
     this._audio.src = src ? src.audio : ""
-    this.state = "paused"
     this.hasRecording = false
+    this.state = "paused"
   }
   public get src() {
     if (this.state === "recording") {
