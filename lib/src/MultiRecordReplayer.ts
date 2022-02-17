@@ -7,7 +7,7 @@ class MultiRecordReplayer implements IRecordReplayer {
   private _ace
   private _audio = new AudioRecordReplayer()
   private emitter = new EventEmitter()
-  private _state: IRecordReplayer.State = "paused"
+  private _state: IRecordReplayer.State = "empty"
   private readonly tolerance = 0.1
 
   constructor(...a: ConstructorParameters<typeof AceMultiRecordReplayer>) {
@@ -89,7 +89,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     this.state = "paused"
   }
   public async record() {
-    if (this.state !== "paused") {
+    if (this.state !== "paused" && this.state !== "empty") {
       throw new Error("Not paused")
     }
     await this._audio.record()
