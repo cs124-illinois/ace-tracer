@@ -1,8 +1,8 @@
+import { AceRecord, AceTrace, Complete, ScrollPosition } from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import type TypedEmitter from "typed-emitter"
 import { CursorChange, Delta, ScrollChange, SelectionChange } from ".."
-import { AceRecord, AceTrace, Complete, ScrollPosition } from "@cs124/ace-recorder-types"
 
 export interface AcePlayerEvents {
   record: (record: AceRecord) => void

@@ -1,5 +1,5 @@
-import EventEmitter from "events"
 import { IRecordReplayer } from "@cs124/ace-recorder-types"
+import EventEmitter from "events"
 import AudioRecorder from "./Recorder"
 
 class AudioRecordReplayer implements IRecordReplayer {

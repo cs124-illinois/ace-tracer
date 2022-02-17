@@ -1,11 +1,4 @@
-import RecordReplayer, {
-  Ace,
-  AceRecord,
-  AceTrace,
-  AceTraceContent,
-  Complete,
-  urlToBase64,
-} from "@cs124/ace-recorder"
+import RecordReplayer, { Ace, AceRecord, AceTrace, AceTraceContent, Complete, urlToBase64 } from "@cs124/ace-recorder"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Timer from "react-compound-timer"
 import DefaultAceEditor from "./DefaultAceEditor"
