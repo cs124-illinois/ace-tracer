@@ -1,7 +1,7 @@
 import EventEmitter from "events"
 import AceMultiRecordReplayer from "./ace/MultiRecordReplayer"
 import AudioRecordReplayer from "./audio/RecordReplayer"
-import { AceTrace, IRecordReplayer } from "./types"
+import { AceTrace, IRecordReplayer } from "@cs124/ace-recorder-types"
 
 class MultiRecordReplayer implements IRecordReplayer {
   private _ace

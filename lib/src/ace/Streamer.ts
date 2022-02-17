@@ -1,6 +1,3 @@
-import { Ace } from "ace-builds"
-import { throttle } from "throttle-debounce"
-import { Complete } from ".."
 import {
   AceRecord,
   CursorChange,
@@ -12,7 +9,10 @@ import {
   SelectionChange,
   WindowSize,
   WindowSizeChange,
-} from "../types"
+} from "@cs124/ace-recorder-types"
+import { Ace } from "ace-builds"
+import { throttle } from "throttle-debounce"
+import { Complete } from ".."
 
 class AceStreamer {
   private editor: Ace.Editor

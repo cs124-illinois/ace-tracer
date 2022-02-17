@@ -8,7 +8,7 @@ import AudioRecorder from "./audio/Recorder"
 import AudioRecordReplayer from "./audio/RecordReplayer"
 import RecordReplayer from "./RecordReplayer"
 import MultiRecordReplayer from "./MultiRecordReplayer"
-export * from "./types"
+export * from "@cs124/ace-recorder-types"
 export type { Ace } from "ace-builds"
 export {
   AceStreamer,

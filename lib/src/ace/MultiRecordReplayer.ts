@@ -1,6 +1,6 @@
 import { Ace } from "ace-builds"
 import EventEmitter from "events"
-import { AceRecord, AceTrace, IRecordReplayer } from "../types"
+import { AceRecord, AceTrace, IRecordReplayer } from "@cs124/ace-recorder-types"
 import AcePlayer from "./Player"
 import AceRecorder from "./Recorder"
 
