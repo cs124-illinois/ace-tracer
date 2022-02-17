@@ -32,14 +32,15 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.records = []
     this.src = undefined
 
-    if (Object.keys(this.sessionMap).length === 0 && !this.sessionName) {
+    if (Object.keys(this.sessionMap).length === 0 && this.sessionName === undefined) {
       this.sessionMap[""] = {
         session: this.editor.getSession(),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mode: (this.editor.getSession() as any).$modeId,
       }
-    } else if (Object.keys(this.sessionMap).length === 0 || !this.sessionName) {
-      throw new Error("Session information not properly configured")
+      this.sessionName = ""
+    } else if (Object.keys(this.sessionMap).length === 0 || this.sessionName === undefined) {
+      throw new Error(`Session information not properly configured: ${this.sessionName}`)
     }
 
     this.sessionInfo = Object.entries(this.sessionMap).map(([name, info]) => {
