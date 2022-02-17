@@ -7,8 +7,9 @@ class RecordReplayer implements IRecordReplayer {
   private _ace
   private _audio = new AudioRecordReplayer()
   private emitter = new EventEmitter()
-  private _state: IRecordReplayer.State = "empty"
+  private _state: IRecordReplayer.State = "paused"
   private readonly tolerance = 0.1
+  public hasRecording = false
 
   constructor(...a: ConstructorParameters<typeof AceRecordReplayer>) {
     this._ace = new AceRecordReplayer(...a)
@@ -78,6 +79,9 @@ class RecordReplayer implements IRecordReplayer {
     if (this.state !== "paused") {
       throw new Error("Not paused")
     }
+    if (!this.src) {
+      throw new Error("No source")
+    }
     await this._audio.play()
     this.state = "playing"
   }
@@ -89,7 +93,7 @@ class RecordReplayer implements IRecordReplayer {
     this.state = "paused"
   }
   public async record() {
-    if (this.state !== "paused" && this.state !== "empty") {
+    if (this.state !== "paused") {
       throw new Error("Not paused")
     }
     await this._audio.record()
@@ -107,6 +111,7 @@ class RecordReplayer implements IRecordReplayer {
         `Recordings do not have equal length: Audio ${this._audio.duration} <-> Ace ${this._ace.duration}`
       )
     }
+    this.hasRecording = true
     this.state = "paused"
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
@@ -116,17 +121,15 @@ class RecordReplayer implements IRecordReplayer {
     if (this.state === "playing" || this.state === "recording") {
       throw new Error("Can't change source while recording or playing")
     }
-    if (src) {
-      this._ace.src = src.ace
-      this._audio.src = src.audio
-      this.state = "paused"
-    } else {
-      this._ace.src = undefined
-      this._audio.src = ""
-      this.state = "empty"
-    }
+    this._ace.src = src ? src.ace : undefined
+    this._audio.src = src ? src.audio : ""
+    this.state = "paused"
+    this.hasRecording = false
   }
   public get src() {
+    if (this.state === "recording") {
+      throw new Error("Still recording")
+    }
     return this._ace.src ? { ace: this._ace.src, audio: this._audio.src } : undefined
   }
   public get currentTime() {

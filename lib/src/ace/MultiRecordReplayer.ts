@@ -11,6 +11,7 @@ class AceMultiRecordReplayer implements IRecordReplayer {
   private emitter = new EventEmitter()
   private stopping = false
   private _src: Record<string, AceTrace> | undefined
+  public hasRecording = false
 
   constructor(editors: Record<string, Ace.Editor>, options?: AceMultiRecordReplayer.Options) {
     for (const name of Object.keys(editors)) {
@@ -61,6 +62,7 @@ class AceMultiRecordReplayer implements IRecordReplayer {
       this.recorders[name].start()
     }
     this.state = "recording"
+    this.hasRecording = true
   }
   public async stop() {
     if (this.state !== "recording") {
@@ -113,12 +115,14 @@ class AceMultiRecordReplayer implements IRecordReplayer {
       for (const name of Object.keys(src)) {
         this.players[name].src = src[name]
       }
-      this.state = "paused"
-    } else {
-      this.state = "empty"
     }
+    this.state = "paused"
+    this.hasRecording = false
   }
   public get src() {
+    if (this.state === "recording") {
+      throw new Error("Still recording")
+    }
     return this._src
   }
 }

@@ -190,6 +190,7 @@ export const deserializeAceRecordTimestamp = (aceRecord: AceRecord): AceRecord =
 
 export interface IRecordReplayer {
   state: IRecordReplayer.State
+  hasRecording: boolean
   src: unknown | undefined
   currentTime: number
   playbackRate: number
@@ -202,5 +203,5 @@ export interface IRecordReplayer {
   addStateListener: (listener: (state: IRecordReplayer.State) => void) => void
 }
 export namespace IRecordReplayer {
-  export type State = "empty" | "paused" | "playing" | "recording"
+  export type State = "paused" | "playing" | "recording"
 }

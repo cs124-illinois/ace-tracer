@@ -9,6 +9,7 @@ class AudioRecordReplayer implements IRecordReplayer {
   private emitter = new EventEmitter()
   private stopping = false
   private _playbackRate = 1.0
+  public hasRecording = false
 
   constructor() {
     this.player = new Audio()
@@ -57,6 +58,7 @@ class AudioRecordReplayer implements IRecordReplayer {
     this.src = this.recorder!.src!
     this.state = "paused"
     this.stopping = false
+    this.hasRecording = true
   }
   public set src(src: string) {
     if (!this.stopping && (this.state === "playing" || this.state === "recording")) {
@@ -66,12 +68,14 @@ class AudioRecordReplayer implements IRecordReplayer {
     this.player.playbackRate = this.playbackRate
     if (src !== "") {
       this.player.load()
-      this.state = "paused"
-    } else {
-      this.state = "empty"
     }
+    this.state = "paused"
+    this.hasRecording = false
   }
   public get src() {
+    if (this.state === "recording") {
+      throw new Error("Still recording")
+    }
     return this.player.src
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {

@@ -9,6 +9,7 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
   private _state: IRecordReplayer.State = "paused"
   private emitter = new EventEmitter()
   private stopping = false
+  public hasRecording = false
 
   constructor(editor: Ace.Editor, options?: AceRecordReplayer.Options) {
     super(options?.replayEditor ?? editor, {
@@ -56,6 +57,7 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
     this.src = this.recorder!.src!
     this.state = "paused"
     this.stopping = false
+    this.hasRecording = true
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
@@ -71,13 +73,13 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
       throw new Error("Can't change src while playing or recording")
     }
     super.src = src
-    if (src) {
-      this.state = "paused"
-    } else {
-      this.state = "empty"
-    }
+    this.state = "paused"
+    this.hasRecording = false
   }
   public get src() {
+    if (this.state === "recording") {
+      throw new Error("Still recording")
+    }
     return super.src
   }
 }
