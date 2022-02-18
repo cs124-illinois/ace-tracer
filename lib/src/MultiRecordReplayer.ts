@@ -29,6 +29,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     })
     this.audio.player.addEventListener("ended", () => {
       this.currentTime = 0
+      this.emitter.emit("event", "ended")
     })
     this.audio.player.addEventListener("waiting", () => {
       if (this._ace.state !== "paused") {
@@ -110,10 +111,14 @@ class MultiRecordReplayer implements IRecordReplayer {
         `Recordings do not have equal length: Audio ${this._audio.duration} <-> Ace ${this._ace.duration}`
       )
     }
+    this.hasRecording && this.emitter.emit("event", "srcChanged")
     this.state = "paused"
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
+  }
+  public addEventListener(listener: (state: IRecordReplayer.Event) => void) {
+    this.emitter.addListener("event", listener)
   }
   public set src(src: MultiRecordReplayer.Content | undefined) {
     if (this.state === "playing" || this.state === "recording") {
@@ -123,6 +128,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     this._audio.src = src ? src.audio : ""
     this.hasRecording = false
     this.state = "paused"
+    this.emitter.emit("event", "srcChanged")
   }
   public get src() {
     if (this.state === "recording") {
@@ -137,6 +143,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     this._audio.currentTime = currentTime
     this._ace.currentTime = currentTime
     this._ace.sync()
+    this.emitter.emit("event", "seeked")
   }
   public get percent() {
     return this._audio.percent
@@ -145,6 +152,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     this._audio.percent = percent
     this._ace.percent = percent
     this._ace.sync()
+    this.emitter.emit("event", "seeked")
   }
   public get ace() {
     return this._ace
@@ -155,6 +163,7 @@ class MultiRecordReplayer implements IRecordReplayer {
   public set playbackRate(playbackRate: number) {
     this._audio.playbackRate = playbackRate
     this._ace.playbackRate = playbackRate
+    this.emitter.emit("event", "playbackRateChange")
   }
   public get playbackRate() {
     return this._audio.playbackRate

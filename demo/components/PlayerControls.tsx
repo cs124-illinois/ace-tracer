@@ -9,6 +9,11 @@ const PlayerControls: React.FC<{
   const [state, setState] = useState<IRecordReplayer.State>("paused")
   useEffect(() => {
     recordReplayer.addStateListener((s) => setState(s))
+    recordReplayer.addEventListener((e) => {
+      if (e === "ended") {
+        setValue(100)
+      }
+    })
   }, [recordReplayer])
 
   const [value, setValue] = useState(0)

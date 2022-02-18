@@ -8,7 +8,7 @@ export interface AcePlayerEvents {
   record: (record: AceRecord) => void
 }
 class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>) {
-  private editor: Ace.Editor
+  private _editor: Ace.Editor
   private wasVisible: boolean
   private wasBlinking: boolean
   private previousOpacity: number
@@ -31,11 +31,11 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
 
   public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
     super()
-    this.editor = editor
+    this._editor = editor
     this.filterRecord = options?.filterRecord
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const renderer = this.editor.renderer as any
+    const renderer = this._editor.renderer as any
     this.wasVisible = renderer.$cursorLayer.isVisible
     this.wasBlinking = renderer.$cursorLayer.isBlinking
     this.previousOpacity = renderer.$cursorLayer.element.style.opacity
@@ -64,7 +64,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.sessionMap[name] = ace.createEditSession(contents, mode as any)
       }
-      this.editor.setSession(this.sessionMap[this._trace.sessionName])
+      this._editor.setSession(this.sessionMap[this._trace.sessionName])
     }
     let lastIndex = 0
     for (let i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
@@ -84,7 +84,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const renderer = this.editor.renderer as any
+    const renderer = this._editor.renderer as any
     renderer.$cursorLayer.isVisible = true
     renderer.$cursorLayer.setBlinking(true)
     renderer.$cursorLayer.element.style.opacity = 1
@@ -117,17 +117,17 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       const apply = this.filterRecord ? this.filterRecord(aceRecord) : true
       if (apply !== false) {
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
-          this.editor.setSession(this.sessionMap[aceRecord.sessionName])
+          this._editor.setSession(this.sessionMap[aceRecord.sessionName])
         }
         if (!ScrollPosition.guard(aceRecord) || !(this.scrollToCursor && aceRecord.triggeredByCursorChange)) {
-          applyAceRecord(this.editor!, aceRecord, !this.scrollToCursor)
+          applyAceRecord(this._editor!, aceRecord, !this.scrollToCursor)
           this.emit("record", aceRecord)
         }
         if (
           (Delta.guard(aceRecord) || CursorChange.guard(aceRecord) || SelectionChange.guard(aceRecord)) &&
           this.scrollToCursor
         ) {
-          this.editor.renderer.scrollCursorIntoView(this.editor.session!.selection.getCursor()!)
+          this._editor.renderer.scrollCursorIntoView(this._editor.session!.selection.getCursor()!)
         }
       }
     }
@@ -168,7 +168,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
 
     if (reset) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const renderer = this.editor.renderer as any
+      const renderer = this._editor.renderer as any
       renderer.$cursorLayer.element.style.opacity = this.previousOpacity
       renderer.$cursorLayer.setBlinking(this.wasBlinking)
       renderer.$cursorLayer.isVisible = this.wasVisible
@@ -224,6 +224,9 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     if (wasPlaying) {
       this.play()
     }
+  }
+  public get editor() {
+    return this._editor
   }
 }
 

@@ -62,6 +62,9 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
   }
+  public addEventListener(listener: (state: IRecordReplayer.Event) => void) {
+    this.emitter.addListener("event", listener)
+  }
   public get percent() {
     return (this.currentTime / this.duration) * 100
   }

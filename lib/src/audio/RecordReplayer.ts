@@ -14,6 +14,7 @@ class AudioRecordReplayer implements IRecordReplayer {
   constructor() {
     this.player = new Audio()
     this.player.addEventListener("ended", () => {
+      this.emitter.emit("ended")
       this.state = "paused"
     })
   }
@@ -80,6 +81,9 @@ class AudioRecordReplayer implements IRecordReplayer {
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
+  }
+  public addEventListener(listener: (state: IRecordReplayer.Event) => void) {
+    this.emitter.addListener("event", listener)
   }
   public get currentTime() {
     return this.player.currentTime

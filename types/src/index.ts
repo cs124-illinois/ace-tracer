@@ -201,7 +201,9 @@ export interface IRecordReplayer {
   record: () => Promise<void>
   stop: () => Promise<void>
   addStateListener: (listener: (state: IRecordReplayer.State) => void) => void
+  addEventListener: (listener: (state: IRecordReplayer.Event) => void) => void
 }
 export namespace IRecordReplayer {
   export type State = "paused" | "playing" | "recording"
+  export type Event = "ended" | "srcChanged" | "seeked" | "playbackRateChange"
 }
