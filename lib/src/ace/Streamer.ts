@@ -34,7 +34,7 @@ class AceStreamer {
     let lastWindowSize = WindowSize.check({
       width,
       height,
-      rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+      rows: height === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
       fontSize: parseInt(this.editor.getFontSize()),
       lineHeight: renderer.$textLayer.getLineHeight(),
     })
@@ -47,7 +47,7 @@ class AceStreamer {
       const windowSize = WindowSize.check({
         width: newWidth,
         height: newHeight,
-        rows: this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+        rows: height === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
         fontSize: parseInt(this.editor.getFontSize()),
         lineHeight: renderer.$textLayer.getLineHeight(),
       })
@@ -269,7 +269,7 @@ const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): 
     window: {
       width,
       height,
-      rows: editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
+      rows: height === 0 ? 0 : editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
       fontSize: parseInt(editor.getFontSize()),
       lineHeight: renderer.$textLayer.getLineHeight(),
     },
