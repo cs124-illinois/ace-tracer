@@ -97,6 +97,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     await this._audio.record()
     await this._ace.record()
     this.state = "recording"
+    this.emitter.emit("event", "startedRecording")
   }
   public async stop() {
     if (this.state !== "recording") {

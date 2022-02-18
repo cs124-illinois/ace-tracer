@@ -205,5 +205,5 @@ export interface IRecordReplayer {
 }
 export namespace IRecordReplayer {
   export type State = "paused" | "playing" | "recording"
-  export type Event = "ended" | "srcChanged" | "seeked" | "playbackRateChange"
+  export type Event = "ended" | "srcChanged" | "seeked" | "playbackRateChange" | "startedRecording"
 }
