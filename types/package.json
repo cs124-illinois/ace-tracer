@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder-types",
-  "version": "2022.2.7",
+  "version": "2022.2.8",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
