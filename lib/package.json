@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder",
-  "version": "2022.2.10",
+  "version": "2022.2.11",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@cs124/ace-recorder-types": "2022.2.7",
+    "@cs124/ace-recorder-types": "2022.2.8",
     "fix-webm-duration": "1.0.4",
     "mime-types": "2.1.34",
     "throttle-debounce": "3.0.1",
