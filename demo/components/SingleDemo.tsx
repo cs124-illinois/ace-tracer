@@ -45,10 +45,7 @@ const Demo: React.FC = () => {
   }, [recordReplayer])
 
   useEffect(() => {
-    if (state === "empty") {
-      setRecords([])
-      setReplayActive(undefined)
-    } else if (state === "recording") {
+    if (state === "recording") {
       setRecording(undefined)
     }
   }, [state, recordReplayer])
@@ -131,7 +128,7 @@ const Demo: React.FC = () => {
           {process.env.NODE_ENV === "development" && (
             <button
               onClick={upload}
-              disabled={uploading || state === "empty" || state === "playing" || state === "recording"}
+              disabled={uploading || state === "playing" || state === "recording"}
             >
               Upload
             </button>
