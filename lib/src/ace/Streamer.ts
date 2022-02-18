@@ -47,7 +47,7 @@ class AceStreamer {
       const windowSize = WindowSize.check({
         width: newWidth,
         height: newHeight,
-        rows: height === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+        rows: newHeight === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
         fontSize: parseInt(this.editor.getFontSize()),
         lineHeight: renderer.$textLayer.getLineHeight(),
       })
