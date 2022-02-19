@@ -47,7 +47,8 @@ class AceStreamer {
       const windowSize = WindowSize.check({
         width: newWidth,
         height: newHeight,
-        rows: newHeight === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
+        rows:
+          newHeight === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
         fontSize: parseInt(this.editor.getFontSize()),
         lineHeight: renderer.$textLayer.getLineHeight(),
       })
@@ -251,7 +252,7 @@ const compareEditorLocations = (first: EditorLocation, second: EditorLocation): 
 const compareSelections = (first: Selection, second: Selection): boolean =>
   compareEditorLocations(first.start, second.start) && compareEditorLocations(first.end, second.end)
 
-const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
+export const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderer = editor.renderer as any
   const { width, height } = renderer.$size

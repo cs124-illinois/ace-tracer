@@ -2,8 +2,7 @@ import { AceRecord, AceTrace, ExternalChange, SessionInfo } from "@cs124/ace-rec
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import type TypedEmitter from "typed-emitter"
-import { Complete } from ".."
-import AceStreamer from "./Streamer"
+import AceStreamer, { getComplete } from "./Streamer"
 
 export interface AceRecorderEvents {
   record: (record: AceRecord) => void
@@ -123,33 +122,6 @@ module AceRecorder {
   export type Options = {
     completeInterval?: number
   }
-}
-
-const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const renderer = editor.renderer as any
-  const { width, height } = renderer.$size
-  return Complete.check({
-    type: "complete",
-    timestamp: new Date(),
-    focused: editor.isFocused(),
-    value: editor.session.getValue(),
-    selection: editor.session.selection.getRange(),
-    cursor: editor.session.selection.getCursor(),
-    scroll: {
-      top: editor.renderer.getScrollTop(),
-      left: editor.renderer.getScrollLeft(),
-    },
-    window: {
-      width,
-      height,
-      rows: editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
-      fontSize: parseInt(editor.getFontSize()),
-      lineHeight: renderer.$textLayer.getLineHeight(),
-    },
-    reason,
-    ...(sessionName && { sessionName }),
-  })
 }
 
 export default AceRecorder
