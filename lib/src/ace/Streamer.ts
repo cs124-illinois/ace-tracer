@@ -70,7 +70,7 @@ class AceStreamer {
           timestamp: new Date(),
           focused: this.editor.isFocused(),
           ...windowSize,
-        })
+        }),
       )
     })
 
@@ -90,7 +90,7 @@ class AceStreamer {
           timestamp: new Date(),
           focused: this.editor.isFocused(),
           ...delta,
-        })
+        }),
       )
     }
 
@@ -112,7 +112,7 @@ class AceStreamer {
           timestamp: new Date(),
           focused: this.editor.isFocused(),
           ...selection,
-        })
+        }),
       )
     })
 
@@ -135,7 +135,7 @@ class AceStreamer {
           timestamp: new Date(),
           focused: this.editor.isFocused(),
           location: cursor,
-        })
+        }),
       )
     })
 
@@ -177,7 +177,7 @@ class AceStreamer {
           focused: this.editor.isFocused(),
           triggeredByCursorChange,
           ...scroll,
-        })
+        }),
       )
     })
 

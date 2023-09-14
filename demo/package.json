@@ -11,30 +11,30 @@
     "lint": "next lint",
     "serve": "next start",
     "start": "next dev",
-    "prettier": "prettier -w --plugin=prettier-plugin-organize-imports . && prettier-package-json --write"
+    "prettier": "prettier -w --cache --plugin=prettier-plugin-organize-imports . && prettier-package-json --write"
   },
   "dependencies": {
-    "@cs124/ace-recorder": "2022.2.11",
-    "glob-promise": "4.2.2",
+    "@cs124/ace-recorder": "2023.9.0",
+    "glob-promise": "6.0.5",
     "lodash": "4.17.21",
-    "next": "12.0.10",
-    "react": "17.0.2",
-    "react-ace": "9.5.0",
-    "react-compound-timer": "1.2.0",
-    "react-dom": "17.0.2",
-    "runtypes": "6.5.0"
+    "next": "13.4.19",
+    "react": "18.2.0",
+    "react-ace": "10.1.0",
+    "react-compound-timer": "2.0.5",
+    "react-dom": "18.2.0",
+    "runtypes": "6.7.0"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.178",
-    "@types/react": "17.0.39",
-    "@types/styled-components": "5.1.22",
-    "eslint": "8.9.0",
-    "eslint-config-next": "12.0.10",
-    "eslint-plugin-react-hooks": "4.3.0",
-    "gh-pages": "3.2.3",
-    "prettier": "2.5.1",
-    "prettier-package-json": "2.6.0",
-    "prettier-plugin-organize-imports": "2.3.4",
-    "typescript": "4.5.5"
+    "@types/lodash": "4.14.198",
+    "@types/react": "18.2.21",
+    "@types/styled-components": "5.1.27",
+    "eslint": "8.49.0",
+    "eslint-config-next": "13.4.19",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "gh-pages": "6.0.0",
+    "prettier": "3.0.3",
+    "prettier-package-json": "gchallen/prettier-package-json#2023.8.0",
+    "prettier-plugin-organize-imports": "3.2.3",
+    "typescript": "5.2.2"
   }
 }

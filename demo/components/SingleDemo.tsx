@@ -126,10 +126,7 @@ const Demo: React.FC = () => {
         <>
           <PlayerControls recordReplayer={recordReplayer} />
           {process.env.NODE_ENV === "development" && (
-            <button
-              onClick={upload}
-              disabled={uploading || state === "playing" || state === "recording"}
-            >
+            <button onClick={upload} disabled={uploading || state === "playing" || state === "recording"}>
               Upload
             </button>
           )}

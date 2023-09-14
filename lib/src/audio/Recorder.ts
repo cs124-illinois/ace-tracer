@@ -26,7 +26,7 @@ class AudioRecorder {
           this.started = Date.now()
           resolve()
         },
-        { once: true }
+        { once: true },
       )
       this.recorder!.addEventListener("error", reject, { once: true })
       this.recorder!.start(1000)
@@ -49,7 +49,7 @@ class AudioRecorder {
           }
           resolve()
         },
-        { once: true }
+        { once: true },
       )
       this.recorder!.stop()
     })

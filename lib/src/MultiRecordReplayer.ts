@@ -109,7 +109,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     if (Math.abs(this._audio.duration - this._ace.duration) > 100) {
       this.hasRecording = false
       throw new Error(
-        `Recordings do not have equal length: Audio ${this._audio.duration} <-> Ace ${this._ace.duration}`
+        `Recordings do not have equal length: Audio ${this._audio.duration} <-> Ace ${this._ace.duration}`,
       )
     }
     this.hasRecording && this.emitter.emit("event", "srcChanged")

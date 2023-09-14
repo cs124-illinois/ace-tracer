@@ -13,7 +13,7 @@ import {
 
 export const AceTimestamp = Union(
   InstanceOf(Date),
-  String.withConstraint((s) => !isNaN(Date.parse(s).valueOf()))
+  String.withConstraint((s) => !isNaN(Date.parse(s).valueOf())),
 )
 export type AceTimestamp = Static<typeof AceTimestamp>
 
@@ -48,7 +48,7 @@ export const Complete = RuntypeRecord({
 }).And(
   Partial({
     sessionName: String,
-  })
+  }),
 )
 export type Complete = Static<typeof Complete>
 
@@ -63,7 +63,7 @@ export const Delta = RuntypeRecord({
 }).And(
   Partial({
     id: Number,
-  })
+  }),
 )
 export type Delta = Static<typeof Delta>
 
@@ -102,8 +102,11 @@ export const ScrollChange = RuntypeRecord({
   focused: Boolean,
   top: Number,
   left: Number,
-  triggeredByCursorChange: Boolean,
-})
+}).And(
+  Partial({
+    triggeredByCursorChange: Boolean,
+  }),
+)
 export type ScrollChange = Static<typeof ScrollChange>
 
 export const WindowSize = RuntypeRecord({
@@ -143,7 +146,7 @@ export const AceRecord = Union(
   CursorChange,
   ScrollChange,
   WindowSizeChange,
-  ExternalChange
+  ExternalChange,
 )
 export type AceRecord = Static<typeof AceRecord>
 
@@ -155,7 +158,7 @@ export const AceTraceContent = RuntypeRecord({
 }).And(
   Partial({
     sessionName: String,
-  })
+  }),
 )
 export class AceTrace {
   records: AceRecord[]
