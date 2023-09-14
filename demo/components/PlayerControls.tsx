@@ -18,11 +18,11 @@ const PlayerControls: React.FC<{
 
   const [value, setValue] = useState(0)
   const handleChange = useCallback(
-    (event) => {
+    (event: any) => {
       recordReplayer.percent = event.target.value
       setValue(event.target.value)
     },
-    [recordReplayer]
+    [recordReplayer],
   )
 
   const timer = useRef<ReturnType<typeof setInterval>>()
