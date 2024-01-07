@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder",
-  "version": "2023.9.0",
+  "version": "2024.1.0",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
@@ -18,31 +18,31 @@
   },
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@cs124/ace-recorder-types": "2023.9.0",
+    "@cs124/ace-recorder-types": "2024.1.0",
     "fix-webm-duration": "1.0.5",
     "throttle-debounce": "5.0.0",
-    "whatwg-mimetype": "3.0.0"
+    "whatwg-mimetype": "4.0.0"
   },
   "peerDependencies": {
     "ace-builds": "1.24.2",
     "runtypes": ">= 6"
   },
   "devDependencies": {
-    "@types/throttle-debounce": "5.0.0",
-    "@types/whatwg-mimetype": "3.0.0",
-    "@typescript-eslint/eslint-plugin": "6.7.0",
-    "@typescript-eslint/parser": "6.7.0",
+    "@types/throttle-debounce": "5.0.2",
+    "@types/whatwg-mimetype": "3.0.2",
+    "@typescript-eslint/eslint-plugin": "6.18.0",
+    "@typescript-eslint/parser": "6.18.0",
     "ace-builds": "1.24.2",
-    "depcheck": "1.4.6",
-    "eslint": "8.49.0",
-    "eslint-config-prettier": "9.0.0",
-    "npm-check-updates": "16.14.2",
-    "prettier": "3.0.3",
+    "depcheck": "1.4.7",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "9.1.0",
+    "npm-check-updates": "16.14.12",
+    "prettier": "3.1.1",
     "prettier-package-json": "gchallen/prettier-package-json#2023.8.0",
-    "prettier-plugin-organize-imports": "3.2.3",
-    "rimraf": "5.0.1",
+    "prettier-plugin-organize-imports": "3.2.4",
+    "rimraf": "5.0.5",
     "runtypes": "6.7.0",
     "typed-emitter": "1.4.0",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   }
 }
