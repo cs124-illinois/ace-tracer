@@ -4,10 +4,9 @@
   "version": "2024.1.0",
   "scripts": {
     "build": "next build",
-    "deploy": "gh-pages -t -d dist",
+    "deploy": "gh-pages -t -d out",
     "eslint": "eslint pages/** components/**",
-    "preexport": "rimraf dist && NEXT_PUBLIC_BASE_PATH=/ace-tracer yarn build",
-    "export": "NEXT_PUBLIC_BASE_PATH=/ace-tracer next export -o dist && touch dist/.nojekyll",
+    "export": "rimraf out && NEXT_PUBLIC_BASE_PATH=/ace-tracer next build && touch out/.nojekyll",
     "lint": "next lint",
     "serve": "next start",
     "start": "next dev",
