@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "demo",
-  "version": "2024.1.0",
+  "version": "2024.1.2",
   "scripts": {
     "build": "next build",
     "deploy": "gh-pages -t -d out",
@@ -13,7 +13,7 @@
     "prettier": "prettier -w --cache --plugin=prettier-plugin-organize-imports . && prettier-package-json --write"
   },
   "dependencies": {
-    "@cs124/ace-recorder": "2024.1.1",
+    "@cs124/ace-recorder": "2024.1.2",
     "glob-promise": "6.0.5",
     "lodash": "4.17.21",
     "next": "14.0.4",

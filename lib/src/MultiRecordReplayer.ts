@@ -28,6 +28,7 @@ class MultiRecordReplayer implements IRecordReplayer {
       this.state = state
     })
     this.audio.player.addEventListener("ended", () => {
+      this.emitter.emit("event", "ending")
       this.currentTime = 0
       this.emitter.emit("event", "ended")
     })
@@ -80,6 +81,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     if (this.state !== "paused") {
       throw new Error("Not paused")
     }
+    this.emitter.emit("event", "starting")
     await this._audio.play()
     this.state = "playing"
   }
@@ -94,6 +96,7 @@ class MultiRecordReplayer implements IRecordReplayer {
     if (this.state !== "paused") {
       throw new Error("Not paused")
     }
+    this.emitter.emit("event", "startingRecording")
     await this._audio.record()
     await this._ace.record()
     this.state = "recording"

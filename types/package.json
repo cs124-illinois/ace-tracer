@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder-types",
-  "version": "2024.1.0",
+  "version": "2024.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
@@ -21,8 +21,8 @@
     "runtypes": ">= 6"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "6.18.0",
-    "@typescript-eslint/parser": "6.18.0",
+    "@typescript-eslint/eslint-plugin": "6.18.1",
+    "@typescript-eslint/parser": "6.18.1",
     "depcheck": "1.4.7",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",

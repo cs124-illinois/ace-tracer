@@ -1,6 +1,7 @@
 import {
   Array,
   Boolean,
+  Dictionary,
   InstanceOf,
   Literal,
   Number,
@@ -9,6 +10,7 @@ import {
   Static,
   String,
   Union,
+  Unknown,
 } from "runtypes"
 
 export const AceTimestamp = Union(
@@ -22,6 +24,13 @@ export const EditorLocation = RuntypeRecord({
   column: Number,
 })
 export type EditorLocation = Static<typeof EditorLocation>
+
+export const SessionInfo = RuntypeRecord({
+  name: String,
+  contents: String,
+  mode: String,
+})
+export type SessionInfo = Static<typeof SessionInfo>
 
 export const Complete = RuntypeRecord({
   type: Literal("complete"),
@@ -48,6 +57,8 @@ export const Complete = RuntypeRecord({
 }).And(
   Partial({
     sessionName: String,
+    external: Dictionary(Unknown),
+    sessionInfo: Array(SessionInfo),
   }),
 )
 export type Complete = Static<typeof Complete>
@@ -102,11 +113,8 @@ export const ScrollChange = RuntypeRecord({
   focused: Boolean,
   top: Number,
   left: Number,
-}).And(
-  Partial({
-    triggeredByCursorChange: Boolean,
-  }),
-)
+  triggeredByCursorChange: Boolean,
+})
 export type ScrollChange = Static<typeof ScrollChange>
 
 export const WindowSize = RuntypeRecord({
@@ -125,13 +133,6 @@ export const WindowSizeChange = RuntypeRecord({
   rows: Number,
 })
 export type WindowSizeChange = Static<typeof WindowSizeChange>
-
-export const SessionInfo = RuntypeRecord({
-  name: String,
-  contents: String,
-  mode: String,
-})
-export type SessionInfo = Static<typeof SessionInfo>
 
 export const ExternalChange = RuntypeRecord({
   type: Literal("external"),
@@ -160,6 +161,9 @@ export const AceTraceContent = RuntypeRecord({
     sessionName: String,
   }),
 )
+
+export type AceTraceContent = Static<typeof AceTraceContent>
+
 export class AceTrace {
   records: AceRecord[]
   duration: number
@@ -208,5 +212,13 @@ export interface IRecordReplayer {
 }
 export namespace IRecordReplayer {
   export type State = "paused" | "playing" | "recording"
-  export type Event = "ended" | "srcChanged" | "seeked" | "playbackRateChange" | "startedRecording"
+  export type Event =
+    | "starting"
+    | "ending"
+    | "ended"
+    | "srcChanged"
+    | "seeked"
+    | "playbackRateChange"
+    | "startedRecording"
+    | "startingRecording"
 }

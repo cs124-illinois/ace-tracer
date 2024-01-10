@@ -8,7 +8,6 @@ import AudioRecorder from "./audio/Recorder"
 import AudioRecordReplayer from "./audio/RecordReplayer"
 import RecordReplayer from "./RecordReplayer"
 import MultiRecordReplayer from "./MultiRecordReplayer"
-export * from "@cs124/ace-recorder-types"
 export type { Ace } from "ace-builds"
 export {
   AceStreamer,
@@ -30,3 +29,4 @@ export const urlToBase64 = async (url: string): Promise<string> => {
     reader.readAsDataURL(blob)
   })
 }
+export * from "@cs124/ace-recorder-types"

@@ -1,8 +1,16 @@
-import { AceRecord, AceTrace, Complete, ScrollPosition } from "@cs124/ace-recorder-types"
+import {
+  AceRecord,
+  AceTrace,
+  Complete,
+  CursorChange,
+  Delta,
+  ScrollChange,
+  ScrollPosition,
+  SelectionChange,
+} from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import type TypedEmitter from "typed-emitter"
-import { CursorChange, Delta, ScrollChange, SelectionChange } from ".."
 
 export interface AcePlayerEvents {
   record: (record: AceRecord) => void
@@ -28,6 +36,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   // private _currentSession?: Ace.EditSession
   public scrollToCursor = false
   private sessionMap: Record<string, Ace.EditSession> = {}
+  public sessionName?: string
 
   public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
     super()
@@ -64,7 +73,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.sessionMap[name] = ace.createEditSession(contents, mode as any)
       }
-      this._editor.setSession(this.sessionMap[this._trace.sessionName])
+      this.setSession(this._trace.sessionName)
     }
     let lastIndex = 0
     for (let i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
@@ -78,6 +87,13 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   public get src() {
     return this._trace
   }
+
+  public getSessionsInfo() {
+    return Object.entries(this.sessionMap).map(([name, session]) => {
+      return { name, contents: session.getValue(), mode: "" }
+    })
+  }
+
   public async play() {
     if (!this._trace) {
       throw new Error("No trace loaded")
@@ -102,6 +118,15 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       this.timerStarted = undefined
     }
   }
+
+  public setSession(name: string) {
+    if (!this.sessionMap[name]) {
+      throw new Error(`Session ${name} does not exist`)
+    }
+    this.sessionName = name
+    this._editor.setSession(this.sessionMap[name])
+  }
+
   public sync() {
     if (!this._trace) {
       throw new Error("Can't sync without trace")
@@ -117,7 +142,14 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       const apply = this.filterRecord ? this.filterRecord(aceRecord) : true
       if (apply !== false) {
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
-          this._editor.setSession(this.sessionMap[aceRecord.sessionName])
+          this.setSession(aceRecord.sessionName)
+          if (aceRecord.sessionInfo) {
+            aceRecord.sessionInfo.forEach((v: { name: string; contents: string }) => {
+              if (v.name !== this.sessionName) {
+                this.sessionMap[v.name].setValue(v.contents)
+              }
+            })
+          }
         }
         if (!ScrollPosition.guard(aceRecord) || !(this.scrollToCursor && aceRecord.triggeredByCursorChange)) {
           applyAceRecord(this._editor!, aceRecord, !this.scrollToCursor)

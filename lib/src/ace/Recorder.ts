@@ -1,4 +1,4 @@
-import { AceRecord, AceTrace, ExternalChange, SessionInfo } from "@cs124/ace-recorder-types"
+import { AceRecord, AceTrace, Complete, ExternalChange, SessionInfo } from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import type TypedEmitter from "typed-emitter"
@@ -19,6 +19,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
   private sessionName?: string
   private startSession = ""
   private sessionInfo: SessionInfo[] = []
+  private _external?: Record<string, unknown>
 
   public constructor(editor: Ace.Editor, options?: AceRecorder.Options) {
     super()
@@ -48,6 +49,13 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.startSession = this.sessionName || ""
 
     this.streamer.start((record: AceRecord) => {
+      if (Complete.guard(record)) {
+        const currentSessions = [...Object.keys(this.sessionMap)]
+        const currentSessionInfo = currentSessions.map((v) => {
+          return { name: v, contents: this.sessionMap[v].session.getValue(), mode: this.sessionMap[v].mode }
+        })
+        record["sessionInfo"] = currentSessionInfo
+      }
       this.records.push(record)
       this.emit("record", record)
     })
@@ -61,30 +69,21 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     if (!this.recording) {
       throw new Error("Not recording")
     }
+    this.recording = false
     this.timer && clearInterval(this.timer)
     this.streamer!.stop()
     this.src = new AceTrace([...this.records], this.sessionInfo, this.startSession)
-  }
-  public addExternalChange(change: Record<string, unknown>) {
-    if (!this.recording) {
-      throw new Error("Not recording")
-    }
-    if (change.type !== undefined) {
-      throw new Error("type property in external changes is overwritten")
-    }
-    const record = ExternalChange.check({
-      ...change,
-      type: "external",
-      timestamp: new Date(),
-    })
-    this.records.push(record)
-    this.emit("record", record)
   }
   public addCompleteRecord(reason = "manual") {
     if (!this.recording) {
       throw new Error("Not recording")
     }
-    const record = getComplete(this.editor, reason, this.sessionName)
+    const record = getComplete(this.editor, reason, this.sessionName, this._external)
+    const currentSessions = [...Object.keys(this.sessionMap)]
+    const currentSessionInfo = currentSessions.map((v) => {
+      return { name: v, contents: this.sessionMap[v].session.getValue(), mode: this.sessionMap[v].mode }
+    })
+    record["sessionInfo"] = currentSessionInfo
     this.records.push(record)
     this.emit("record", record)
   }
@@ -92,6 +91,9 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     const { name, contents, mode } = session
     if (this.sessionMap[name]) {
       throw new Error(`Session ${name} already exists`)
+    }
+    if (this.recording) {
+      this.sessionInfo.push({ name, contents: contents, mode: mode })
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.sessionMap[name] = { session: ace.createEditSession(contents, mode as any), mode }
@@ -101,6 +103,20 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
       this.addSession(session)
     }
   }
+
+  public getSessionsInfo() {
+    return Object.entries(this.sessionMap).map(([name, info]) => {
+      return { name, contents: info.session.getValue(), mode: info.mode }
+    })
+  }
+
+  public clearSessions() {
+    if (this.recording) {
+      throw new Error("cannot clear sessions while recording")
+    }
+    this.sessionMap = {}
+  }
+
   public setSession(name: string) {
     if (!this.sessionMap[name]) {
       throw new Error(`Session ${name} does not exist`)
@@ -114,6 +130,22 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     }
     this.addSession(session)
     this.sessionName = session.name
+  }
+  public set external(external: Record<string, unknown>) {
+    if (external.type !== undefined) {
+      throw new Error("type property in external changes is overwritten")
+    }
+    this._external = external
+    this.streamer.external = external
+    if (this.recording) {
+      const record = ExternalChange.check({
+        external,
+        type: "external",
+        timestamp: new Date(),
+      })
+      this.records.push(record)
+      this.emit("record", record)
+    }
   }
 }
 

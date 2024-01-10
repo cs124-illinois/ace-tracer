@@ -1,5 +1,6 @@
 import {
   AceRecord,
+  Complete,
   CursorChange,
   Delta,
   EditorLocation,
@@ -12,7 +13,6 @@ import {
 } from "@cs124/ace-recorder-types"
 import { Ace } from "ace-builds"
 import { throttle } from "throttle-debounce"
-import { Complete } from ".."
 
 class AceStreamer {
   private editor: Ace.Editor
@@ -20,6 +20,7 @@ class AceStreamer {
   private _stop: () => void = () => {}
   running = false
   public sessionName?: string
+  private _external?: Record<string, unknown>
 
   public constructor(editor: Ace.Editor) {
     this.editor = editor
@@ -52,6 +53,9 @@ class AceStreamer {
         fontSize: parseInt(this.editor.getFontSize()),
         lineHeight: renderer.$textLayer.getLineHeight(),
       })
+      if (windowSize.rows === null || windowSize.rows === undefined) {
+        return
+      }
       if (
         windowSize.width === lastWindowSize.width &&
         windowSize.height === lastWindowSize.height &&
@@ -198,7 +202,7 @@ class AceStreamer {
         throw new Error("Must set sessionName if switching sessions during recording")
       }
 
-      callback(getComplete(this.editor, "session", this.sessionName))
+      callback(getComplete(this.editor, "session", this.sessionName, this._external))
 
       session.addEventListener("change", changeListener)
       session.addEventListener("changeScrollTop", scrollListener)
@@ -209,7 +213,7 @@ class AceStreamer {
       beforeEndOperation = true
     }
 
-    callback(getComplete(this.editor, "start", this.sessionName))
+    callback(getComplete(this.editor, "start", this.sessionName, this._external))
     this.editor.session.addEventListener("change", changeListener)
     this.editor.addEventListener("changeSelection", selectionListener)
     this.editor.addEventListener("changeSelection", cursorListener)
@@ -228,7 +232,7 @@ class AceStreamer {
       this.editor.removeEventListener("changeSelection", cursorListener)
       this.editor.removeEventListener("changeSelection", selectionListener)
       this.editor.session.removeEventListener("change", changeListener)
-      callback(getComplete(this.editor, "end", this.sessionName))
+      callback(getComplete(this.editor, "end", this.sessionName, this._external))
 
       this.running = false
     }
@@ -242,6 +246,10 @@ class AceStreamer {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     this._stop = () => {}
   }
+
+  public set external(external: Record<string, unknown>) {
+    this._external = external
+  }
 }
 
 export default AceStreamer
@@ -252,7 +260,12 @@ const compareEditorLocations = (first: EditorLocation, second: EditorLocation): 
 const compareSelections = (first: Selection, second: Selection): boolean =>
   compareEditorLocations(first.start, second.start) && compareEditorLocations(first.end, second.end)
 
-export const getComplete = (editor: Ace.Editor, reason: string, sessionName?: string): Complete => {
+export const getComplete = (
+  editor: Ace.Editor,
+  reason: string,
+  sessionName?: string,
+  external?: Record<string, unknown>,
+): Complete => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderer = editor.renderer as any
   const { width, height } = renderer.$size
@@ -276,6 +289,7 @@ export const getComplete = (editor: Ace.Editor, reason: string, sessionName?: st
     },
     reason,
     ...(sessionName && { sessionName }),
+    ...(external && { external }),
   })
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder",
-  "version": "2024.1.1",
+  "version": "2024.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "depcheck": "depcheck --ignores=prettier-plugin-*,rimraf --ignore-dirs=dist",
     "eslint": "eslint src/**",
     "ncu": "ncu",
-    "prettier": "prettier -w --cache --plugin=prettier-plugin-organize-imports . && prettier-package-json --write",
+    "prettier": "prettier -w --plugin=prettier-plugin-organize-imports . && prettier-package-json --write",
     "prepublish": "rimraf dist && tsc",
     "start": "yarn watch",
     "tsc": "tsc --noEmit",
@@ -18,20 +18,20 @@
   },
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@cs124/ace-recorder-types": "2024.1.0",
+    "@cs124/ace-recorder-types": "2024.1.2",
     "fix-webm-duration": "1.0.5",
     "throttle-debounce": "5.0.0",
     "whatwg-mimetype": "4.0.0"
   },
   "peerDependencies": {
-    "ace-builds": "1.24.2",
+    "ace-builds": "1.32.3",
     "runtypes": ">= 6"
   },
   "devDependencies": {
     "@types/throttle-debounce": "5.0.2",
     "@types/whatwg-mimetype": "3.0.2",
-    "@typescript-eslint/eslint-plugin": "6.18.0",
-    "@typescript-eslint/parser": "6.18.0",
+    "@typescript-eslint/eslint-plugin": "6.18.1",
+    "@typescript-eslint/parser": "6.18.1",
     "ace-builds": "1.32.3",
     "depcheck": "1.4.7",
     "eslint": "8.56.0",
