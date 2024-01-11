@@ -14,7 +14,8 @@
     "**/public": true,
     "**/.deploy": true,
     "**/.next": true,
-    "common/temp": true
+    "common/temp": true,
+    "demo/out": true
   },
   "emmet.showExpandedAbbreviation": "never",
   "files.trimTrailingWhitespace": true,

@@ -1,7 +1,4 @@
-import dynamic from "next/dynamic"
-
-const SingleDemo = dynamic(() => import("../components/SingleDemo"), { ssr: false })
-const MultiDemo = dynamic(() => import("../components/MultiDemo"), { ssr: false })
+import { SingleDemo, MultiDemo } from "../components"
 
 export default function Home() {
   return (
