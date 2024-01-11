@@ -34,29 +34,20 @@ const Demo: React.FC = () => {
   const recordEditor = useRef<Ace.Editor>()
   const replayEditor = useRef<Ace.Editor>()
 
-  const [recordReplayer, setRecordReplayer] = useState<RecordReplayer | undefined>(undefined)
-  const [state, setState] = useState<RecordReplayer.State>("paused")
+  const [loaded, setLoaded] = useState(false)
+  const recordReplayer = useRef<RecordReplayer | undefined>(undefined)
 
   const [active, setActive] = useState<string>("Main.java")
+  const [state, setState] = useState<RecordReplayer.State>("paused")
   const [replayActive, setReplayActive] = useState<string | undefined>()
-
-  useEffect(() => {
-    recordReplayer?.addStateListener((s) => setState(s))
-  }, [recordReplayer])
-
-  useEffect(() => {
-    if (state === "recording") {
-      setRecording(undefined)
-    }
-  }, [state, recordReplayer])
 
   const [uploading, setUploading] = useState(false)
   const upload = useCallback(async () => {
-    if (!recordReplayer || !recordReplayer.src) {
+    if (!recordReplayer.current?.src) {
       return
     }
     setUploading(true)
-    const { ace, audio: audioURL } = recordReplayer.src
+    const { ace, audio: audioURL } = recordReplayer.current.src
     const audio = await urlToBase64(audioURL)
     fetch(`/api/`, {
       method: "POST",
@@ -88,24 +79,31 @@ const Demo: React.FC = () => {
       { name: "Another.java", contents: "", mode: "ace/mode/java" },
     ])
     newRecordReplayer.ace.recorder.setSession("Main.java")
-    setRecordReplayer(newRecordReplayer)
+    newRecordReplayer.addStateListener((state) => {
+      if (state === "recording") {
+        setRecording(undefined)
+      }
+      setState(state)
+    })
+    recordReplayer.current = newRecordReplayer
+    setLoaded(true)
   }, [])
 
   useEffect(() => {
-    recordReplayer?.ace.recorder.setSession(active)
-  }, [active, recordReplayer])
+    recordReplayer.current?.ace.recorder.setSession(active)
+  }, [active])
 
   useEffect(() => {
-    if (!recording || !recordReplayer) {
+    if (!recording || !recordReplayer.current) {
       return
     }
     fetch(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/${recording.stem}.json`)
       .then((r) => r.json())
       .then((t) => {
         const ace = AceTraceContent.check(t) as AceTrace
-        recordReplayer!.src = { ace, audio: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/${recording.stem}.mp4` }
+        recordReplayer.current!.src = { ace, audio: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/${recording.stem}.mp4` }
       })
-  }, [recording, recordReplayer])
+  }, [recording])
 
   return (
     <>
@@ -122,9 +120,9 @@ const Demo: React.FC = () => {
           </option>
         ))}
       </select>
-      {recordReplayer && (
+      {loaded && (
         <>
-          <PlayerControls recordReplayer={recordReplayer} />
+          <PlayerControls recordReplayer={recordReplayer.current!} />
           {process.env.NODE_ENV === "development" && (
             <button onClick={upload} disabled={uploading || state === "playing" || state === "recording"}>
               Upload
@@ -147,6 +145,12 @@ const Demo: React.FC = () => {
       <span>Record</span>
       <DefaultAceEditor
         onLoad={(ace) => {
+          ace.on("mousewheel", (e) => {
+            if (recordReplayer.current?.state === "recording") {
+              e.defaultPrevented = true
+              return false
+            }
+          })
           recordEditor.current = ace
           finishInitialization()
         }}

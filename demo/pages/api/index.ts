@@ -3,7 +3,7 @@ import glob from "glob-promise"
 import sortBy from "lodash/sortBy"
 import type { NextApiRequest, NextApiResponse } from "next"
 
-const route = async (request: NextApiRequest, response: NextApiResponse) => {
+export default async function route(request: NextApiRequest, response: NextApiResponse) {
   if (request.method === "POST") {
     const timestamp = new Date().valueOf()
     const { ace, audio } = request.body
@@ -14,7 +14,7 @@ const route = async (request: NextApiRequest, response: NextApiResponse) => {
     const filenames = sortBy(
       await glob(`public/*`),
       (filename) => parseInt(filename.split(".")[0]),
-      (filename) => (filename.split(".")[1] === "json" ? 0 : 1)
+      (filename) => (filename.split(".")[1] === "json" ? 0 : 1),
     )
     const traces = {} as Record<string, any>
     for (const filename of filenames) {
@@ -31,4 +31,10 @@ const route = async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json(Object.values(traces))
   }
 }
-export default route
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "16mb",
+    },
+  },
+}
