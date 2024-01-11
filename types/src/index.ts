@@ -113,8 +113,11 @@ export const ScrollChange = RuntypeRecord({
   focused: Boolean,
   top: Number,
   left: Number,
-  triggeredByCursorChange: Boolean,
-})
+}).And(
+  Partial({
+    triggeredByCursorChange: Boolean,
+  }),
+)
 export type ScrollChange = Static<typeof ScrollChange>
 
 export const WindowSize = RuntypeRecord({
