@@ -1,9 +1,0 @@
-{
-    "private": true,
-    "workspaces": [
-        "types",
-        "lib",
-        "demo"
-    ],
-    "version": "2024.1.0"
-}

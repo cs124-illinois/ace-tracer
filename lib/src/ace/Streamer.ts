@@ -16,7 +16,6 @@ import { throttle } from "throttle-debounce"
 
 class AceStreamer {
   private editor: Ace.Editor
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private _stop: () => void = () => {}
   running = false
   public sessionName?: string
@@ -243,7 +242,6 @@ class AceStreamer {
       throw new Error("Not running")
     }
     this._stop()
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     this._stop = () => {}
   }
 

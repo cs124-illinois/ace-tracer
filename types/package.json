@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder-types",
-  "version": "2024.1.2",
+  "version": "2024.4.0",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
@@ -21,17 +21,17 @@
     "runtypes": ">= 6"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "6.18.1",
-    "@typescript-eslint/parser": "6.18.1",
+    "@eslint/js": "9.1.1",
     "depcheck": "1.4.7",
-    "eslint": "8.56.0",
+    "eslint": "9.1.1",
     "eslint-config-prettier": "9.1.0",
-    "npm-check-updates": "16.14.12",
-    "prettier": "3.1.1",
+    "npm-check-updates": "16.14.18",
+    "prettier": "3.2.5",
     "prettier-package-json": "gchallen/prettier-package-json#2023.8.0",
     "prettier-plugin-organize-imports": "3.2.4",
     "rimraf": "5.0.5",
     "runtypes": "6.7.0",
-    "typescript": "5.3.3"
+    "typescript": "5.4.5",
+    "typescript-eslint": "7.7.1"
   }
 }
