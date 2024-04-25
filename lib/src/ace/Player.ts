@@ -10,7 +10,7 @@ import {
 } from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
-import type TypedEmitter from "typed-emitter"
+import { TypedEmitter } from "tiny-typed-emitter"
 
 export interface AcePlayerEvents {
   record: (record: AceRecord) => void

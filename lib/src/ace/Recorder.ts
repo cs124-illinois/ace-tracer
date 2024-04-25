@@ -1,7 +1,7 @@
 import { AceRecord, AceTrace, Complete, ExternalChange, SessionInfo } from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
-import type TypedEmitter from "typed-emitter"
+import { TypedEmitter } from "tiny-typed-emitter"
 import AceStreamer, { getComplete } from "./Streamer"
 
 export interface AceRecorderEvents {

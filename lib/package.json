@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && tsc",
-    "checker": "npm run prettier && npm run eslint && npm run tsc && npm run depcheck && npm run build",
+    "check": "npm run prettier && npm run eslint && npm run tsc && npm run depcheck && npm run build",
     "clean": "rimraf dist",
     "depcheck": "depcheck --ignores=prettier-plugin-*,rimraf --ignore-dirs=dist",
     "eslint": "eslint src/**",
@@ -21,6 +21,7 @@
     "@cs124/ace-recorder-types": "workspace:2024.4.0",
     "fix-webm-duration": "1.0.5",
     "throttle-debounce": "5.0.0",
+    "tiny-typed-emitter": "2.1.0",
     "whatwg-mimetype": "4.0.0"
   },
   "peerDependencies": {
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.1.1",
+    "@types/node": "20.12.7",
     "@types/throttle-debounce": "5.0.2",
     "@types/whatwg-mimetype": "3.0.2",
     "ace-builds": "1.33.1",
@@ -41,7 +43,6 @@
     "prettier-plugin-organize-imports": "3.2.4",
     "rimraf": "5.0.5",
     "runtypes": "6.7.0",
-    "typed-emitter": "1.4.0",
     "typescript": "5.4.5",
     "typescript-eslint": "7.7.1"
   }

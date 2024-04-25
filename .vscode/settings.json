@@ -14,7 +14,7 @@
     "**/public": true,
     "**/.deploy": true,
     "**/.next": true,
-    "common/temp": true,
+    "common": true,
     "demo/out": true
   },
   "emmet.showExpandedAbbreviation": "never",
