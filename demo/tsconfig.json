@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@cs124/aceaudio-recorder": ["../lib/dist"]
+      "~/*": ["./*"]
     },
     "incremental": true
   },
