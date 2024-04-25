@@ -1,1 +1,1 @@
-declare module 'react-compound-timer'
+declare module "react-compound-timer"

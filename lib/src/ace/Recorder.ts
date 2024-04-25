@@ -1,4 +1,4 @@
-import { AceRecord, AceTrace, Complete, ExternalChange, SessionInfo } from "@cs124/ace-recorder-types"
+import { AceRecord, AceTrace, Complete, CompleteReasons, ExternalChange, SessionInfo } from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import { TypedEmitter } from "tiny-typed-emitter"
@@ -7,7 +7,13 @@ import AceStreamer, { getComplete } from "./Streamer"
 export interface AceRecorderEvents {
   record: (record: AceRecord) => void
 }
+
 class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEvents>) {
+  public static defaultOptions: AceRecorder.Options = {
+    completeCount: 0,
+    completeInterval: 32,
+  }
+
   private editor: Ace.Editor
   private streamer: AceStreamer
   public recording = false
@@ -28,10 +34,20 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.options = options
   }
   public async start() {
-    const interval = this.options?.completeInterval || 1000
+    const completeInterval = this.options?.completeInterval ?? AceRecorder.defaultOptions.completeInterval!
+    if (completeInterval < 0) {
+      throw new Error(`completeInterval must be greater than or equal to zero`)
+    }
+
+    const completeCount = this.options?.completeCount ?? AceRecorder.defaultOptions.completeInterval!
+    if (completeCount <= 0) {
+      throw new Error(`completeCount must be greater than zero`)
+    }
+
     this.records = []
     this.src = undefined
 
+    let counter = 0
     if (Object.keys(this.sessionMap).length === 0 && this.sessionName === undefined) {
       this.sessionMap[""] = {
         session: this.editor.getSession(),
@@ -55,13 +71,24 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
           return { name: v, contents: this.sessionMap[v].session.getValue(), mode: this.sessionMap[v].mode }
         })
         record["sessionInfo"] = currentSessionInfo
+      } else {
+        counter++
+        if (counter === completeCount) {
+          this.addCompleteRecord("counter")
+          counter = 0
+        }
       }
       this.records.push(record)
       this.emit("record", record)
     })
-    this.timer = setInterval(() => {
-      this.addCompleteRecord("timer")
-    }, interval)
+
+    if (completeInterval > 0) {
+      this.timer = setInterval(() => {
+        this.addCompleteRecord("timer")
+      }, completeInterval)
+    } else {
+      this.timer = undefined
+    }
 
     this.recording = true
   }
@@ -74,7 +101,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.streamer!.stop()
     this.src = new AceTrace([...this.records], this.sessionInfo, this.startSession)
   }
-  public addCompleteRecord(reason = "manual") {
+  public addCompleteRecord(reason: CompleteReasons = "manual") {
     if (!this.recording) {
       throw new Error("Not recording")
     }
@@ -153,6 +180,7 @@ module AceRecorder {
   export type Session = { name: string; contents: string; mode: string }
   export type Options = {
     completeInterval?: number
+    completeCount?: number
   }
 }
 

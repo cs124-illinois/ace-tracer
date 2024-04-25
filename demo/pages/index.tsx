@@ -1,4 +1,4 @@
-import { SingleDemo, MultiDemo } from "~/components"
+import { MultiDemo, SingleDemo } from "~/components"
 
 export default function Home() {
   return (

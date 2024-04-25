@@ -4,13 +4,18 @@
   "version": "2024.4.0",
   "scripts": {
     "build": "exit",
+    "check": "npm run prettier && npm run eslint && npm run lint && npm run depcheck && npm run nextBuild",
+    "depcheck": "depcheck --ignores=~*,prettier-plugin-*,rimraf --ignore-dirs=out",
     "deploy": "next build && gh-pages -t -d out",
     "eslint": "eslint pages/** components/**",
     "export": "rimraf out && NEXT_PUBLIC_BASE_PATH=/ace-tracer next build && touch out/.nojekyll",
     "lint": "next lint",
+    "ncu": "ncu",
+    "nextBuild": "next build",
+    "prettier": "prettier -w --cache --plugin=prettier-plugin-organize-imports . && prettier-package-json --write",
     "serve": "next start",
     "start": "next dev",
-    "prettier": "prettier -w --cache --plugin=prettier-plugin-organize-imports . && prettier-package-json --write"
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@cs124/ace-recorder": "workspace:2024.4.0",
@@ -26,11 +31,12 @@
   "devDependencies": {
     "@types/lodash": "4.17.0",
     "@types/react": "18.2.79",
-    "@types/styled-components": "5.1.34",
+    "depcheck": "1.4.7",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.3",
     "eslint-plugin-react-hooks": "4.6.0",
     "gh-pages": "6.1.1",
+    "npm-check-updates": "16.14.18",
     "prettier": "3.2.5",
     "prettier-package-json": "gchallen/prettier-package-json#2023.8.0",
     "prettier-plugin-organize-imports": "3.2.4",

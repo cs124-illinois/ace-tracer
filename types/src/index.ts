@@ -32,6 +32,16 @@ export const SessionInfo = RuntypeRecord({
 })
 export type SessionInfo = Static<typeof SessionInfo>
 
+export const CompleteReasons = Union(
+  Literal("start"),
+  Literal("timer"),
+  Literal("end"),
+  Literal("manual"),
+  Literal("session"),
+  Literal("counter"),
+)
+export type CompleteReasons = Static<typeof CompleteReasons>
+
 export const Complete = RuntypeRecord({
   type: Literal("complete"),
   timestamp: AceTimestamp,
@@ -53,7 +63,7 @@ export const Complete = RuntypeRecord({
     fontSize: Number,
     lineHeight: Number,
   }),
-  reason: Union(Literal("start"), Literal("timer"), Literal("end"), Literal("manual"), Literal("session")),
+  reason: CompleteReasons,
 }).And(
   Partial({
     sessionName: String,

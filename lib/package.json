@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "tsc",
     "check": "npm run prettier && npm run eslint && npm run tsc && npm run depcheck && npm run build",
     "clean": "rimraf dist",
     "depcheck": "depcheck --ignores=prettier-plugin-*,rimraf --ignore-dirs=dist",

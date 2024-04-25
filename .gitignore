@@ -76,3 +76,6 @@ common/autoinstallers/*/.npmrc
 
 # Build directories
 dist
+
+# tsconfig stuff
+*.tsbuildinfo
