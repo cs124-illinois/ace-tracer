@@ -25,13 +25,13 @@
     "depcheck": "1.4.7",
     "eslint": "9.1.1",
     "eslint-config-prettier": "9.1.0",
-    "npm-check-updates": "16.14.18",
+    "npm-check-updates": "16.14.20",
     "prettier": "3.2.5",
     "prettier-package-json": "gchallen/prettier-package-json#2023.8.0",
     "prettier-plugin-organize-imports": "3.2.4",
     "rimraf": "5.0.5",
     "runtypes": "6.7.0",
     "typescript": "5.4.5",
-    "typescript-eslint": "7.7.1"
+    "typescript-eslint": "7.8.0"
   }
 }

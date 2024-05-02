@@ -1,4 +1,4 @@
-import { AceRecord, AceTrace, Complete, CompleteReasons, ExternalChange, SessionInfo } from "@cs124/ace-recorder-types"
+import { AceRecord, AceTrace, Complete, CompleteReasons, ExternalChange } from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
 import { TypedEmitter } from "tiny-typed-emitter"
@@ -21,10 +21,9 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
   private timer?: ReturnType<typeof setInterval>
   private options?: AceRecorder.Options
   public src?: AceTrace
-  private sessionMap: Record<string, { session: Ace.EditSession; mode: string }> = {}
+  private sessionMap: { [key: string]: { session: Ace.EditSession; mode: string } } = {}
   private sessionName?: string
   private startSession = ""
-  private sessionInfo: SessionInfo[] = []
   private _external?: Record<string, unknown>
 
   public constructor(editor: Ace.Editor, options?: AceRecorder.Options) {
@@ -59,18 +58,11 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
       throw new Error(`Session information not properly configured: ${this.sessionName}`)
     }
 
-    this.sessionInfo = Object.entries(this.sessionMap).map(([name, info]) => {
-      return { name, contents: info.session.getValue(), mode: info.mode }
-    })
     this.startSession = this.sessionName || ""
 
     this.streamer.start((record: AceRecord) => {
       if (Complete.guard(record)) {
-        const currentSessions = [...Object.keys(this.sessionMap)]
-        const currentSessionInfo = currentSessions.map((v) => {
-          return { name: v, contents: this.sessionMap[v].session.getValue(), mode: this.sessionMap[v].mode }
-        })
-        record["sessionInfo"] = currentSessionInfo
+        record["sessionInfo"] = this.sessionInfo
       } else {
         counter++
         if (counter === completeCount) {
@@ -106,44 +98,54 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
       throw new Error("Not recording")
     }
     const record = getComplete(this.editor, reason, this.sessionName, this._external)
-    const currentSessions = [...Object.keys(this.sessionMap)]
-    const currentSessionInfo = currentSessions.map((v) => {
-      return { name: v, contents: this.sessionMap[v].session.getValue(), mode: this.sessionMap[v].mode }
-    })
-    record["sessionInfo"] = currentSessionInfo
+    record["sessionInfo"] = this.sessionInfo
     this.records.push(record)
     this.emit("record", record)
   }
-  public addSession(session: AceRecorder.Session) {
-    const { name, contents, mode } = session
-    if (this.sessionMap[name]) {
-      throw new Error(`Session ${name} already exists`)
-    }
-    if (this.recording) {
-      this.sessionInfo.push({ name, contents: contents, mode: mode })
-    }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.sessionMap[name] = { session: ace.createEditSession(contents, mode as any), mode }
-  }
-  public addSessions(sessions: AceRecorder.Session[]) {
-    for (const session of sessions) {
-      this.addSession(session)
-    }
-  }
-
-  public getSessionsInfo() {
+  public get sessionInfo() {
     return Object.entries(this.sessionMap).map(([name, info]) => {
       return { name, contents: info.session.getValue(), mode: info.mode }
     })
   }
-
-  public clearSessions() {
-    if (this.recording) {
-      throw new Error("cannot clear sessions while recording")
+  public addSession(session: AceRecorder.Session, batch = false) {
+    const { name, contents, mode } = session
+    if (this.sessionMap[name]) {
+      throw new Error(`Session ${name} already exists`)
     }
-    this.sessionMap = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.sessionMap[name] = { session: ace.createEditSession(contents, mode as any), mode }
+    if (this.recording && !batch) {
+      this.addCompleteRecord("session")
+    }
   }
-
+  public addSessions(sessions: AceRecorder.Session[]) {
+    for (const session of sessions) {
+      this.addSession(session, true)
+    }
+    if (this.recording) {
+      this.addCompleteRecord("session")
+    }
+  }
+  public deleteSession(name: string, batch = false) {
+    if (!this.sessionMap[name]) {
+      throw new Error(`Session ${name} does not exists`)
+    }
+    delete this.sessionMap[name]
+    if (this.recording && !batch) {
+      this.addCompleteRecord("session")
+    }
+  }
+  public deleteSessions(names: string[]) {
+    for (const name of names) {
+      this.deleteSession(name, true)
+    }
+    if (this.recording) {
+      this.addCompleteRecord("session")
+    }
+  }
+  public clearSessions() {
+    this.deleteSessions(Object.keys(this.sessionMap))
+  }
   public setSession(name: string) {
     if (!this.sessionMap[name]) {
       throw new Error(`Session ${name} does not exist`)

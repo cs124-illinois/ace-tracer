@@ -30,20 +30,20 @@
   },
   "devDependencies": {
     "@eslint/js": "9.1.1",
-    "@types/node": "20.12.7",
+    "@types/node": "20.12.8",
     "@types/throttle-debounce": "5.0.2",
     "@types/whatwg-mimetype": "3.0.2",
     "ace-builds": "1.33.1",
     "depcheck": "1.4.7",
     "eslint": "9.1.1",
     "eslint-config-prettier": "9.1.0",
-    "npm-check-updates": "16.14.18",
+    "npm-check-updates": "16.14.20",
     "prettier": "3.2.5",
     "prettier-package-json": "gchallen/prettier-package-json#2023.8.0",
     "prettier-plugin-organize-imports": "3.2.4",
     "rimraf": "5.0.5",
     "runtypes": "6.7.0",
     "typescript": "5.4.5",
-    "typescript-eslint": "7.7.1"
+    "typescript-eslint": "7.8.0"
   }
 }

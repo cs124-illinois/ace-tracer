@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "demo",
-  "version": "2024.4.0",
+  "version": "2024.5.0",
   "scripts": {
     "build": "exit",
     "check": "npm run prettier && npm run eslint && npm run lint && npm run depcheck && npm run nextBuild",
@@ -18,25 +18,25 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@cs124/ace-recorder": "workspace:2024.4.0",
+    "@cs124/ace-recorder": "workspace:*",
     "glob-promise": "6.0.5",
     "lodash": "4.17.21",
     "next": "14.2.3",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "react-ace": "11.0.1",
     "react-compound-timer": "1.2.0",
-    "react-dom": "18.2.0",
+    "react-dom": "18.3.1",
     "runtypes": "6.7.0"
   },
   "devDependencies": {
     "@types/lodash": "4.17.0",
-    "@types/react": "18.2.79",
+    "@types/react": "18.3.1",
     "depcheck": "1.4.7",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.3",
-    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-react-hooks": "4.6.2",
     "gh-pages": "6.1.1",
-    "npm-check-updates": "16.14.18",
+    "npm-check-updates": "16.14.20",
     "prettier": "3.2.5",
     "prettier-package-json": "gchallen/prettier-package-json#2023.8.0",
     "prettier-plugin-organize-imports": "3.2.4",

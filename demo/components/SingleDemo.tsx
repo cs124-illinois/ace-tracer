@@ -37,6 +37,7 @@ const Demo: React.FC = () => {
   const [loaded, setLoaded] = useState(false)
   const recordReplayer = useRef<RecordReplayer | undefined>(undefined)
 
+  const [sessions, setSessions] = useState<string[]>(["Main.java", "Another.java"])
   const [active, setActive] = useState<string>("Main.java")
   const [state, setState] = useState<RecordReplayer.State>("paused")
   const [replayActive, setReplayActive] = useState<string | undefined>()
@@ -60,7 +61,7 @@ const Demo: React.FC = () => {
     })
   }, [recordReplayer])
 
-  const finishInitialization = useCallback(() => {
+  const finishInitialization = useCallback((sessions: string[]) => {
     if (!recordEditor.current || !replayEditor.current) {
       return
     }
@@ -74,11 +75,12 @@ const Demo: React.FC = () => {
     newRecordReplayer.ace.addListener("record", (record) => {
       Complete.guard(record) && setReplayActive(record.sessionName)
     })
-    newRecordReplayer.ace.recorder.addSessions([
-      { name: "Main.java", contents: "", mode: "ace/mode/java" },
-      { name: "Another.java", contents: "", mode: "ace/mode/java" },
-    ])
-    newRecordReplayer.ace.recorder.setSession("Main.java")
+    newRecordReplayer.ace.recorder.addSessions(
+      sessions.map((name) => {
+        return { name, contents: "", mode: "ace/mode/java" }
+      }),
+    )
+    newRecordReplayer.ace.recorder.setSession(sessions[0])
     newRecordReplayer.addStateListener((state) => {
       if (state === "recording") {
         setRecording(undefined)
@@ -152,16 +154,31 @@ const Demo: React.FC = () => {
             }
           })
           recordEditor.current = ace
-          finishInitialization()
+          finishInitialization(sessions)
         }}
       />
       <div style={{ display: "flex", flexDirection: "row", marginBottom: 8 }}>
-        <button onClick={() => setActive("Main.java")}>
-          <kbd style={{ fontWeight: active === "Main.java" ? "bold" : "inherit" }}>Main.java</kbd>
-        </button>
-        <button onClick={() => setActive("Another.java")}>
-          <kbd style={{ fontWeight: active === "Another.java" ? "bold" : "inherit" }}>Another.java</kbd>
-        </button>
+        {sessions.map((name, i) => (
+          <div key={i} style={{ marginRight: 8 }}>
+            <button onClick={() => setActive(name)}>
+              <kbd style={{ fontWeight: active === name ? "bold" : "inherit" }}>{name}</kbd>
+            </button>
+            {sessions.length > 1 && (
+              <button
+                onClick={() => {
+                  recordReplayer.current?.ace.recorder.deleteSession(active)
+                  const currentIndex = sessions.indexOf(name)
+                  setSessions((currentSessions) => currentSessions.filter((sessionName) => name !== sessionName))
+                  if (active === name) {
+                    setActive(sessions[currentIndex - 1])
+                  }
+                }}
+              >
+                x
+              </button>
+            )}
+          </div>
+        ))}
       </div>
 
       <span>Play</span>
@@ -171,7 +188,7 @@ const Demo: React.FC = () => {
         maxLines={2}
         onLoad={(ace) => {
           replayEditor.current = ace
-          finishInitialization()
+          finishInitialization(sessions)
         }}
       />
       <div>
