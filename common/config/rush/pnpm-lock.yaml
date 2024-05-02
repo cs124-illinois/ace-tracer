@@ -80,7 +80,7 @@ importers:
   ../../lib:
     dependencies:
       '@cs124/ace-recorder-types':
-        specifier: workspace:*
+        specifier: workspace:2024.4.0
         version: link:../types
       fix-webm-duration:
         specifier: 1.0.5
