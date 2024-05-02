@@ -130,6 +130,9 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     if (!this.sessionMap[name]) {
       throw new Error(`Session ${name} does not exists`)
     }
+    if (this.sessionName === name) {
+      throw new Error(`Can't delete current session ${name}`)
+    }
     delete this.sessionMap[name]
     if (this.recording && !batch) {
       this.addCompleteRecord("session")
@@ -142,9 +145,6 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     if (this.recording) {
       this.addCompleteRecord("session")
     }
-  }
-  public clearSessions() {
-    this.deleteSessions(Object.keys(this.sessionMap))
   }
   public setSession(name: string) {
     if (!this.sessionMap[name]) {

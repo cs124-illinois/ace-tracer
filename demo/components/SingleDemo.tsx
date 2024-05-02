@@ -166,11 +166,14 @@ const Demo: React.FC = () => {
             {sessions.length > 1 && (
               <button
                 onClick={() => {
-                  recordReplayer.current?.ace.recorder.deleteSession(active)
-                  const currentIndex = sessions.indexOf(name)
-                  setSessions((currentSessions) => currentSessions.filter((sessionName) => name !== sessionName))
+                  const nextSessions = sessions.filter((sessionName) => name !== sessionName)
                   if (active === name) {
-                    setActive(sessions[currentIndex - 1])
+                    recordReplayer.current?.ace.recorder.setSession(nextSessions[0])
+                  }
+                  recordReplayer.current?.ace.recorder.deleteSession(name)
+                  setSessions(nextSessions)
+                  if (active === name) {
+                    setActive(nextSessions[0])
                   }
                 }}
               >
