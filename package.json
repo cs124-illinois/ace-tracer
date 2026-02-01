@@ -1,0 +1,34 @@
+{
+  "name": "ace-tracer",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "types",
+    "lib",
+    "demo"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "check": "turbo lint tsc && bun run format",
+    "clean": "turbo clean && rm -rf node_modules",
+    "format": "prettier --write --log-level warn .",
+    "format:check": "prettier --check .",
+    "lint": "turbo lint",
+    "ncu": "bun run scripts/check-updates.ts",
+    "ncu:apply": "bun run scripts/check-updates.ts --apply",
+    "tsc": "turbo tsc"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.2",
+    "eslint": "9.39.2",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "prettier": "3.8.1",
+    "prettier-plugin-organize-imports": "3.2.4",
+    "turbo": "2.7.5",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.54.0"
+  },
+  "packageManager": "bun@1.3.5"
+}

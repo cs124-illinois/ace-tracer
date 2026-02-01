@@ -1,0 +1,11 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": ["NEXT_PUBLIC_*", "NODE_ENV", "DEVELOPMENT"],
+  "tasks": {
+    "build": { "dependsOn": ["^build"], "outputs": ["dist/**", ".next/**", "!.next/cache/**"] },
+    "dev": { "cache": false, "persistent": true, "interruptible": true },
+    "lint": { "dependsOn": ["^build"] },
+    "tsc": { "dependsOn": ["^build"] },
+    "clean": { "cache": false }
+  }
+}

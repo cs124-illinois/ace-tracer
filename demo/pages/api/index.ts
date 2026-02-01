@@ -8,7 +8,7 @@ export default async function route(request: NextApiRequest, response: NextApiRe
     const timestamp = new Date().valueOf()
     const { ace, audio } = request.body
     await fs.writeFile(`public/${timestamp}.json`, JSON.stringify(ace))
-    await fs.writeFile(`public/${timestamp}.webm`, Buffer.from(audio, "base64"), "binary")
+    await fs.writeFile(`public/${timestamp}.webm`, new Uint8Array(Buffer.from(audio, "base64")))
     return response.redirect("/")
   } else if (request.method === "GET") {
     const filenames = sortBy(

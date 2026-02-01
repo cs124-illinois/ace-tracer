@@ -28,7 +28,6 @@ class AceStreamer {
   public start(callback: (record: AceRecord) => void) {
     let beforeEndOperation = false
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = this.editor.renderer as any
     let { width, height } = renderer.$size
     let lastWindowSize = WindowSize.check({
@@ -264,7 +263,6 @@ export const getComplete = (
   sessionName?: string,
   external?: Record<string, unknown>,
 ): Complete => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderer = editor.renderer as any
   const { width, height } = renderer.$size
   return Complete.check({

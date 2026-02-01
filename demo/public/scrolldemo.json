@@ -1,1 +1,2335 @@
-{"records":[{"type":"complete","timestamp":"2024-01-10T22:37:09.844Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"start","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:10.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:11.846Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:12.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:13.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:14.846Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:15.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:16.846Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:17.846Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:18.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:19.846Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:20.846Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:21.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:22.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:23.845Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:24.844Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"cursorchange","timestamp":"2024-01-10T22:37:25.234Z","focused":false,"location":{"row":0,"column":1}},{"type":"complete","timestamp":"2024-01-10T22:37:25.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:26.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:27.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:28.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:29.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:30.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:31.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:32.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:33.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:34.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:35.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:36.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:37.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:38.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:39.844Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":1},"end":{"row":0,"column":1}},"cursor":{"row":0,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"cursorchange","timestamp":"2024-01-10T22:37:40.212Z","focused":true,"location":{"row":1,"column":1}},{"type":"cursorchange","timestamp":"2024-01-10T22:37:40.528Z","focused":true,"location":{"row":2,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:37:40.594Z","focused":true,"triggeredByCursorChange":true,"top":16,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:37:40.629Z","focused":true,"location":{"row":4,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:37:40.695Z","focused":true,"triggeredByCursorChange":true,"top":48,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:37:40.729Z","focused":true,"location":{"row":7,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:37:40.795Z","focused":true,"triggeredByCursorChange":true,"top":64,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:37:40.830Z","focused":true,"location":{"row":9,"column":2}},{"type":"complete","timestamp":"2024-01-10T22:37:40.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:41.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:42.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:43.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:44.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:45.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:46.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:47.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:48.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:49.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:50.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:51.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:52.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:53.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:54.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:55.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:56.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"cursorchange","timestamp":"2024-01-10T22:37:56.870Z","focused":true,"location":{"row":8,"column":1}},{"type":"cursorchange","timestamp":"2024-01-10T22:37:57.287Z","focused":true,"location":{"row":7,"column":1}},{"type":"cursorchange","timestamp":"2024-01-10T22:37:57.387Z","focused":true,"location":{"row":4,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:37:57.455Z","focused":true,"triggeredByCursorChange":true,"top":32,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:37:57.488Z","focused":true,"location":{"row":1,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:37:57.556Z","focused":true,"triggeredByCursorChange":true,"top":0,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:37:57.589Z","focused":true,"location":{"row":0,"column":0}},{"type":"complete","timestamp":"2024-01-10T22:37:57.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:58.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:37:59.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:00.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:01.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:02.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:03.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:04.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:05.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"cursorchange","timestamp":"2024-01-10T22:38:06.768Z","focused":true,"location":{"row":1,"column":1}},{"type":"complete","timestamp":"2024-01-10T22:38:06.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":1,"column":1},"end":{"row":1,"column":1}},"cursor":{"row":1,"column":1},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"cursorchange","timestamp":"2024-01-10T22:38:07.185Z","focused":true,"location":{"row":2,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:38:07.251Z","focused":true,"triggeredByCursorChange":true,"top":16,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:38:07.285Z","focused":true,"location":{"row":5,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:38:07.352Z","focused":true,"triggeredByCursorChange":true,"top":48,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:38:07.386Z","focused":true,"location":{"row":8,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:38:07.453Z","focused":true,"triggeredByCursorChange":true,"top":64,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:38:07.486Z","focused":true,"location":{"row":9,"column":2}},{"type":"complete","timestamp":"2024-01-10T22:38:07.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:08.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:09.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:10.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:11.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:12.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:13.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:14.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:15.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:16.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:17.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:18.844Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:19.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:20.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:21.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:22.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:23.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:24.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"cursorchange","timestamp":"2024-01-10T22:38:24.883Z","focused":true,"location":{"row":8,"column":1}},{"type":"cursorchange","timestamp":"2024-01-10T22:38:25.300Z","focused":true,"location":{"row":7,"column":1}},{"type":"cursorchange","timestamp":"2024-01-10T22:38:25.401Z","focused":true,"location":{"row":5,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:38:25.469Z","focused":true,"triggeredByCursorChange":true,"top":32,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:38:25.502Z","focused":true,"location":{"row":2,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:38:25.570Z","focused":true,"triggeredByCursorChange":true,"top":0,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:38:25.603Z","focused":true,"location":{"row":0,"column":0}},{"type":"complete","timestamp":"2024-01-10T22:38:25.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:26.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"scrollchange","timestamp":"2024-01-10T22:38:27.228Z","focused":true,"triggeredByCursorChange":true,"top":0.6,"left":0},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:27.295Z","focused":true,"width":800,"height":64,"rows":3.6125,"fontSize":12,"lineHeight":16},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:27.296Z","focused":true,"width":800,"height":64,"rows":3.6125,"fontSize":12,"lineHeight":16},{"type":"scrollchange","timestamp":"2024-01-10T22:38:27.328Z","focused":true,"triggeredByCursorChange":false,"top":64,"left":0},{"type":"complete","timestamp":"2024-01-10T22:38:27.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:28.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:29.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:30.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:31.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:32.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:33.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:34.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:35.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:36.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:37.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:38.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:39.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:40.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:41.830Z","focused":true,"width":800,"height":64,"rows":3.1125,"fontSize":12,"lineHeight":16},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:41.830Z","focused":true,"width":800,"height":64,"rows":3.1125,"fontSize":12,"lineHeight":16},{"type":"scrollchange","timestamp":"2024-01-10T22:38:41.843Z","focused":true,"triggeredByCursorChange":false,"top":46.2,"left":0},{"type":"complete","timestamp":"2024-01-10T22:38:41.855Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":18.000000000000004,"left":0},"window":{"width":800,"height":64,"rows":3.875,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"scrollchange","timestamp":"2024-01-10T22:38:41.944Z","focused":true,"triggeredByCursorChange":false,"top":0,"left":0},{"type":"complete","timestamp":"2024-01-10T22:38:42.844Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:43.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:44.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:45.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:46.844Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":0,"column":0},"end":{"row":0,"column":0}},"cursor":{"row":0,"column":0},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"cursorchange","timestamp":"2024-01-10T22:38:47.031Z","focused":true,"location":{"row":1,"column":1}},{"type":"cursorchange","timestamp":"2024-01-10T22:38:47.447Z","focused":true,"location":{"row":2,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:38:47.514Z","focused":true,"triggeredByCursorChange":true,"top":16,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:38:47.547Z","focused":true,"location":{"row":5,"column":1}},{"type":"scrollchange","timestamp":"2024-01-10T22:38:47.614Z","focused":true,"triggeredByCursorChange":true,"top":64,"left":0},{"type":"cursorchange","timestamp":"2024-01-10T22:38:47.647Z","focused":true,"location":{"row":7,"column":1}},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:47.662Z","focused":true,"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:47.662Z","focused":true,"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},{"type":"cursorchange","timestamp":"2024-01-10T22:38:47.747Z","focused":true,"location":{"row":9,"column":2}},{"type":"complete","timestamp":"2024-01-10T22:38:47.844Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:48.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:49.846Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":96,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:50.729Z","focused":true,"width":800,"height":64,"rows":3.0374999999999988,"fontSize":12,"lineHeight":16},{"type":"windowsizechange","timestamp":"2024-01-10T22:38:50.729Z","focused":true,"width":800,"height":64,"rows":3.0374999999999988,"fontSize":12,"lineHeight":16},{"type":"scrollchange","timestamp":"2024-01-10T22:38:50.761Z","focused":true,"triggeredByCursorChange":false,"top":0,"left":0},{"type":"complete","timestamp":"2024-01-10T22:38:50.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:51.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:52.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:53.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:54.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:55.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:56.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:57.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:58.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:38:59.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:00.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:01.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:02.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:03.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:04.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:05.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:06.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:07.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:08.845Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:09.844Z","focused":true,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"timer","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]},{"type":"complete","timestamp":"2024-01-10T22:39:10.127Z","focused":false,"value":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","selection":{"start":{"row":9,"column":2},"end":{"row":9,"column":2}},"cursor":{"row":9,"column":2},"scroll":{"top":0,"left":0},"window":{"width":800,"height":64,"rows":4,"fontSize":12,"lineHeight":16},"reason":"end","sessionName":"Main.java","sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}]}],"startTime":"2024-01-10T22:37:09.844Z","duration":120283,"sessionInfo":[{"name":"Main.java","contents":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","mode":"ace/mode/java"},{"name":"Another.java","contents":"","mode":"ace/mode/java"}],"sessionName":"Main.java"}
+{
+  "records": [
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:09.844Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "start",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:10.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:11.846Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:12.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:13.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:14.846Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:15.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:16.846Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:17.846Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:18.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:19.846Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:20.846Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:21.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:22.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:23.845Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:24.844Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:25.234Z",
+      "focused": false,
+      "location": { "row": 0, "column": 1 }
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:25.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:26.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:27.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:28.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:29.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:30.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:31.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:32.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:33.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:34.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:35.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:36.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:37.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:38.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:39.844Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 1 }, "end": { "row": 0, "column": 1 } },
+      "cursor": { "row": 0, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:40.212Z",
+      "focused": true,
+      "location": { "row": 1, "column": 1 }
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:40.528Z",
+      "focused": true,
+      "location": { "row": 2, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:37:40.594Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 16,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:40.629Z",
+      "focused": true,
+      "location": { "row": 4, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:37:40.695Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 48,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:40.729Z",
+      "focused": true,
+      "location": { "row": 7, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:37:40.795Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 64,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:40.830Z",
+      "focused": true,
+      "location": { "row": 9, "column": 2 }
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:40.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:41.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:42.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:43.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:44.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:45.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:46.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:47.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:48.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:49.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:50.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:51.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:52.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:53.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:54.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:55.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:56.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:56.870Z",
+      "focused": true,
+      "location": { "row": 8, "column": 1 }
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:57.287Z",
+      "focused": true,
+      "location": { "row": 7, "column": 1 }
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:57.387Z",
+      "focused": true,
+      "location": { "row": 4, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:37:57.455Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 32,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:57.488Z",
+      "focused": true,
+      "location": { "row": 1, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:37:57.556Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 0,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:37:57.589Z",
+      "focused": true,
+      "location": { "row": 0, "column": 0 }
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:57.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:58.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:37:59.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:00.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:01.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:02.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:03.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:04.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:05.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:06.768Z",
+      "focused": true,
+      "location": { "row": 1, "column": 1 }
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:06.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 1, "column": 1 }, "end": { "row": 1, "column": 1 } },
+      "cursor": { "row": 1, "column": 1 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:07.185Z",
+      "focused": true,
+      "location": { "row": 2, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:07.251Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 16,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:07.285Z",
+      "focused": true,
+      "location": { "row": 5, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:07.352Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 48,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:07.386Z",
+      "focused": true,
+      "location": { "row": 8, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:07.453Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 64,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:07.486Z",
+      "focused": true,
+      "location": { "row": 9, "column": 2 }
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:07.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:08.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:09.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:10.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:11.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:12.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:13.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:14.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:15.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:16.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:17.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:18.844Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:19.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:20.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:21.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:22.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:23.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:24.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:24.883Z",
+      "focused": true,
+      "location": { "row": 8, "column": 1 }
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:25.300Z",
+      "focused": true,
+      "location": { "row": 7, "column": 1 }
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:25.401Z",
+      "focused": true,
+      "location": { "row": 5, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:25.469Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 32,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:25.502Z",
+      "focused": true,
+      "location": { "row": 2, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:25.570Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 0,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:25.603Z",
+      "focused": true,
+      "location": { "row": 0, "column": 0 }
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:25.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:26.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:27.228Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 0.6,
+      "left": 0
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:27.295Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 3.6125,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:27.296Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 3.6125,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:27.328Z",
+      "focused": true,
+      "triggeredByCursorChange": false,
+      "top": 64,
+      "left": 0
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:27.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:28.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:29.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:30.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:31.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:32.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:33.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:34.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:35.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:36.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:37.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:38.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:39.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:40.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:41.830Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 3.1125,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:41.830Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 3.1125,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:41.843Z",
+      "focused": true,
+      "triggeredByCursorChange": false,
+      "top": 46.2,
+      "left": 0
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:41.855Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 18.000000000000004, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 3.875, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:41.944Z",
+      "focused": true,
+      "triggeredByCursorChange": false,
+      "top": 0,
+      "left": 0
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:42.844Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:43.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:44.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:45.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:46.844Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 0, "column": 0 }, "end": { "row": 0, "column": 0 } },
+      "cursor": { "row": 0, "column": 0 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:47.031Z",
+      "focused": true,
+      "location": { "row": 1, "column": 1 }
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:47.447Z",
+      "focused": true,
+      "location": { "row": 2, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:47.514Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 16,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:47.547Z",
+      "focused": true,
+      "location": { "row": 5, "column": 1 }
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:47.614Z",
+      "focused": true,
+      "triggeredByCursorChange": true,
+      "top": 64,
+      "left": 0
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:47.647Z",
+      "focused": true,
+      "location": { "row": 7, "column": 1 }
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:47.662Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 4,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:47.662Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 4,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "cursorchange",
+      "timestamp": "2024-01-10T22:38:47.747Z",
+      "focused": true,
+      "location": { "row": 9, "column": 2 }
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:47.844Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:48.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:49.846Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 96, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:50.729Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 3.0374999999999988,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "windowsizechange",
+      "timestamp": "2024-01-10T22:38:50.729Z",
+      "focused": true,
+      "width": 800,
+      "height": 64,
+      "rows": 3.0374999999999988,
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    {
+      "type": "scrollchange",
+      "timestamp": "2024-01-10T22:38:50.761Z",
+      "focused": true,
+      "triggeredByCursorChange": false,
+      "top": 0,
+      "left": 0
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:50.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:51.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:52.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:53.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:54.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:55.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:56.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:57.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:58.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:38:59.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:00.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:01.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:02.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:03.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:04.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:05.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:06.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:07.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:08.845Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:09.844Z",
+      "focused": true,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "timer",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    },
+    {
+      "type": "complete",
+      "timestamp": "2024-01-10T22:39:10.127Z",
+      "focused": false,
+      "value": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10",
+      "selection": { "start": { "row": 9, "column": 2 }, "end": { "row": 9, "column": 2 } },
+      "cursor": { "row": 9, "column": 2 },
+      "scroll": { "top": 0, "left": 0 },
+      "window": { "width": 800, "height": 64, "rows": 4, "fontSize": 12, "lineHeight": 16 },
+      "reason": "end",
+      "sessionName": "Main.java",
+      "sessionInfo": [
+        { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+        { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+      ]
+    }
+  ],
+  "startTime": "2024-01-10T22:37:09.844Z",
+  "duration": 120283,
+  "sessionInfo": [
+    { "name": "Main.java", "contents": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", "mode": "ace/mode/java" },
+    { "name": "Another.java", "contents": "", "mode": "ace/mode/java" }
+  ],
+  "sessionName": "Main.java"
+}

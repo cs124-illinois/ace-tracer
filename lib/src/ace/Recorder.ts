@@ -50,7 +50,6 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     if (Object.keys(this.sessionMap).length === 0 && this.sessionName === undefined) {
       this.sessionMap[""] = {
         session: this.editor.getSession(),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mode: (this.editor.getSession() as any).$modeId,
       }
       this.sessionName = ""
@@ -112,7 +111,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     if (this.sessionMap[name]) {
       throw new Error(`Session ${name} already exists`)
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     this.sessionMap[name] = { session: ace.createEditSession(contents, mode as any), mode }
     if (this.recording && !batch) {
       this.addCompleteRecord("session")

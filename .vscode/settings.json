@@ -5,7 +5,7 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/.rush": true,
+    "**/.turbo": true,
     "**/dist": true,
     "**/node_modules": true,
     "**/*.build.log": true,
@@ -14,7 +14,6 @@
     "**/public": true,
     "**/.deploy": true,
     "**/.next": true,
-    "common": true,
     "demo/out": true
   },
   "emmet.showExpandedAbbreviation": "never",

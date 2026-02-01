@@ -54,6 +54,7 @@ jspm_packages
 
 # next.js build output
 .next
+out
 
 # OS X temporary files
 .DS_Store
@@ -63,16 +64,11 @@ jspm_packages
 .idea/
 *.iml
 
-# Rush temporary files
-common/deploy/
-common/temp/
-common/autoinstallers/*/.npmrc
-**/.rush/temp/
-*.lock
+# Turborepo
+.turbo
 
-# Heft temporary files
-.cache
-.heft
+# Bun
+bun.lock
 
 # Build directories
 dist

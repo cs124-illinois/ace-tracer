@@ -43,7 +43,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     this._editor = editor
     this.filterRecord = options?.filterRecord
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = this._editor.renderer as any
     this.wasVisible = renderer.$cursorLayer.isVisible
     this.wasBlinking = renderer.$cursorLayer.isBlinking
@@ -70,7 +69,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     if (this._trace.sessionName) {
       this.sessionMap = {}
       for (const { name, contents, mode } of this._trace.sessionInfo) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.sessionMap[name] = ace.createEditSession(contents, mode as any)
       }
       this.setSession(this._trace.sessionName)
@@ -99,7 +97,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       throw new Error("No trace loaded")
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderer = this._editor.renderer as any
     renderer.$cursorLayer.isVisible = true
     renderer.$cursorLayer.setBlinking(true)
@@ -199,7 +196,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     this.playing = false
 
     if (reset) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const renderer = this._editor.renderer as any
       renderer.$cursorLayer.element.style.opacity = this.previousOpacity
       renderer.$cursorLayer.setBlinking(this.wasBlinking)
