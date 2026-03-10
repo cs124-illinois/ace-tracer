@@ -34,7 +34,7 @@ class AceStreamer {
       width,
       height,
       rows: height === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
-      fontSize: parseInt(this.editor.getFontSize()),
+      fontSize: parseInt(String(this.editor.getFontSize())),
       lineHeight: renderer.$textLayer.getLineHeight(),
     })
     const windowSizeListener = throttle(100, () => {
@@ -48,7 +48,7 @@ class AceStreamer {
         height: newHeight,
         rows:
           newHeight === 0 ? 0 : this.editor.renderer.getScrollBottomRow() - this.editor.renderer.getScrollTopRow() + 1,
-        fontSize: parseInt(this.editor.getFontSize()),
+        fontSize: parseInt(String(this.editor.getFontSize())),
         lineHeight: renderer.$textLayer.getLineHeight(),
       })
       if (windowSize.rows === null || windowSize.rows === undefined) {
@@ -77,7 +77,7 @@ class AceStreamer {
     })
 
     let lastValue = this.editor.getValue()
-    const changeListener = (delta: { [key: string]: unknown }) => {
+    const changeListener = (delta: any) => {
       if (!this.running) {
         return
       }
@@ -225,7 +225,7 @@ class AceStreamer {
     this._stop = () => {
       this.editor.removeEventListener("beforeEndOperation", beforeEndListener)
       this.editor.removeEventListener("changeSession", changeSessionListener)
-      this.editor.session.removeEventListener("resize", windowSizeListener)
+      this.editor.renderer.removeEventListener("resize", windowSizeListener)
       this.editor.session.removeEventListener("changeScrollTop", scrollListener)
       this.editor.removeEventListener("changeSelection", cursorListener)
       this.editor.removeEventListener("changeSelection", selectionListener)
@@ -280,7 +280,7 @@ export const getComplete = (
       width,
       height,
       rows: height === 0 ? 0 : editor.renderer.getScrollBottomRow() - editor.renderer.getScrollTopRow() + 1,
-      fontSize: parseInt(editor.getFontSize()),
+      fontSize: parseInt(String(editor.getFontSize())),
       lineHeight: renderer.$textLayer.getLineHeight(),
     },
     reason,

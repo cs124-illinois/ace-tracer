@@ -13,19 +13,19 @@
   },
   "dependencies": {
     "@cs124/ace-recorder": "workspace:*",
-    "glob-promise": "6.0.5",
-    "lodash": "4.17.21",
-    "next": "14.2.3",
-    "react": "18.3.1",
-    "react-ace": "11.0.1",
-    "react-compound-timer": "1.2.0",
-    "react-dom": "18.3.1",
+    "glob-promise": "6.0.7",
+    "lodash": "4.17.23",
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-ace": "14.0.1",
+    "react-compound-timer": "2.0.5",
+    "react-dom": "19.2.4",
     "runtypes": "6.7.0"
   },
   "devDependencies": {
-    "@types/lodash": "4.17.0",
+    "@types/lodash": "4.17.24",
     "@types/node": "20.12.8",
-    "@types/react": "18.3.1",
+    "@types/react": "19.2.14",
     "typescript": "5.9.3"
   }
 }

@@ -31,8 +31,8 @@ const Demo: React.FC = () => {
   const [recording, setRecording] = useState<Recording | undefined>()
   const [records, setRecords] = useState<AceRecord[]>([])
 
-  const recordEditor = useRef<Ace.Editor>()
-  const replayEditor = useRef<Ace.Editor>()
+  const recordEditor = useRef<Ace.Editor>(undefined)
+  const replayEditor = useRef<Ace.Editor>(undefined)
 
   const [loaded, setLoaded] = useState(false)
   const recordReplayer = useRef<RecordReplayer | undefined>(undefined)

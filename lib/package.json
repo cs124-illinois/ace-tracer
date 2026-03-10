@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@cs124/ace-recorder-types": "workspace:*",
-    "fix-webm-duration": "1.0.5",
-    "throttle-debounce": "5.0.0",
+    "fix-webm-duration": "1.0.6",
+    "throttle-debounce": "5.0.2",
     "tiny-typed-emitter": "2.1.0",
-    "whatwg-mimetype": "4.0.0"
+    "whatwg-mimetype": "5.0.0"
   },
   "peerDependencies": {
     "ace-builds": "1.32.3",
@@ -25,8 +25,8 @@
   "devDependencies": {
     "@types/node": "20.12.8",
     "@types/throttle-debounce": "5.0.2",
-    "@types/whatwg-mimetype": "3.0.2",
-    "ace-builds": "1.33.1",
+    "@types/whatwg-mimetype": "5.0.0",
+    "ace-builds": "1.43.6",
     "runtypes": "6.7.0"
   }
 }

@@ -1,5 +1,5 @@
 import ysFixWebmDuration from "fix-webm-duration"
-import MimeType from "whatwg-mimetype"
+import { MIMEType } from "whatwg-mimetype"
 
 class AudioRecorder {
   private recorder: MediaRecorder | undefined
@@ -41,7 +41,7 @@ class AudioRecorder {
           this.recorder!.removeEventListener("dataavailable", this.listener!)
           this.recorder!.stream.getTracks()[0].stop()
           this.blob = new Blob(this.chunks, { type: this.recorder!.mimeType })
-          const mimeType = new MimeType(this.recorder!.mimeType)
+          const mimeType = new MIMEType(this.recorder!.mimeType)
           if (mimeType.subtype === "webm") {
             this.blob = await ysFixWebmDuration(new Blob(this.chunks, { type: this.recorder!.mimeType }), duration, {
               logger: false,

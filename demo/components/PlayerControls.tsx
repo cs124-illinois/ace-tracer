@@ -25,7 +25,7 @@ const PlayerControls: React.FC<{
     [recordReplayer],
   )
 
-  const timer = useRef<ReturnType<typeof setInterval>>()
+  const timer = useRef<ReturnType<typeof setInterval>>(undefined)
   useEffect(() => {
     if (state === "playing") {
       timer.current = setInterval(() => {
