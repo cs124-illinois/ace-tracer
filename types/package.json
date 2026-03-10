@@ -9,6 +9,7 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "lint": "bunx eslint --max-warnings 0 .",
+    "test": "bun test",
     "tsc": "tsc --noEmit"
   },
   "peerDependencies": {

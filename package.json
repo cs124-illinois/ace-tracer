@@ -16,6 +16,7 @@
     "lint": "turbo lint",
     "ncu": "bun run scripts/check-updates.ts",
     "ncu:apply": "bun run scripts/check-updates.ts --apply",
+    "test": "turbo test",
     "tsc": "turbo tsc"
   },
   "devDependencies": {

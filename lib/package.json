@@ -9,6 +9,7 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "lint": "bunx eslint --max-warnings 0 .",
+    "test": "bun test",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
@@ -23,10 +24,12 @@
     "runtypes": ">= 6"
   },
   "devDependencies": {
+    "@happy-dom/global-registrator": "^20.8.3",
     "@types/node": "20.12.8",
     "@types/throttle-debounce": "5.0.2",
     "@types/whatwg-mimetype": "5.0.0",
     "ace-builds": "1.43.6",
+    "happy-dom": "^20.8.3",
     "runtypes": "6.7.0"
   }
 }
