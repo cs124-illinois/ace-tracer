@@ -45,7 +45,7 @@ export class MockEditSession {
   }
   setScrollTop(top: number) {
     this._scrollTop = top
-    this._emit("changeScrollTop", top)
+    this.emit("changeScrollTop", top)
   }
   setScrollLeft(left: number) {
     this._scrollLeft = left
@@ -64,7 +64,7 @@ export class MockEditSession {
     if (!this._listeners[event]) return
     this._listeners[event] = this._listeners[event].filter((h) => h !== handler)
   }
-  private _emit(event: string, ...args: any[]) {
+  emit(event: string, ...args: any[]) {
     for (const handler of this._listeners[event] || []) {
       handler(...args)
     }
@@ -177,7 +177,7 @@ export class MockEditor {
     const oldSession = this.session
     this.session = session
     this.selection = session.selection
-    this._emit("changeSession", { session, oldSession })
+    this.emit("changeSession", { session, oldSession })
   }
   addEventListener(event: string, handler: EventHandler) {
     if (!this._listeners[event]) this._listeners[event] = []
@@ -187,7 +187,7 @@ export class MockEditor {
     if (!this._listeners[event]) return
     this._listeners[event] = this._listeners[event].filter((h) => h !== handler)
   }
-  private _emit(event: string, ...args: any[]) {
+  emit(event: string, ...args: any[]) {
     for (const handler of this._listeners[event] || []) {
       handler(...args)
     }
@@ -195,8 +195,18 @@ export class MockEditor {
 
   simulateChange(delta: any) {
     this.session.getDocument().applyDelta(delta)
-    // Trigger change on session listeners
-    ;(this.session as any)._emit?.("change", delta)
+    this.session.emit("change", delta)
+  }
+
+  simulateSelectionChange(start: { row: number; column: number }, end: { row: number; column: number }) {
+    this.session.selection.setSelectionRange({ start, end })
+    this.emit("changeSelection")
+  }
+
+  simulateCursorMove(row: number, column: number) {
+    this.session.selection.moveCursorTo(row, column)
+    this.session.selection.setSelectionRange({ start: { row, column }, end: { row, column } })
+    this.emit("changeSelection")
   }
 }
 
