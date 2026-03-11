@@ -6,5 +6,5 @@
     "noEmit": false,
     "jsx": "react"
   },
-  "exclude": ["test"]
+  "exclude": ["dist", "test"]
 }
