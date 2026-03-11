@@ -29,7 +29,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   private currentIndex = 0
   private endIndex = 0
   private traceTimes: { complete: boolean; offset: number }[] = []
-  private traceIndex: Record<number, number> = {}
+  private completeIndices: number[] = []
   private filterRecord?: (record: AceRecord) => boolean
   public playing = false
   private _playbackRate: number
@@ -56,12 +56,12 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     }
     this._trace = trace
     this.endIndex = trace.records.length
+    this.completeIndices = []
     this.traceTimes = this._trace.records.map((record, i) => {
       const complete = Complete.guard(record)
       const offset = new Date(record.timestamp).valueOf() - new Date(trace.startTime).valueOf()
-      const index = Math.ceil(offset / 1000)
       if (complete) {
-        this.traceIndex[index] = i
+        this.completeIndices.push(i)
       }
       return { complete, offset }
     })
@@ -72,14 +72,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
         this.sessionMap[name] = ace.createEditSession(contents, mode as any)
       }
       this.setSession(this._trace.sessionName)
-    }
-    let lastIndex = 0
-    for (let i = 0; i < Math.floor(this.traceTimes[this.endIndex - 1].offset) / 1000; i++) {
-      if (this.traceIndex[i]) {
-        lastIndex = i
-      } else {
-        this.traceIndex[i] = lastIndex
-      }
     }
   }
   public get src() {
@@ -216,29 +208,23 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     if (currentTimeSec < 0 || currentTimeSec > this.duration + 0.1) {
       throw new Error(`Bad timestamp: ${currentTimeSec}`)
     }
-    const currentTime = currentTimeSec * 1000
+    const currentTimeMs = currentTimeSec * 1000
     this.syncTime = new Date().valueOf()
-    this.startTime = this.syncTime - currentTime / this.playbackRate
-    let newCurrentIndex = -1
-    const floorValue = Math.floor(currentTimeSec)
-    const startIndex = this.traceIndex[floorValue]
-    if (startIndex === undefined) {
-      throw new Error(`Couldn't find index for ${floorValue}: ${currentTimeSec}`)
-    }
-    if (this.traceTimes[startIndex].offset > currentTime) {
-      throw new Error(`Bad index value: ${startIndex}`)
-    }
-    for (let i = startIndex; i < this.traceTimes.length; i++) {
-      const traceTime = this.traceTimes[i]
-      if (traceTime.complete) {
-        if (traceTime.offset > currentTime) {
-          break
-        }
-        newCurrentIndex = i
+    this.startTime = this.syncTime - currentTimeMs / this.playbackRate
+
+    // Binary search completeIndices for last Complete with offset <= currentTimeMs
+    let lo = 0
+    let hi = this.completeIndices.length - 1
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1
+      if (this.traceTimes[this.completeIndices[mid]].offset <= currentTimeMs) {
+        lo = mid
+      } else {
+        hi = mid - 1
       }
     }
-    this.currentIndex = newCurrentIndex
-    this._currentTime = currentTime
+    this.currentIndex = this.completeIndices.length > 0 ? this.completeIndices[lo] : 0
+    this._currentTime = currentTimeMs
   }
   public get playbackRate() {
     return this._playbackRate

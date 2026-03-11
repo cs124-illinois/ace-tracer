@@ -219,4 +219,100 @@ describe("RecordReplayer sync tolerance", () => {
       expect((rr as any).tolerance).toBe(0.1)
     })
   })
+
+  describe("continuous playback simulation", () => {
+    test("continuous playback: ace stays within tolerance of audio", () => {
+      const { rr } = createRR()
+      const trace = makeTrace({ durationMs: 2000, records: 11 })
+      rr.src = { ace: trace, audio: "data:audio/wav;base64,fake" }
+
+      const ace = rr.ace
+      const audio = rr.audio
+
+      ace.src = trace
+      Object.defineProperty(audio.player, "duration", { value: 2, writable: true })
+
+      // Start at 0
+      ace.currentTime = 0
+
+      // Step audio forward in 50ms increments across the 2s trace
+      const stepMs = 50
+      const durationMs = 2000
+      for (let t = 0; t <= durationMs; t += stepMs) {
+        const timeSec = t / 1000
+        audio.player.currentTime = timeSec
+        audio.player.dispatchEvent(new Event("timeupdate"))
+
+        // Ace should be within tolerance of audio
+        const drift = Math.abs(ace.currentTime - timeSec)
+        expect(drift).toBeLessThanOrEqual(0.5)
+      }
+    })
+
+    test("mid-playback stall: ace pauses and resumes correctly", async () => {
+      const { rr } = createRR()
+      const trace = makeTrace({ durationMs: 5000, records: 11 })
+      rr.src = { ace: trace, audio: "data:audio/wav;base64,fake" }
+
+      const ace = rr.ace
+      const audio = rr.audio
+
+      ace.src = trace
+      Object.defineProperty(audio.player, "duration", { value: 5, writable: true })
+
+      // Start playing
+      await ace.play()
+      expect(ace.playing).toBe(true)
+
+      // Advance to 1s
+      audio.player.currentTime = 1.0
+      audio.player.dispatchEvent(new Event("timeupdate"))
+
+      // Fire waiting — ace should pause
+      audio.player.dispatchEvent(new Event("waiting"))
+      expect(ace.state).toBe("paused")
+
+      // Fire playing — ace should resume (play() is async, need a tick for state to update)
+      audio.player.dispatchEvent(new Event("playing"))
+      await new Promise((resolve) => setTimeout(resolve, 10))
+      expect(ace.state).toBe("playing")
+
+      // After resume, ace time should be close to audio time
+      const drift = Math.abs(ace.currentTime - audio.player.currentTime)
+      expect(drift).toBeLessThan(1)
+    })
+
+    test("playback rate change mid-stream", () => {
+      const { rr } = createRR()
+      const trace = makeTrace({ durationMs: 4000, records: 9 })
+      rr.src = { ace: trace, audio: "data:audio/wav;base64,fake" }
+
+      const ace = rr.ace
+      const audio = rr.audio
+
+      ace.src = trace
+      Object.defineProperty(audio.player, "duration", { value: 4, writable: true })
+
+      // Start at 1x
+      rr.playbackRate = 1
+      expect(rr.playbackRate).toBe(1)
+
+      // Advance to 2s at 1x
+      audio.player.currentTime = 2.0
+      ace.currentTime = 2.0
+      audio.player.dispatchEvent(new Event("timeupdate"))
+
+      // Change to 2x
+      rr.playbackRate = 2
+      expect(rr.playbackRate).toBe(2)
+      expect(ace.playbackRate).toBe(2)
+
+      // Continue advancing — ace should still track audio
+      audio.player.currentTime = 3.0
+      audio.player.dispatchEvent(new Event("timeupdate"))
+
+      const drift = Math.abs(ace.currentTime - 3.0)
+      expect(drift).toBeLessThan(1)
+    })
+  })
 })

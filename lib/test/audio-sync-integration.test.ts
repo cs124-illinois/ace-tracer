@@ -281,6 +281,81 @@ describe("Audio-Editor sync integration", () => {
     URL.revokeObjectURL(audioUrl)
   })
 
+  test("continuous playback applies records at correct times", async () => {
+    const editor = createMockEditor("")
+    const rr = new RecordReplayer(editor as any)
+
+    const { installAudioMocks } = await import("./fixtures/audio-mock")
+    installAudioMocks()
+
+    await rr.record()
+
+    // Record edits at known intervals
+    const INTERVAL = 80
+    const CHARS = ["A", "B", "C", "D"]
+
+    for (let i = 0; i < CHARS.length; i++) {
+      await sleep(INTERVAL)
+      editor.simulateChange({
+        action: "insert",
+        start: { row: 0, column: i },
+        end: { row: 0, column: i + 1 },
+        lines: [CHARS[i]],
+      })
+    }
+
+    await sleep(50)
+    await rr.stop()
+
+    const aceTrace = rr.ace.src!
+    const traceDurationSec = aceTrace.duration / 1000
+
+    const wavBlob = generateSilentWav(Math.ceil(aceTrace.duration))
+    const audioUrl = URL.createObjectURL(wavBlob)
+    rr.src = { ace: aceTrace, audio: audioUrl }
+    Object.defineProperty(rr.audio.player, "duration", {
+      value: traceDurationSec,
+      writable: true,
+    })
+
+    // Get delta timestamps
+    const deltaOffsets = aceTrace.records
+      .filter((r) => Delta.guard(r))
+      .map((r) => new Date(r.timestamp).valueOf() - new Date(aceTrace.startTime).valueOf())
+
+    expect(deltaOffsets).toHaveLength(CHARS.length)
+
+    // Simulate continuous playback by stepping through timeupdates
+    const stepMs = 20
+    let lastExpectedValue = ""
+
+    for (let t = 0; t <= aceTrace.duration; t += stepMs) {
+      const timeSec = t / 1000
+      if (timeSec > traceDurationSec + 0.1) break
+
+      rr.currentTime = timeSec
+      rr.ace.sync()
+
+      // Determine expected value at this time
+      let expected = ""
+      for (let i = 0; i < deltaOffsets.length; i++) {
+        if (t >= deltaOffsets[i]) {
+          expected += CHARS[i]
+        }
+      }
+
+      const actual = editor.session.getValue()
+      // Editor state should match expected at this point in time
+      expect(actual).toBe(expected)
+      lastExpectedValue = expected
+    }
+
+    // Final state should have all characters
+    expect(lastExpectedValue).toBe("ABCD")
+
+    URL.revokeObjectURL(audioUrl)
+  })
+
   test("click-track pattern: edits at precise intervals produce deterministic playback", async () => {
     const editor = createMockEditor("")
     const rr = new RecordReplayer(editor as any)
