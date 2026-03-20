@@ -75,3 +75,7 @@ dist
 
 # tsconfig stuff
 *.tsbuildinfo
+
+# Playwright
+test-results/
+playwright-report/

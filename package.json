@@ -17,10 +17,13 @@
     "ncu": "bun run scripts/check-updates.ts",
     "ncu:apply": "bun run scripts/check-updates.ts --apply",
     "test": "turbo run test",
+    "test:e2e": "playwright test --config e2e/playwright.config.ts",
+    "test:e2e:ui": "playwright test --config e2e/playwright.config.ts --ui",
     "tsc": "turbo tsc"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@playwright/test": "^1.58.2",
     "eslint": "10.0.3",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-react": "7.37.5",
