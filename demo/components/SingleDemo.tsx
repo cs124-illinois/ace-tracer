@@ -1,8 +1,18 @@
 import RecordReplayer, { Ace, AceRecord, AceTrace, AceTraceContent, Complete, urlToBase64 } from "@cs124/ace-recorder"
-import { useCallback, useEffect, useRef, useState } from "react"
-import Timer from "react-compound-timer"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { createTimeModel, useTimeModel } from "react-compound-timer"
 import DefaultAceEditor from "./DefaultAceEditor"
 import PlayerControls from "./PlayerControls"
+
+const RecordingTimer: React.FC = () => {
+  const timer = useMemo(() => createTimeModel({ initialTime: 0, direction: "forward", startImmediately: true }), [])
+  const { value } = useTimeModel(timer)
+  return (
+    <>
+      {value.m}:{String(value.s).padStart(2, "0")}
+    </>
+  )
+}
 
 type Recording = {
   name: string
@@ -132,17 +142,7 @@ const Demo: React.FC = () => {
           )}
         </>
       )}
-      <div style={{ display: "flex" }}>
-        {state === "recording" && (
-          <Timer>
-            {() => (
-              <>
-                <Timer.Minutes />:<Timer.Seconds />
-              </>
-            )}
-          </Timer>
-        )}
-      </div>
+      <div style={{ display: "flex" }}>{state === "recording" && <RecordingTimer />}</div>
 
       <span>Record</span>
       <DefaultAceEditor
