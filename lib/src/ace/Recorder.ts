@@ -177,7 +177,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
   }
 }
 
-module AceRecorder {
+namespace AceRecorder {
   export type Session = { name: string; contents: string; mode: string }
   export type Options = {
     completeInterval?: number

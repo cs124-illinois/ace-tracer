@@ -244,7 +244,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   }
 }
 
-module AcePlayer {
+namespace AcePlayer {
   export type Options = {
     filterRecord?: (record: AceRecord) => boolean
   }

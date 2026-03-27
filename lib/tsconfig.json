@@ -4,7 +4,8 @@
     "rootDir": "src",
     "outDir": "dist",
     "noEmit": false,
-    "jsx": "react"
+    "jsx": "react",
+    "types": ["node"]
   },
   "exclude": ["dist", "test"]
 }

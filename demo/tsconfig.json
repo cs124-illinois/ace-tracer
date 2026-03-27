@@ -13,6 +13,7 @@
     "incremental": true,
     "declaration": false,
     "declarationMap": false,
+    "types": ["node", "react", "lodash"],
     "paths": {
       "~/*": ["./*"]
     }
