@@ -1,103 +1,118 @@
-import { expect, test } from "@playwright/test"
-import { getEditorContent, selectTrace, waitForAceEditors } from "./fixtures"
+import {
+  expect,
+  getEditorValue,
+  gotoDemo,
+  HELLOWORLD_DURATION,
+  playButton,
+  rateSelect,
+  seekTo,
+  selectTrace,
+  singleDemo,
+  sliderPercent,
+  test,
+} from "./fixtures"
 
 test.describe("Playback", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/")
-    await waitForAceEditors(page, 4)
+    await gotoDemo(page)
+    await selectTrace(page, "helloworld")
   })
 
-  test("select trace, click Play, button becomes Pause", async ({ page }) => {
-    await selectTrace(page, "helloworld")
-
-    // Click the first Play button (single demo)
-    const playButton = page.locator("button", { hasText: "Play" }).first()
-    await playButton.click()
-
-    // Button should now show "Pause"
-    await expect(page.locator("button", { hasText: "Pause" }).first()).toBeVisible({ timeout: 3000 })
+  test("Play toggles to Pause and back", async ({ page }) => {
+    const play = playButton(singleDemo(page))
+    await play.click()
+    await expect(play).toHaveText("Pause")
+    await play.click()
+    await expect(play).toHaveText("Play")
   })
 
-  test("during playback, replay editor content changes", async ({ page }) => {
-    await selectTrace(page, "helloworld")
-
-    // Get initial content of replay editor (second ace editor = index 1)
-    const initialContent = await getEditorContent(page, 1)
-
-    // Start playback
-    await page.locator("button", { hasText: "Play" }).first().click()
-
-    // Wait a moment for playback to progress
-    await page.waitForTimeout(1500)
-
-    // Content should have changed
-    const playingContent = await getEditorContent(page, 1)
-    // At minimum, we expect the editor to have some content during playback
-    expect(playingContent.length).toBeGreaterThan(0)
-
-    // Pause to clean up
-    const pauseButton = page.locator("button", { hasText: "Pause" }).first()
-    if (await pauseButton.isVisible()) {
-      await pauseButton.click()
-    }
+  test("during playback, replay editor shows recorded content", async ({ page }) => {
+    expect(await getEditorValue(page, "single-replay")).toBe("")
+    const play = playButton(singleDemo(page))
+    await play.click()
+    // "Hello" is typed during the first two seconds of the trace
+    await expect.poll(() => getEditorValue(page, "single-replay"), { timeout: 10000 }).toBe("Hello")
+    await play.click()
+    await expect(play).toHaveText("Play")
   })
 
   test("seek slider value increases during playback", async ({ page }) => {
-    await selectTrace(page, "helloworld")
-
-    const slider = page.locator('input[type="range"]').first()
-    const initialValue = await slider.inputValue()
-
-    // Start playback
-    await page.locator("button", { hasText: "Play" }).first().click()
-
-    // Wait for playback to progress
-    await page.waitForTimeout(2000)
-
-    const currentValue = await slider.inputValue()
-
-    // Slider should have advanced
-    expect(Number(currentValue)).toBeGreaterThan(Number(initialValue))
-
-    // Pause to clean up
-    const pauseButton = page.locator("button", { hasText: "Pause" }).first()
-    if (await pauseButton.isVisible()) {
-      await pauseButton.click()
-    }
+    const demo = singleDemo(page)
+    expect(await sliderPercent(demo)).toBe(0)
+    await playButton(demo).click()
+    await expect.poll(() => sliderPercent(demo), { timeout: 10000 }).toBeGreaterThan(5)
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Play")
   })
 
-  test("pause during playback, editor content stable", async ({ page }) => {
-    await selectTrace(page, "helloworld")
+  test("pause during playback, position and editor content stable", async ({ page }) => {
+    const demo = singleDemo(page)
+    await playButton(demo).click()
+    await expect.poll(() => getEditorValue(page, "single-replay"), { timeout: 10000 }).toBe("Hello")
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Play")
 
-    // Start playback
-    await page.locator("button", { hasText: "Play" }).first().click()
+    const percentAtPause = await sliderPercent(demo)
+    const contentAtPause = await getEditorValue(page, "single-replay")
+    // Stability can only be observed over time: wait long enough that playback would have visibly advanced
     await page.waitForTimeout(1000)
-
-    // Pause
-    await page.locator("button", { hasText: "Pause" }).first().click()
-
-    // Get content right after pausing
-    const contentAtPause = await getEditorContent(page, 1)
-
-    // Wait and check again — should be stable
-    await page.waitForTimeout(500)
-    const contentAfterWait = await getEditorContent(page, 1)
-
-    expect(contentAfterWait).toBe(contentAtPause)
+    expect(await sliderPercent(demo)).toBe(percentAtPause)
+    expect(await getEditorValue(page, "single-replay")).toBe(contentAtPause)
   })
 
-  test("playback rate change reflects in select value", async ({ page }) => {
-    await selectTrace(page, "helloworld")
+  test("playback rate 2.0 plays about twice as fast as 1.0", async ({ page }) => {
+    const demo = singleDemo(page)
 
-    // Change playback rate to 2.0
-    const rateSelect = page.locator("select#playbackRate").first()
-    await rateSelect.selectOption("2.0")
+    const measureRate = async () => {
+      const startPercent = await sliderPercent(demo)
+      const startTime = Date.now()
+      await expect.poll(() => sliderPercent(demo), { timeout: 10000 }).toBeGreaterThan(startPercent + 10)
+      const elapsed = (Date.now() - startTime) / 1000
+      const advanced = (((await sliderPercent(demo)) - startPercent) / 100) * HELLOWORLD_DURATION
+      return advanced / elapsed
+    }
 
-    // Verify the select reflects the chosen value
-    await expect(rateSelect).toHaveValue("2.0")
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Pause")
+    await expect.poll(() => sliderPercent(demo)).toBeGreaterThan(0)
+    const normalRate = await measureRate()
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Play")
 
-    // Change back to 0.5 and verify
-    await rateSelect.selectOption("0.5")
-    await expect(rateSelect).toHaveValue("0.5")
+    await rateSelect(demo).selectOption("2.0")
+    await expect(rateSelect(demo)).toHaveValue("2.0")
+    await seekTo(demo, 0)
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Pause")
+    await expect.poll(() => sliderPercent(demo)).toBeGreaterThan(0)
+    const fastRate = await measureRate()
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Play")
+
+    expect(normalRate).toBeGreaterThan(0.6)
+    expect(normalRate).toBeLessThan(1.4)
+    expect(fastRate / normalRate).toBeGreaterThan(1.5)
+    expect(fastRate / normalRate).toBeLessThan(2.5)
+  })
+
+  test("after playback ends, controls reflect the reset to the start", async ({ page }) => {
+    const demo = singleDemo(page)
+    await seekTo(demo, 90)
+    await expect.poll(() => getEditorValue(page, "single-replay")).toBe("world!")
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Pause")
+    await expect(playButton(demo)).toHaveText("Play", { timeout: 10000 })
+    await expect.poll(() => sliderPercent(demo)).toBe(0)
+    await expect.poll(() => getEditorValue(page, "single-replay")).toBe("")
+  })
+
+  test("recording select is disabled during playback", async ({ page }) => {
+    const demo = singleDemo(page)
+    const select = demo.locator("select#language")
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Pause")
+    await expect(select).toBeDisabled()
+    await playButton(demo).click()
+    await expect(select).toBeEnabled()
   })
 })

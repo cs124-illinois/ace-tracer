@@ -9,9 +9,10 @@ export interface AceRecorderEvents {
 }
 
 class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEvents>) {
-  public static defaultOptions: AceRecorder.Options = {
+  // completeInterval is in milliseconds. A completeCount of 0 disables count-based Complete records.
+  public static defaultOptions: Required<AceRecorder.Options> = {
     completeCount: 0,
-    completeInterval: 32,
+    completeInterval: 1000,
   }
 
   private editor: Ace.Editor
@@ -33,14 +34,17 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.options = options
   }
   public async start() {
-    const completeInterval = this.options?.completeInterval ?? AceRecorder.defaultOptions.completeInterval!
+    if (this.recording) {
+      throw new Error("Already recording")
+    }
+    const completeInterval = this.options?.completeInterval ?? AceRecorder.defaultOptions.completeInterval
     if (completeInterval < 0) {
       throw new Error(`completeInterval must be greater than or equal to zero`)
     }
 
-    const completeCount = this.options?.completeCount ?? AceRecorder.defaultOptions.completeInterval!
-    if (completeCount <= 0) {
-      throw new Error(`completeCount must be greater than zero`)
+    const completeCount = this.options?.completeCount ?? AceRecorder.defaultOptions.completeCount
+    if (completeCount < 0) {
+      throw new Error(`completeCount must be greater than or equal to zero`)
     }
 
     this.records = []
@@ -62,15 +66,14 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
     this.streamer.start((record: AceRecord) => {
       if (Complete.guard(record)) {
         record["sessionInfo"] = this.sessionInfo
-      } else {
-        counter++
-        if (counter === completeCount) {
-          this.addCompleteRecord("counter")
-          counter = 0
-        }
       }
       this.records.push(record)
       this.emit("record", record)
+      // After the record that triggered it: the Complete's snapshot already includes that record's change
+      if (!Complete.guard(record) && completeCount > 0 && ++counter === completeCount) {
+        counter = 0
+        this.addCompleteRecord("counter")
+      }
     })
 
     if (completeInterval > 0) {
@@ -88,8 +91,11 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
       throw new Error("Not recording")
     }
     this.recording = false
-    this.timer && clearInterval(this.timer)
-    this.streamer!.stop()
+    if (this.timer) {
+      clearInterval(this.timer)
+      this.timer = undefined
+    }
+    this.streamer.stop()
     this.src = new AceTrace([...this.records], this.sessionInfo, this.startSession)
   }
   public addCompleteRecord(reason: CompleteReasons = "manual") {
@@ -157,7 +163,7 @@ class AceRecorder extends (EventEmitter as new () => TypedEmitter<AceRecorderEve
       throw new Error("Session map must be empty when calling singleSession")
     }
     this.addSession(session)
-    this.sessionName = session.name
+    this.setSession(session.name)
   }
   public set external(external: Record<string, unknown>) {
     if (external.type !== undefined) {

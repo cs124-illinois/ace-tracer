@@ -15,7 +15,11 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
     super(options?.replayEditor ?? editor, {
       filterRecord: options?.filterRecord,
     })
-    this.recorder = new AceRecorder(editor)
+    this.recorder = new AceRecorder(editor, options?.recorderOptions)
+    this.on("ended", () => {
+      this.state = "paused"
+      this.emitter.emit("event", "ended")
+    })
   }
   public set state(state: IRecordReplayer.State) {
     if (state === this._state) {
@@ -32,7 +36,8 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
       throw new Error("Not paused")
     }
     await super.play()
-    this.state = "playing"
+    // Playback that starts at the last record ends immediately
+    this.state = this.playing ? "playing" : "paused"
   }
   public pause() {
     if (this.state !== "playing") {
@@ -45,25 +50,34 @@ class AceRecordReplayer extends AcePlayer implements IRecordReplayer {
     if (this.state !== "paused") {
       throw new Error("Not paused")
     }
-    this.recorder.start()
+    await this.recorder.start()
+    this.hasRecording = false
     this.state = "recording"
   }
   public async stop() {
     if (this.state !== "recording") {
       throw new Error("Not recording")
     }
-    this.recorder!.stop()
+    await this.recorder.stop()
     this.stopping = true
-    this.src = this.recorder!.src!
-    this.state = "paused"
-    this.stopping = false
+    try {
+      this.src = this.recorder.src!
+    } finally {
+      this.stopping = false
+    }
     this.hasRecording = true
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
   }
-  public addEventListener(listener: (state: IRecordReplayer.Event) => void) {
+  public removeStateListener(listener: (state: IRecordReplayer.State) => void) {
+    this.emitter.removeListener("state", listener)
+  }
+  public addEventListener(listener: (event: IRecordReplayer.Event) => void) {
     this.emitter.addListener("event", listener)
+  }
+  public removeEventListener(listener: (event: IRecordReplayer.Event) => void) {
+    this.emitter.removeListener("event", listener)
   }
   public get percent() {
     return (this.currentTime / this.duration) * 100
@@ -91,6 +105,7 @@ namespace AceRecordReplayer {
   export type Options = {
     filterRecord?: (record: AceRecord) => boolean
     replayEditor?: Ace.Editor
+    recorderOptions?: AceRecorder.Options
   }
 }
 

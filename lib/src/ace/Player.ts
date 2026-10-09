@@ -5,8 +5,8 @@ import {
   CursorChange,
   Delta,
   ScrollChange,
-  ScrollPosition,
   SelectionChange,
+  SessionInfo,
 } from "@cs124/ace-recorder-types"
 import ace, { Ace } from "ace-builds"
 import EventEmitter from "events"
@@ -14,6 +14,7 @@ import { TypedEmitter } from "tiny-typed-emitter"
 
 export interface AcePlayerEvents {
   record: (record: AceRecord) => void
+  ended: () => void
 }
 class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>) {
   private _editor: Ace.Editor
@@ -22,7 +23,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   private previousOpacity: number
   private _trace: AceTrace | undefined
   private timer?: ReturnType<typeof setTimeout>
-  private timerStarted: number | undefined
   private startTime?: number
   private _currentTime = 0
   private syncTime?: number
@@ -35,7 +35,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   private _playbackRate: number
   // private _currentSession?: Ace.EditSession
   public scrollToCursor = false
-  private sessionMap: Record<string, Ace.EditSession> = {}
+  private sessionMap: Record<string, { session: Ace.EditSession; mode: string }> = {}
   public sessionName?: string
 
   public constructor(editor: Ace.Editor, options?: AcePlayer.Options) {
@@ -50,14 +50,19 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     this._playbackRate = 1
   }
   public set src(trace: AceTrace | undefined) {
+    this.stopPlayback()
+    this._trace = trace
+    this._currentTime = 0
+    this.currentIndex = 0
     if (!trace) {
-      this._trace = trace
+      this.endIndex = 0
+      this.traceTimes = []
+      this.completeIndices = []
       return
     }
-    this._trace = trace
     this.endIndex = trace.records.length
     this.completeIndices = []
-    this.traceTimes = this._trace.records.map((record, i) => {
+    this.traceTimes = trace.records.map((record, i) => {
       const complete = Complete.guard(record)
       const offset = new Date(record.timestamp).valueOf() - new Date(trace.startTime).valueOf()
       if (complete) {
@@ -66,12 +71,10 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       return { complete, offset }
     })
 
-    if (this._trace.sessionName) {
+    if (trace.sessionName) {
       this.sessionMap = {}
-      for (const { name, contents, mode } of this._trace.sessionInfo) {
-        this.sessionMap[name] = ace.createEditSession(contents, mode as any)
-      }
-      this.setSession(this._trace.sessionName)
+      this.updateSessions(trace.sessionInfo)
+      this.setSession(trace.sessionName)
     }
   }
   public get src() {
@@ -79,14 +82,35 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
   }
 
   public getSessionsInfo() {
-    return Object.entries(this.sessionMap).map(([name, session]) => {
-      return { name, contents: session.getValue(), mode: "" }
+    return Object.entries(this.sessionMap).map(([name, { session, mode }]) => {
+      return { name, contents: session.getValue(), mode }
     })
   }
 
+  // Sessions can be added or removed during a recording, so a Complete's sessionInfo may name sessions that the
+  // trace-level sessionInfo (captured when recording stopped) doesn't include.
+  private updateSessions(sessionInfo: SessionInfo[]) {
+    for (const { name, contents, mode } of sessionInfo) {
+      const existing = this.sessionMap[name]
+      if (!existing) {
+        this.sessionMap[name] = { session: ace.createEditSession(contents, mode as any), mode }
+      } else if (name !== this.sessionName && existing.session.getValue() !== contents) {
+        existing.session.setValue(contents)
+      }
+    }
+  }
+
   public async play() {
+    this.startPlayback()
+  }
+  // startPlayback and stopPlayback aren't virtual: subclasses override play() and pause() with state checks that
+  // must not run when the playback rate changes or playback ends on its own.
+  private startPlayback() {
     if (!this._trace) {
       throw new Error("No trace loaded")
+    }
+    if (this._currentTime >= this._trace.duration) {
+      this._currentTime = 0
     }
 
     const renderer = this._editor.renderer as any
@@ -104,7 +128,6 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     if (this.timer) {
       clearTimeout(this.timer)
       this.timer = undefined
-      this.timerStarted = undefined
     }
   }
 
@@ -113,7 +136,7 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       throw new Error(`Session ${name} does not exist`)
     }
     this.sessionName = name
-    this._editor.setSession(this.sessionMap[name])
+    this._editor.setSession(this.sessionMap[name].session)
   }
 
   public sync() {
@@ -131,16 +154,12 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
       const apply = this.filterRecord ? this.filterRecord(aceRecord) : true
       if (apply !== false) {
         if (Complete.guard(aceRecord) && !!aceRecord.sessionName) {
-          this.setSession(aceRecord.sessionName)
           if (aceRecord.sessionInfo) {
-            aceRecord.sessionInfo.forEach((v: { name: string; contents: string }) => {
-              if (v.name !== this.sessionName) {
-                this.sessionMap[v.name].setValue(v.contents)
-              }
-            })
+            this.updateSessions(aceRecord.sessionInfo)
           }
+          this.setSession(aceRecord.sessionName)
         }
-        if (!ScrollPosition.guard(aceRecord) || !(this.scrollToCursor && aceRecord.triggeredByCursorChange)) {
+        if (!ScrollChange.guard(aceRecord) || !(this.scrollToCursor && aceRecord.triggeredByCursorChange)) {
           applyAceRecord(this._editor!, aceRecord, !this.scrollToCursor)
           this.emit("record", aceRecord)
         }
@@ -152,10 +171,13 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
         }
       }
     }
-    if (this.playing && this.currentIndex === this.endIndex) {
-      this.playing = false
-    }
     this.currentIndex = i
+    if (this.playing && this.currentIndex === this.endIndex) {
+      this.stopPlayback()
+      this._currentTime = this._trace.duration
+      this.emit("ended")
+      return -1
+    }
     return nextWait
   }
   private next(sync = true) {
@@ -174,25 +196,31 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
 
     const nextWait = this.sync()
     if (nextWait > 0) {
-      this.timerStarted = new Date().valueOf()
       this.timer = setTimeout(() => {
         this.next()
       }, nextWait)
     }
   }
-  public pause(reset = true) {
-    if (this.timerStarted) {
-      this._currentTime += (new Date().valueOf() - this.timerStarted) * this.playbackRate
+  private stopPlayback(reset = true) {
+    if (this.playing) {
+      this._currentTime = Math.min((new Date().valueOf() - this.startTime!) * this._playbackRate, this.durationMs)
     }
     this.clearTimeout()
+    const wasPlaying = this.playing
     this.playing = false
 
-    if (reset) {
+    if (reset && wasPlaying) {
       const renderer = this._editor.renderer as any
       renderer.$cursorLayer.element.style.opacity = this.previousOpacity
       renderer.$cursorLayer.setBlinking(this.wasBlinking)
       renderer.$cursorLayer.isVisible = this.wasVisible
     }
+  }
+  public pause(reset = true) {
+    this.stopPlayback(reset)
+  }
+  private get durationMs() {
+    return this._trace?.duration ?? 0
   }
   public get duration() {
     return this._trace!.duration / 1000
@@ -225,18 +253,22 @@ class AcePlayer extends (EventEmitter as new () => TypedEmitter<AcePlayerEvents>
     }
     this.currentIndex = this.completeIndices.length > 0 ? this.completeIndices[lo] : 0
     this._currentTime = currentTimeMs
+    if (this.playing) {
+      // Reschedule: the pending timer was computed for the old position
+      this.next(false)
+    }
   }
   public get playbackRate() {
     return this._playbackRate
   }
   public set playbackRate(playbackRate: number) {
     const wasPlaying = this.playing
-    if (this.playing) {
-      this.pause(false)
+    if (wasPlaying) {
+      this.stopPlayback(false)
     }
     this._playbackRate = playbackRate
     if (wasPlaying) {
-      this.play()
+      this.startPlayback()
     }
   }
   public get editor() {
@@ -270,14 +302,14 @@ const applyComplete = (session: Ace.EditSession, complete: Complete, setScroll =
     safeChangeValue(session, complete.value)
   }
 
-  const { row, column } = complete.cursor
-  session.selection.moveCursorTo(row, column)
-
   const { start, end } = complete.selection
-  session.selection.setSelectionRange({
-    start: { row: start.row, column: start.column },
-    end: { row: end.row, column: end.column },
-  })
+  const { row, column } = complete.cursor
+  // The cursor is the selection's lead, so a cursor at the start of a non-empty range means a backwards selection
+  const reverse = (start.row !== end.row || start.column !== end.column) && row === start.row && column === start.column
+  session.selection.setSelectionRange(
+    { start: { row: start.row, column: start.column }, end: { row: end.row, column: end.column } },
+    reverse,
+  )
 
   if (setScroll) {
     const { top, left } = complete.scroll
@@ -291,8 +323,11 @@ const applyDelta = (session: Ace.EditSession, delta: Delta): void => session.get
 const applySelectionChange = (session: Ace.EditSession, selectionChange: SelectionChange): void =>
   session.selection.setSelectionRange(selectionChange)
 
-const applyCursorChange = (session: Ace.EditSession, cursorChange: CursorChange): void =>
-  session.selection.moveCursorTo(cursorChange.location.row, cursorChange.location.column)
+// Cursor changes are only recorded with an empty selection, so replaying one also clears any selection
+const applyCursorChange = (session: Ace.EditSession, cursorChange: CursorChange): void => {
+  const { row, column } = cursorChange.location
+  session.selection.setSelectionRange({ start: { row, column }, end: { row, column } })
+}
 
 const applyScrollChange = (renderer: Ace.VirtualRenderer, scrollChange: ScrollChange): void => {
   renderer.scrollToY(scrollChange.top)

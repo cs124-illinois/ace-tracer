@@ -15,10 +15,18 @@ class AceMultiRecordReplayer implements IRecordReplayer {
 
   constructor(editors: Record<string, Ace.Editor>, options?: AceMultiRecordReplayer.Options) {
     for (const name of Object.keys(editors)) {
-      this.players[name] = new AcePlayer(options?.replayEditors ? options.replayEditors[name] : editors[name], {
+      const player = new AcePlayer(options?.replayEditors ? options.replayEditors[name] : editors[name], {
         filterRecord: (record) => (options?.filterRecord ? options.filterRecord(record, name) : true),
       })
-      this.recorders[name] = new AceRecorder(editors[name])
+      // Traces can differ slightly in length, so playback ends when the last player finishes
+      player.on("ended", () => {
+        if (this.state === "playing" && !Object.values(this.players).some((p) => p.playing)) {
+          this.state = "paused"
+          this.emitter.emit("event", "ended")
+        }
+      })
+      this.players[name] = player
+      this.recorders[name] = new AceRecorder(editors[name], options?.recorderOptions)
     }
   }
   public set state(state: IRecordReplayer.State) {
@@ -35,73 +43,94 @@ class AceMultiRecordReplayer implements IRecordReplayer {
     if (this.state !== "paused") {
       throw new Error("Not paused")
     }
-    for (const name of Object.keys(this.players)) {
-      await this.players[name].play()
+    for (const player of Object.values(this.players)) {
+      await player.play()
     }
-    this.state = "playing"
+    this.state = Object.values(this.players).some((p) => p.playing) ? "playing" : "paused"
   }
   public pause() {
     if (this.state !== "playing") {
       throw new Error("Not playing")
     }
-    for (const name of Object.keys(this.players)) {
-      this.players[name].pause()
+    for (const player of Object.values(this.players)) {
+      player.pause()
     }
     this.state = "paused"
   }
   public sync() {
-    for (const name of Object.keys(this.players)) {
-      this.players[name].sync()
+    for (const player of Object.values(this.players)) {
+      player.sync()
     }
   }
   public async record() {
     if (this.state !== "paused") {
       throw new Error("Not paused")
     }
-    for (const name of Object.keys(this.recorders)) {
-      this.recorders[name].start()
+    const started: AceRecorder[] = []
+    try {
+      for (const recorder of Object.values(this.recorders)) {
+        await recorder.start()
+        started.push(recorder)
+      }
+    } catch (err) {
+      for (const recorder of started) {
+        await recorder.stop()
+      }
+      throw err
     }
+    this.hasRecording = false
     this.state = "recording"
-    this.hasRecording = true
   }
   public async stop() {
     if (this.state !== "recording") {
       throw new Error("Not recording")
     }
-    this.stopping = true
     const src: Record<string, AceTrace> = {}
-    for (const name of Object.keys(this.recorders)) {
-      this.recorders[name].stop()
-      src[name] = this.recorders[name].src!
+    for (const [name, recorder] of Object.entries(this.recorders)) {
+      await recorder.stop()
+      src[name] = recorder.src!
     }
-    this.src = src
-    this.state = "paused"
-    this.stopping = false
+    this.stopping = true
+    try {
+      this.src = src
+    } finally {
+      this.stopping = false
+    }
+    this.hasRecording = true
   }
   public addStateListener(listener: (state: IRecordReplayer.State) => void) {
     this.emitter.addListener("state", listener)
   }
-  public addEventListener(listener: (state: IRecordReplayer.Event) => void) {
+  public removeStateListener(listener: (state: IRecordReplayer.State) => void) {
+    this.emitter.removeListener("state", listener)
+  }
+  public addEventListener(listener: (event: IRecordReplayer.Event) => void) {
     this.emitter.addListener("event", listener)
   }
+  public removeEventListener(listener: (event: IRecordReplayer.Event) => void) {
+    this.emitter.removeListener("event", listener)
+  }
+  private get firstPlayer() {
+    return this.players[Object.keys(this.players)[0]]
+  }
   public get currentTime() {
-    return this.players[Object.keys(this.players)[0]].currentTime
+    return this.firstPlayer.currentTime
   }
   public set currentTime(currentTime: number) {
-    for (const name of Object.keys(this.players)) {
-      this.players[name].currentTime = currentTime
+    for (const player of Object.values(this.players)) {
+      player.currentTime = currentTime
     }
   }
   public get playbackRate() {
-    return this.players[Object.keys(this.players)[0]].playbackRate
+    return this.firstPlayer.playbackRate
   }
   public set playbackRate(playbackRate: number) {
-    for (const name of Object.keys(this.players)) {
-      this.players[name].playbackRate = playbackRate
+    for (const player of Object.values(this.players)) {
+      player.playbackRate = playbackRate
     }
   }
   public get duration() {
-    return this.players[Object.keys(this.players)[0]].duration
+    return this.firstPlayer.duration
   }
   public get percent() {
     return (this.currentTime / this.duration) * 100
@@ -114,10 +143,8 @@ class AceMultiRecordReplayer implements IRecordReplayer {
       throw new Error("Can't change src while playing or recording")
     }
     this._src = src
-    if (src) {
-      for (const name of Object.keys(src)) {
-        this.players[name].src = src[name]
-      }
+    for (const [name, player] of Object.entries(this.players)) {
+      player.src = src?.[name]
     }
     this.state = "paused"
     this.hasRecording = false
@@ -134,6 +161,7 @@ namespace AceMultiRecordReplayer {
   export type Options = {
     filterRecord?: (record: AceRecord, name: string) => boolean
     replayEditors?: Record<string, Ace.Editor>
+    recorderOptions?: AceRecorder.Options
   }
 }
 

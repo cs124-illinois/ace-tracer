@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder-types",
-  "version": "2026.2.0",
+  "version": "2026.10.0",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -8,14 +8,15 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "lint": "bunx eslint --max-warnings 0 .",
+    "lint": "oxlint --max-warnings 0 .",
     "test": "bun test",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit && tsc -p tsconfig.test.json"
   },
   "peerDependencies": {
     "runtypes": ">= 6"
   },
   "devDependencies": {
+    "@types/bun": "1.4.2",
     "runtypes": "6.7.0"
   }
 }

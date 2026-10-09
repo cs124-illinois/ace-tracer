@@ -2,6 +2,8 @@ import { AceTrace, Complete, CursorChange, Delta, ScrollChange, SelectionChange 
 
 const BASE_DATE = new Date("2025-01-15T10:00:00.000Z")
 const loc = (row: number, column: number) => ({ row, column })
+// A timestamp offsetMs after BASE_DATE, for building traces with known offsets
+export const at = (offsetMs: number) => new Date(BASE_DATE.valueOf() + offsetMs)
 
 export function makeComplete(overrides?: Record<string, unknown>): Complete {
   return Complete.check({

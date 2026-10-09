@@ -5,12 +5,24 @@ class AudioRecorder {
   private recorder: MediaRecorder | undefined
   private listener: (({ data }: { data: Blob }) => void) | undefined
   private started = 0
+  private url: string | undefined
 
   private chunks: Blob[] = []
   blob: Blob | undefined
 
   public async start() {
-    this.recorder = new MediaRecorder(await navigator.mediaDevices.getUserMedia({ audio: true }))
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    const releaseMicrophone = () => {
+      for (const track of stream.getTracks()) {
+        track.stop()
+      }
+    }
+    try {
+      this.recorder = new MediaRecorder(stream)
+    } catch (err) {
+      releaseMicrophone()
+      throw err
+    }
     this.listener = ({ data }: { data: Blob }) => {
       data && data.size > 0 && this.chunks.push(data)
     }
@@ -18,7 +30,6 @@ class AudioRecorder {
     this.blob = undefined
 
     return new Promise<void>((resolve, reject) => {
-      this.blob = undefined
       this.recorder!.addEventListener(
         "start",
         () => {
@@ -28,34 +39,57 @@ class AudioRecorder {
         },
         { once: true },
       )
-      this.recorder!.addEventListener("error", reject, { once: true })
-      this.recorder!.start(1000)
-    })
-  }
-  public async stop() {
-    return new Promise<void>((resolve) => {
       this.recorder!.addEventListener(
-        "stop",
-        async () => {
-          const duration = Date.now() - this.started
-          this.recorder!.removeEventListener("dataavailable", this.listener!)
-          this.recorder!.stream.getTracks()[0].stop()
-          this.blob = new Blob(this.chunks, { type: this.recorder!.mimeType })
-          const mimeType = new MIMEType(this.recorder!.mimeType)
-          if (mimeType.subtype === "webm") {
-            this.blob = await ysFixWebmDuration(new Blob(this.chunks, { type: this.recorder!.mimeType }), duration, {
-              logger: false,
-            })
-          }
-          resolve()
+        "error",
+        (event) => {
+          releaseMicrophone()
+          const error = (event as ErrorEvent).error
+          reject(error instanceof Error ? error : new Error(`MediaRecorder failed to start: ${event.type}`))
         },
         { once: true },
       )
-      this.recorder!.stop()
+      try {
+        this.recorder!.start(1000)
+      } catch (err) {
+        releaseMicrophone()
+        reject(err)
+      }
+    })
+  }
+  public async stop() {
+    const recorder = this.recorder
+    if (!recorder) {
+      throw new Error("Not recording")
+    }
+    return new Promise<void>((resolve, reject) => {
+      recorder.addEventListener(
+        "stop",
+        async () => {
+          try {
+            const duration = Date.now() - this.started
+            recorder.removeEventListener("dataavailable", this.listener!)
+            for (const track of recorder.stream.getTracks()) {
+              track.stop()
+            }
+            const blob = new Blob(this.chunks, { type: recorder.mimeType })
+            const mimeType = new MIMEType(recorder.mimeType)
+            this.blob = mimeType.subtype === "webm" ? await ysFixWebmDuration(blob, duration, { logger: false }) : blob
+            if (this.url) {
+              URL.revokeObjectURL(this.url)
+            }
+            this.url = URL.createObjectURL(this.blob)
+            resolve()
+          } catch (err) {
+            reject(err)
+          }
+        },
+        { once: true },
+      )
+      recorder.stop()
     })
   }
   public get src() {
-    return this.blob && URL.createObjectURL(this.blob)
+    return this.url
   }
 }
 

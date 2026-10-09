@@ -1,61 +1,41 @@
-import { expect, test } from "@playwright/test"
-import { getEditorContent, seekTo, selectTrace, waitForAceEditors } from "./fixtures"
+import { expect, getEditorValue, gotoDemo, seekTo, selectTrace, singleDemo, test } from "./fixtures"
+
+// Replay editor contents of the helloworld trace at positions chosen well away from any edit
+const EXPECTED: [number, string][] = [
+  [0, ""],
+  [20, "Hello"],
+  [30, ""],
+  [45, "world!"],
+  [70, "Hello"],
+  [100, "world!"],
+]
 
 test.describe("Seeking", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/")
-    await waitForAceEditors(page, 4)
+    await gotoDemo(page)
     await selectTrace(page, "helloworld")
   })
 
-  test("seek to 50%, editor content differs from initial", async ({ page }) => {
-    const initialContent = await getEditorContent(page, 1)
+  for (const [percent, content] of EXPECTED) {
+    test(`seek to ${percent}% shows the recorded content at that time`, async ({ page }) => {
+      const demo = singleDemo(page)
+      // Start from a different state so that the assertion proves the seek changed the editor
+      const [otherPercent, otherContent] = EXPECTED.find(([, c]) => c !== content)!
+      await seekTo(demo, otherPercent)
+      await expect.poll(() => getEditorValue(page, "single-replay")).toBe(otherContent)
 
-    await seekTo(page, 50)
-    await page.waitForTimeout(300)
-
-    const midContent = await getEditorContent(page, 1)
-    // Content at 50% should differ from initial (which is typically empty or start state)
-    // At minimum, editor should have some content at the midpoint
-    expect(midContent.length + initialContent.length).toBeGreaterThanOrEqual(0)
-  })
-
-  test("seek to 0%, verify initial state", async ({ page }) => {
-    // First seek to 50 to get away from start
-    await seekTo(page, 50)
-    await page.waitForTimeout(300)
-
-    // Then seek back to 0
-    await seekTo(page, 0)
-    await page.waitForTimeout(300)
-
-    const content = await getEditorContent(page, 1)
-    // At the very start, content should exist (at least initial Complete applies)
-    expect(typeof content).toBe("string")
-  })
-
-  test("seek to 100%, verify final state", async ({ page }) => {
-    await seekTo(page, 100)
-    await page.waitForTimeout(300)
-
-    const content = await getEditorContent(page, 1)
-    // At the end, the editor should have the full recording content
-    expect(content.length).toBeGreaterThan(0)
-  })
+      await seekTo(demo, percent)
+      await expect.poll(() => getEditorValue(page, "single-replay")).toBe(content)
+    })
+  }
 
   test("seek forward then backward", async ({ page }) => {
-    // Seek forward to 75%
-    await seekTo(page, 75)
-    await page.waitForTimeout(300)
-    const forwardContent = await getEditorContent(page, 1)
-
-    // Seek backward to 25%
-    await seekTo(page, 25)
-    await page.waitForTimeout(300)
-    const backwardContent = await getEditorContent(page, 1)
-
-    // Both states should be valid strings (the exact content depends on the recording)
-    expect(typeof forwardContent).toBe("string")
-    expect(typeof backwardContent).toBe("string")
+    const demo = singleDemo(page)
+    await seekTo(demo, 70)
+    await expect.poll(() => getEditorValue(page, "single-replay")).toBe("Hello")
+    await seekTo(demo, 45)
+    await expect.poll(() => getEditorValue(page, "single-replay")).toBe("world!")
+    await seekTo(demo, 30)
+    await expect.poll(() => getEditorValue(page, "single-replay")).toBe("")
   })
 })

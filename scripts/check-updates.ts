@@ -57,8 +57,8 @@ async function getPackageVersions(dir: string): Promise<Record<string, string>> 
 }
 
 async function runNcu(dir: string, apply: boolean, skipCooldown: boolean = false): Promise<Record<string, string>> {
+  const packageFile = join(dir, "package.json")
   try {
-    const packageFile = join(dir, "package.json")
     const args = ["--jsonUpgraded", "--packageFile", packageFile]
     if (apply) args.push("-u")
     if (skipCooldown) args.push("--cooldown", "0")
@@ -67,8 +67,10 @@ async function runNcu(dir: string, apply: boolean, skipCooldown: boolean = false
     const output = result.text().trim()
     if (!output || output === "{}") return {}
     return JSON.parse(output)
-  } catch {
-    return {}
+  } catch (err) {
+    const message = err instanceof $.ShellError ? err.stderr.toString().trim() || err.stdout.toString().trim() : err
+    console.error(`\n  ncu failed for ${packageFile}: ${message}`)
+    process.exit(1)
   }
 }
 

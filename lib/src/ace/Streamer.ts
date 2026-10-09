@@ -1,6 +1,7 @@
 import {
   AceRecord,
   Complete,
+  CompleteReasons,
   CursorChange,
   Delta,
   EditorLocation,
@@ -29,7 +30,7 @@ class AceStreamer {
     let beforeEndOperation = false
 
     const renderer = this.editor.renderer as any
-    let { width, height } = renderer.$size
+    const { width, height } = renderer.$size
     let lastWindowSize = WindowSize.check({
       width,
       height,
@@ -63,8 +64,6 @@ class AceStreamer {
       ) {
         return
       }
-      width = newWidth
-      height = newHeight
       lastWindowSize = windowSize
       callback(
         WindowSizeChange.check({
@@ -152,20 +151,10 @@ class AceStreamer {
       const triggeredByCursorChange = beforeEndOperation
       beforeEndOperation = false
 
-      let top = this.editor.renderer.getScrollTop()
-      if (top < 0) {
-        top = 0
-      }
-      if (top > height) {
-        top = height
-      }
-      let left = this.editor.renderer.getScrollLeft()
-      if (left < 0) {
-        left = 0
-      }
-      if (left > width) {
-        left = width
-      }
+      // Ace reports negative positions during overscroll. The upper bound is the document's scroll range, which the
+      // renderer already enforces, so it is not clamped here.
+      const top = Math.max(this.editor.renderer.getScrollTop(), 0)
+      const left = Math.max(this.editor.renderer.getScrollLeft(), 0)
       const scroll = ScrollPosition.check({ top, left })
       if (scroll.top === lastScroll.top && scroll.left === lastScroll.left) {
         return
@@ -216,6 +205,7 @@ class AceStreamer {
     this.editor.addEventListener("changeSelection", selectionListener)
     this.editor.addEventListener("changeSelection", cursorListener)
     this.editor.session.addEventListener("changeScrollTop", scrollListener)
+    this.editor.session.addEventListener("changeScrollTop", windowSizeListener)
     this.editor.renderer.addEventListener("resize", windowSizeListener)
     this.editor.addEventListener("changeSession", changeSessionListener)
     this.editor.addEventListener("beforeEndOperation", beforeEndListener)
@@ -226,10 +216,16 @@ class AceStreamer {
       this.editor.removeEventListener("beforeEndOperation", beforeEndListener)
       this.editor.removeEventListener("changeSession", changeSessionListener)
       this.editor.renderer.removeEventListener("resize", windowSizeListener)
+      this.editor.session.removeEventListener("changeScrollTop", windowSizeListener)
       this.editor.session.removeEventListener("changeScrollTop", scrollListener)
       this.editor.removeEventListener("changeSelection", cursorListener)
       this.editor.removeEventListener("changeSelection", selectionListener)
       this.editor.session.removeEventListener("change", changeListener)
+      // Drop pending trailing calls so they can't fire into a later recording
+      windowSizeListener.cancel()
+      selectionListener.cancel()
+      cursorListener.cancel()
+      scrollListener.cancel()
       callback(getComplete(this.editor, "end", this.sessionName, this._external))
 
       this.running = false
@@ -259,7 +255,7 @@ const compareSelections = (first: Selection, second: Selection): boolean =>
 
 export const getComplete = (
   editor: Ace.Editor,
-  reason: string,
+  reason: CompleteReasons,
   sessionName?: string,
   external?: Record<string, unknown>,
 ): Complete => {

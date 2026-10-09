@@ -3,6 +3,7 @@ import { dirname, resolve } from "path"
 import { fileURLToPath } from "url"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+const PORT = 3124
 
 export default defineConfig({
   testDir: "./tests",
@@ -12,7 +13,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: `http://localhost:${PORT}`,
     trace: "on-first-retry",
   },
   projects: [
@@ -26,11 +27,12 @@ export default defineConfig({
       },
     },
   ],
+  // Test against the static export rather than next dev, which avoids on-demand compilation races and the error overlay
   webServer: {
-    command: "bun run dev",
-    cwd: resolve(__dirname, "../demo"),
-    url: "http://localhost:3000",
+    command: `bun x turbo build --filter=demo && bun e2e/serve.ts demo/out ${PORT}`,
+    cwd: resolve(__dirname, ".."),
+    url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
-    timeout: 60000,
+    timeout: 180000,
   },
 })

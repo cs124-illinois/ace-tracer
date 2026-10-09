@@ -1,4 +1,4 @@
-// organize-imports-ignore
+// biome-ignore-all assist/source/organizeImports: import and export order is intentional
 import AceStreamer from "./ace/Streamer"
 import AcePlayer from "./ace/Player"
 import AceRecorder from "./ace/Recorder"
@@ -18,6 +18,7 @@ export {
   AudioRecorder,
   AudioRecordReplayer,
   MultiRecordReplayer,
+  RecordReplayer,
 }
 export default RecordReplayer
 

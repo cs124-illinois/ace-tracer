@@ -1,436 +1,156 @@
 /**
  * Audio-Editor Synchronization Integration Test
  *
- * Strategy: Generate a synthetic WAV with a known duration. Record editor changes at precise
- * wall-clock offsets (using real delays). Stop recording, producing both an audio blob and an
- * AceTrace. Then simulate playback by advancing the audio element's currentTime and firing
- * timeupdate events. At each position, verify the editor reflects the correct state.
- *
- * This tests the full pipeline: recording captures timestamps that align with audio duration,
- * and playback correctly maps audio time → editor state.
+ * Records editor changes and audio together through RecordReplayer, using the mock MediaRecorder (which produces
+ * real WAV or WebM bytes as long as the recording) and fake timers (so every offset is exact). Then replays the
+ * recording through the mock <audio>, which reads its duration from those bytes, checking the editor against the
+ * recorded timeline at each point.
  */
 
-import { AceRecord, Complete, Delta } from "@cs124/ace-recorder-types"
-import { describe, expect, test } from "bun:test"
+import { describe, expect, jest, test } from "bun:test"
+import { AceTrace, Complete, Delta } from "@cs124/ace-recorder-types"
 import RecordReplayer from "../src/RecordReplayer"
-import { createMockEditor } from "./fixtures/ace-mock"
-import { generateSilentWav } from "./fixtures/wav-generator"
+import { createMockEditor, MockEditor } from "./fixtures/ace-mock"
+import { installAudioMocks, MockAudioElement, useAudioMocks } from "./fixtures/audio-mock"
+import { settle, useFakeTimers } from "./fixtures/timers"
 
-/**
- * Sleep for a given number of milliseconds. Used to create real wall-clock gaps
- * between editor events so the streamer captures distinct timestamps.
- */
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
+const player = (rr: RecordReplayer) => rr.audio.player as unknown as MockAudioElement
+
+// Records one character typed at each of the given offsets, stopping stopMs after the start
+async function recordTyping(initial: string, offsetsMs: number[], chars: string, stopMs: number) {
+  const editor = createMockEditor(initial)
+  const rr = new RecordReplayer(editor as any, { recorderOptions: { completeInterval: 0 } })
+  await settle(rr.record())
+  let elapsed = 0
+  offsetsMs.forEach((offset, i) => {
+    jest.advanceTimersByTime(offset - elapsed)
+    elapsed = offset
+    const column = initial.length + i
+    editor.simulateChange({
+      action: "insert",
+      start: { row: 0, column },
+      end: { row: 0, column: column + 1 },
+      lines: [chars[i]],
+    })
+  })
+  jest.advanceTimersByTime(stopMs - elapsed)
+  await settle(rr.stop())
+  return { editor, rr }
+}
+
+const deltaOffsets = (trace: AceTrace) =>
+  trace.records
+    .filter((r) => Delta.guard(r))
+    .map((r) => new Date(r.timestamp).valueOf() - new Date(trace.startTime).valueOf())
+
+// The editor value at offsetMs according to the recording: the initial text plus every character typed by then
+const expectedAt = (initial: string, offsetsMs: number[], chars: string, offsetMs: number) =>
+  initial + chars.slice(0, offsetsMs.filter((offset) => offset <= offsetMs).length)
+
+// Plays ms of wall time, advancing the media clock in whole milliseconds along with the fake clock
+function playFor(rr: RecordReplayer, ms: number, stepMs: number, each?: () => void) {
+  for (let elapsed = 0; elapsed < ms; elapsed += stepMs) {
+    jest.advanceTimersByTime(stepMs)
+    if (!player(rr).paused) {
+      player(rr).advanceTo((Math.round(player(rr).currentTime * 1000) + stepMs * player(rr).playbackRate) / 1000)
+    }
+    each?.()
+  }
+}
+
+const seek = (rr: RecordReplayer, editor: MockEditor, seconds: number) => {
+  rr.currentTime = seconds
+  return editor.getValue()
 }
 
 describe("Audio-Editor sync integration", () => {
-  test("recorded editor changes align with audio timeline during playback", async () => {
-    const editor = createMockEditor("line0")
-    const rr = new RecordReplayer(editor as any)
+  useAudioMocks()
+  useFakeTimers()
 
-    // Generate a 3-second silent WAV as our audio source
-    const wavBlob = generateSilentWav(3000)
-    const audioUrl = URL.createObjectURL(wavBlob)
+  test("recording produces audio and an Ace trace of the same length", async () => {
+    const { rr } = await recordTyping("line0", [100, 200, 300], "abc", 350)
 
-    // --- RECORDING PHASE ---
-    // Install audio mocks so record() can call getUserMedia/MediaRecorder
-    const { installAudioMocks } = await import("./fixtures/audio-mock")
-    installAudioMocks()
+    const trace = rr.src!.ace!
+    expect(trace.records.map((r) => r.type)).toEqual(["complete", "delta", "delta", "delta", "complete"])
+    expect((trace.records[0] as Complete).reason).toBe("start")
+    expect((trace.records[4] as Complete).reason).toBe("end")
+    expect(deltaOffsets(trace)).toEqual([100, 200, 300])
+    expect(trace.duration).toBe(350)
+    expect(rr.duration).toBe(0.35)
+  })
 
-    await rr.record()
-    expect(rr.state).toBe("recording")
+  test("seeking shows the editor as it was at that point in the recording", async () => {
+    const offsets = [100, 250, 400]
+    const { editor, rr } = await recordTyping("", offsets, "XYZ", 450)
+    // Loading the recording leaves the editor showing the final text
+    expect(editor.getValue()).toBe("XYZ")
 
-    // Simulate editor changes at ~100ms intervals
-    // Each change appends a character, creating a timeline:
-    // t≈0ms: "line0" (initial)
-    // t≈100ms: "line0a" (first edit)
-    // t≈200ms: "line0ab" (second edit)
-    // t≈300ms: "line0abc" (third edit)
-    const editTimes: number[] = []
-    const recordedRecords: AceRecord[] = []
-    rr.ace.recorder.on("record", (r) => recordedRecords.push(r))
+    for (const ms of [0, 99, 100, 249, 250, 399, 400, 450, 120, 0]) {
+      expect(seek(rr, editor, ms / 1000)).toBe(expectedAt("", offsets, "XYZ", ms))
+    }
+  })
 
-    const recordStart = Date.now()
+  test("continuous playback applies each edit as the audio reaches it", async () => {
+    const offsets = [80, 160, 240, 320]
+    const { editor, rr } = await recordTyping("", offsets, "ABCD", 370)
+    rr.currentTime = 0
+    const seen: string[] = []
 
-    await sleep(100)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 5 },
-      end: { row: 0, column: 6 },
-      lines: ["a"],
+    await rr.play()
+    playFor(rr, 360, 20, () => {
+      const ms = Math.round(rr.currentTime * 1000)
+      expect(editor.getValue()).toBe(expectedAt("", offsets, "ABCD", ms))
+      seen.push(editor.getValue())
     })
-    editTimes.push(Date.now() - recordStart)
 
-    await sleep(100)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 6 },
-      end: { row: 0, column: 7 },
-      lines: ["b"],
-    })
-    editTimes.push(Date.now() - recordStart)
+    expect([...new Set(seen)]).toEqual(["", "A", "AB", "ABC", "ABCD"])
+    expect(rr.state).toBe("playing")
 
-    await sleep(100)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 7 },
-      end: { row: 0, column: 8 },
-      lines: ["c"],
-    })
-    editTimes.push(Date.now() - recordStart)
-
-    await sleep(50)
-    await rr.stop()
+    // At the end the audio ends and playback rewinds
+    playFor(rr, 20, 20)
     expect(rr.state).toBe("paused")
+    expect(rr.currentTime).toBe(0)
+    expect(editor.getValue()).toBe("")
+  })
 
-    // --- VERIFICATION: Recording produced valid data ---
-    const aceTrace = rr.ace.src!
-    expect(aceTrace).toBeDefined()
-    expect(aceTrace.records.length).toBeGreaterThanOrEqual(5) // start + 3 deltas + end at minimum
-
-    // First record is Complete "start", last is Complete "end"
-    expect(Complete.guard(aceTrace.records[0])).toBe(true)
-    expect((aceTrace.records[0] as Complete).reason).toBe("start")
-    expect(Complete.guard(aceTrace.records[aceTrace.records.length - 1])).toBe(true)
-    expect((aceTrace.records[aceTrace.records.length - 1] as Complete).reason).toBe("end")
-
-    // Delta records exist
-    const deltas = aceTrace.records.filter((r) => Delta.guard(r))
-    expect(deltas.length).toBe(3)
-
-    // Trace duration should approximately match recording wall-clock time
-    expect(aceTrace.duration).toBeGreaterThan(200) // at least 200ms
-    expect(aceTrace.duration).toBeLessThan(2000) // well under 2s
-
-    // --- PLAYBACK VERIFICATION ---
-    // Load the recorded trace + synthetic audio for playback
-    rr.src = { ace: aceTrace, audio: audioUrl }
-
-    // Set audio duration to match (happy-dom's Audio won't parse WAV)
-    Object.defineProperty(rr.audio.player, "duration", {
-      value: aceTrace.duration / 1000,
-      writable: true,
-    })
-
-    // Reset editor to blank state to verify playback restores it
-    editor.session.setValue("")
-
-    // Seek to time 0 and sync — should restore initial state ("line0")
+  test("playback at double speed reaches each edit in half the time", async () => {
+    const offsets = [80, 160, 240, 320]
+    const { editor, rr } = await recordTyping("", offsets, "ABCD", 400)
     rr.currentTime = 0
-    rr.ace.sync()
-    expect(editor.session.getValue()).toBe("line0")
+    rr.playbackRate = 2
 
-    // Seek to end — should show final state with all edits
-    const endTime = aceTrace.duration / 1000
-    rr.currentTime = endTime
-    rr.ace.sync()
-    expect(editor.session.getValue()).toBe("line0abc")
+    await rr.play()
+    playFor(rr, 80, 20)
+    expect(rr.currentTime).toBe(0.16)
+    expect(editor.getValue()).toBe("AB")
 
-    URL.revokeObjectURL(audioUrl)
+    playFor(rr, 80, 20)
+    expect(editor.getValue()).toBe("ABCD")
   })
 
-  test("editor state at intermediate seek points matches recording timeline", async () => {
-    const editor = createMockEditor("")
-    const rr = new RecordReplayer(editor as any)
+  test("click track: edits at regular intervals replay at the same intervals", async () => {
+    const clicks = [80, 160, 240, 320, 400]
+    const { editor, rr } = await recordTyping("", clicks, "ABCDE", 450)
 
-    const { installAudioMocks } = await import("./fixtures/audio-mock")
-    installAudioMocks()
-
-    await rr.record()
-
-    // Change 1: set value at ~100ms
-    await sleep(100)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 0 },
-      end: { row: 0, column: 1 },
-      lines: ["X"],
+    expect(deltaOffsets(rr.src!.ace!)).toEqual(clicks)
+    clicks.forEach((click, i) => {
+      expect(seek(rr, editor, (click + 5) / 1000)).toBe("ABCDE".slice(0, i + 1))
+      expect(seek(rr, editor, (click - 5) / 1000)).toBe("ABCDE".slice(0, i))
     })
-
-    // Change 2: set value at ~250ms
-    await sleep(150)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 1 },
-      end: { row: 0, column: 2 },
-      lines: ["Y"],
-    })
-
-    // Change 3: set value at ~400ms
-    await sleep(150)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 2 },
-      end: { row: 0, column: 3 },
-      lines: ["Z"],
-    })
-
-    await sleep(50)
-    await rr.stop()
-
-    const aceTrace = rr.ace.src!
-    const traceDurationSec = aceTrace.duration / 1000
-
-    // Load for playback
-    const wavBlob = generateSilentWav(Math.ceil(aceTrace.duration))
-    const audioUrl = URL.createObjectURL(wavBlob)
-    rr.src = { ace: aceTrace, audio: audioUrl }
-    Object.defineProperty(rr.audio.player, "duration", {
-      value: traceDurationSec,
-      writable: true,
-    })
-
-    // Get delta timestamps relative to start
-    const deltaTimes = aceTrace.records
-      .filter((r) => Delta.guard(r))
-      .map((r) => new Date(r.timestamp).valueOf() - new Date(aceTrace.startTime).valueOf())
-
-    expect(deltaTimes).toHaveLength(3)
-
-    // Seek to just before first delta — editor should be empty
-    const beforeFirstEdit = Math.max(0, deltaTimes[0] - 20) / 1000
-    rr.currentTime = beforeFirstEdit
-    rr.ace.sync()
-    expect(editor.session.getValue()).toBe("")
-
-    // Seek to just after first delta — editor should have "X"
-    const afterFirstEdit = (deltaTimes[0] + 10) / 1000
-    if (afterFirstEdit <= traceDurationSec + 0.1) {
-      rr.currentTime = afterFirstEdit
-      rr.ace.sync()
-      expect(editor.session.getValue()).toBe("X")
-    }
-
-    // Seek to just after second delta — editor should have "XY"
-    const afterSecondEdit = (deltaTimes[1] + 10) / 1000
-    if (afterSecondEdit <= traceDurationSec + 0.1) {
-      rr.currentTime = afterSecondEdit
-      rr.ace.sync()
-      expect(editor.session.getValue()).toBe("XY")
-    }
-
-    // Seek to end — all edits applied
-    rr.currentTime = traceDurationSec
-    rr.ace.sync()
-    expect(editor.session.getValue()).toBe("XYZ")
-
-    URL.revokeObjectURL(audioUrl)
+    expect(seek(rr, editor, 0)).toBe("")
+    expect(seek(rr, editor, 0.45)).toBe("ABCDE")
   })
 
-  test("timeupdate-driven sync keeps editor aligned with audio position", async () => {
-    const editor = createMockEditor("start")
-    const rr = new RecordReplayer(editor as any)
+  test("a WebM recording gets its duration patched in, so it matches the trace", async () => {
+    // Without fix-webm-duration the browser reports an infinite duration for MediaRecorder WebM files
+    installAudioMocks({ mimeType: "audio/webm" })
+    const { editor, rr } = await recordTyping("", [100], "A", 300)
 
-    const { installAudioMocks } = await import("./fixtures/audio-mock")
-    installAudioMocks()
-
-    await rr.record()
-
-    // Record a series of edits at known times
-    await sleep(100)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 5 },
-      end: { row: 0, column: 6 },
-      lines: ["1"],
-    })
-
-    await sleep(100)
-    editor.simulateChange({
-      action: "insert",
-      start: { row: 0, column: 6 },
-      end: { row: 0, column: 7 },
-      lines: ["2"],
-    })
-
-    await sleep(50)
-    await rr.stop()
-
-    const aceTrace = rr.ace.src!
-    const traceDurationSec = aceTrace.duration / 1000
-
-    // Load for playback
-    const wavBlob = generateSilentWav(Math.ceil(aceTrace.duration))
-    const audioUrl = URL.createObjectURL(wavBlob)
-    rr.src = { ace: aceTrace, audio: audioUrl }
-    Object.defineProperty(rr.audio.player, "duration", {
-      value: traceDurationSec,
-      writable: true,
-    })
-
-    // Simulate audio timeupdate events at various positions
-    // First, manually position at start
-    rr.currentTime = 0
-    rr.ace.sync()
-    const stateAt0 = editor.session.getValue()
-    expect(stateAt0).toBe("start")
-
-    // Simulate audio jumping ahead (exceeding tolerance)
-    // This mimics what happens during real playback when audio advances
-    rr.audio.player.currentTime = traceDurationSec
-    rr.ace.currentTime = 0 // ace is behind
-
-    // Fire timeupdate — should sync ace to audio position
-    rr.audio.player.dispatchEvent(new Event("timeupdate"))
-
-    // After sync, ace should be close to audio time
-    const aceTime = rr.ace.currentTime
-    expect(Math.abs(aceTime - traceDurationSec)).toBeLessThan(1)
-
-    URL.revokeObjectURL(audioUrl)
-  })
-
-  test("continuous playback applies records at correct times", async () => {
-    const editor = createMockEditor("")
-    const rr = new RecordReplayer(editor as any)
-
-    const { installAudioMocks } = await import("./fixtures/audio-mock")
-    installAudioMocks()
-
-    await rr.record()
-
-    // Record edits at known intervals
-    const INTERVAL = 80
-    const CHARS = ["A", "B", "C", "D"]
-
-    for (let i = 0; i < CHARS.length; i++) {
-      await sleep(INTERVAL)
-      editor.simulateChange({
-        action: "insert",
-        start: { row: 0, column: i },
-        end: { row: 0, column: i + 1 },
-        lines: [CHARS[i]],
-      })
-    }
-
-    await sleep(50)
-    await rr.stop()
-
-    const aceTrace = rr.ace.src!
-    const traceDurationSec = aceTrace.duration / 1000
-
-    const wavBlob = generateSilentWav(Math.ceil(aceTrace.duration))
-    const audioUrl = URL.createObjectURL(wavBlob)
-    rr.src = { ace: aceTrace, audio: audioUrl }
-    Object.defineProperty(rr.audio.player, "duration", {
-      value: traceDurationSec,
-      writable: true,
-    })
-
-    // Get delta timestamps
-    const deltaOffsets = aceTrace.records
-      .filter((r) => Delta.guard(r))
-      .map((r) => new Date(r.timestamp).valueOf() - new Date(aceTrace.startTime).valueOf())
-
-    expect(deltaOffsets).toHaveLength(CHARS.length)
-
-    // Simulate continuous playback by stepping through timeupdates
-    const stepMs = 20
-    let lastExpectedValue = ""
-
-    for (let t = 0; t <= aceTrace.duration; t += stepMs) {
-      const timeSec = t / 1000
-      if (timeSec > traceDurationSec + 0.1) break
-
-      rr.currentTime = timeSec
-      rr.ace.sync()
-
-      // Determine expected value at this time
-      let expected = ""
-      for (let i = 0; i < deltaOffsets.length; i++) {
-        if (t >= deltaOffsets[i]) {
-          expected += CHARS[i]
-        }
-      }
-
-      const actual = editor.session.getValue()
-      // Editor state should match expected at this point in time
-      expect(actual).toBe(expected)
-      lastExpectedValue = expected
-    }
-
-    // Final state should have all characters
-    expect(lastExpectedValue).toBe("ABCD")
-
-    URL.revokeObjectURL(audioUrl)
-  })
-
-  test("click-track pattern: edits at precise intervals produce deterministic playback", async () => {
-    const editor = createMockEditor("")
-    const rr = new RecordReplayer(editor as any)
-
-    const { installAudioMocks } = await import("./fixtures/audio-mock")
-    installAudioMocks()
-
-    // Record edits at regular "click" intervals
-    const CLICK_INTERVAL = 80 // ms between clicks
-    const NUM_CLICKS = 5
-
-    await rr.record()
-
-    for (let i = 0; i < NUM_CLICKS; i++) {
-      await sleep(CLICK_INTERVAL)
-      const char = String.fromCharCode(65 + i) // A, B, C, D, E
-      editor.simulateChange({
-        action: "insert",
-        start: { row: 0, column: i },
-        end: { row: 0, column: i + 1 },
-        lines: [char],
-      })
-    }
-
-    await sleep(50)
-    await rr.stop()
-
-    const aceTrace = rr.ace.src!
-    const traceDurationSec = aceTrace.duration / 1000
-
-    // Load for playback
-    const wavBlob = generateSilentWav(Math.ceil(aceTrace.duration))
-    const audioUrl = URL.createObjectURL(wavBlob)
-    rr.src = { ace: aceTrace, audio: audioUrl }
-    Object.defineProperty(rr.audio.player, "duration", {
-      value: traceDurationSec,
-      writable: true,
-    })
-
-    // Get each delta's timestamp
-    const deltas = aceTrace.records.filter((r) => Delta.guard(r)) as Delta[]
-    expect(deltas).toHaveLength(NUM_CLICKS)
-
-    const deltaOffsets = deltas.map((d) => new Date(d.timestamp).valueOf() - new Date(aceTrace.startTime).valueOf())
-
-    // Verify deltas are spaced roughly CLICK_INTERVAL apart (with some jitter tolerance)
-    for (let i = 1; i < deltaOffsets.length; i++) {
-      const gap = deltaOffsets[i] - deltaOffsets[i - 1]
-      expect(gap).toBeGreaterThan(CLICK_INTERVAL * 0.5)
-      expect(gap).toBeLessThan(CLICK_INTERVAL * 3)
-    }
-
-    // Seek to each click point and verify progressive editor state
-    for (let i = 0; i < NUM_CLICKS; i++) {
-      const seekTime = (deltaOffsets[i] + 5) / 1000 // just after the delta
-      if (seekTime > traceDurationSec + 0.1) break
-
-      rr.currentTime = seekTime
-      rr.ace.sync()
-
-      const expected = "ABCDE".substring(0, i + 1)
-      const actual = editor.session.getValue()
-      expect(actual).toBe(expected)
-    }
-
-    // Seek back to start — should be empty
-    rr.currentTime = 0
-    rr.ace.sync()
-    expect(editor.session.getValue()).toBe("")
-
-    // Seek to end — should have all clicks
-    rr.currentTime = traceDurationSec
-    rr.ace.sync()
-    expect(editor.session.getValue()).toBe("ABCDE")
-
-    URL.revokeObjectURL(audioUrl)
+    expect(rr.audio.recorder.blob!.type).toBe("audio/webm")
+    expect(rr.ace.duration).toBe(0.3)
+    // AudioRecorder times the recording itself, ending when MediaRecorder's stop event arrives, a tick after Ace stops
+    expect(rr.duration).toBeCloseTo(0.3, 2)
+    expect(seek(rr, editor, 0.05)).toBe("")
+    expect(seek(rr, editor, 0.15)).toBe("A")
   })
 })

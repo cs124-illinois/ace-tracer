@@ -1,5 +1,5 @@
 import { Ace, MultiRecordReplayer } from "@cs124/ace-recorder"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createTimeModel, useTimeModel } from "react-compound-timer"
 import DefaultAceEditor from "./DefaultAceEditor"
 import PlayerControls from "./PlayerControls"
@@ -16,30 +16,36 @@ const RecordingTimer: React.FC = () => {
 
 const Demo: React.FC = () => {
   const editors = useRef<Record<string, Ace.Editor>>({})
+  const initialized = useRef(false)
 
-  const recordReplayer = useRef<MultiRecordReplayer | undefined>(undefined)
-  const [loaded, setLoaded] = useState(false)
+  const [recordReplayer, setRecordReplayer] = useState<MultiRecordReplayer | undefined>()
   const [state, setState] = useState<MultiRecordReplayer.State>("paused")
 
   const finishInitialization = useCallback(() => {
-    if (Object.keys(editors.current).length !== 2) {
+    if (initialized.current || Object.keys(editors.current).length !== 2) {
       return
     }
-    const newRecordReplayer = new MultiRecordReplayer(editors.current)
-    newRecordReplayer.addStateListener((state) => {
-      setState(state)
-    })
-    recordReplayer.current = newRecordReplayer
-    setLoaded(true)
+    initialized.current = true
+    setRecordReplayer(new MultiRecordReplayer(editors.current))
   }, [])
 
+  useEffect(() => {
+    if (!recordReplayer) {
+      return
+    }
+    const listener = (s: MultiRecordReplayer.State) => setState(s)
+    recordReplayer.addStateListener(listener)
+    return () => recordReplayer.removeStateListener(listener)
+  }, [recordReplayer])
+
   return (
-    <>
+    <div data-testid="multi-demo">
       <p>Use the record button to start recording, and play to replay when you are finished.</p>
-      {loaded && <PlayerControls recordReplayer={recordReplayer.current!} />}
+      {recordReplayer && <PlayerControls recordReplayer={recordReplayer} />}
       <div style={{ display: "flex" }}>{state === "recording" && <RecordingTimer />}</div>
 
       <DefaultAceEditor
+        name="multi-first"
         onLoad={(ace) => {
           editors.current["First.java"] = ace
           finishInitialization()
@@ -47,12 +53,13 @@ const Demo: React.FC = () => {
       />
 
       <DefaultAceEditor
+        name="multi-second"
         onLoad={(ace) => {
           editors.current["Second.java"] = ace
           finishInitialization()
         }}
       />
-    </>
+    </div>
   )
 }
 export default Demo

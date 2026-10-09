@@ -143,14 +143,22 @@ export const WindowSizeChange = RuntypeRecord({
   type: Literal("windowsizechange"),
   timestamp: AceTimestamp,
   focused: Boolean,
+  width: Number,
+  height: Number,
   rows: Number,
+  fontSize: Number,
+  lineHeight: Number,
 })
 export type WindowSizeChange = Static<typeof WindowSizeChange>
 
 export const ExternalChange = RuntypeRecord({
   type: Literal("external"),
   timestamp: AceTimestamp,
-})
+}).And(
+  Partial({
+    external: Dictionary(Unknown),
+  }),
+)
 export type ExternalChange = Static<typeof ExternalChange>
 
 export const AceRecord = Union(
@@ -195,7 +203,7 @@ export class AceTrace {
       throw new Error("Session names must not be blank")
     }
     if (!sessionInfo.find(({ name }) => name === sessionName)) {
-      throw new Error("Must set sessionName when trace includes multiple sessions")
+      throw new Error(`sessionName "${sessionName}" does not match any session in sessionInfo`)
     }
     this.sessionInfo = sessionInfo
     this.sessionName = sessionName
@@ -221,7 +229,9 @@ export interface IRecordReplayer {
   record: () => Promise<void>
   stop: () => Promise<void>
   addStateListener: (listener: (state: IRecordReplayer.State) => void) => void
-  addEventListener: (listener: (state: IRecordReplayer.Event) => void) => void
+  removeStateListener: (listener: (state: IRecordReplayer.State) => void) => void
+  addEventListener: (listener: (event: IRecordReplayer.Event) => void) => void
+  removeEventListener: (listener: (event: IRecordReplayer.Event) => void) => void
 }
 export namespace IRecordReplayer {
   export type State = "paused" | "playing" | "recording"

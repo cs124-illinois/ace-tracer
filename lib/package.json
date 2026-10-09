@@ -1,6 +1,6 @@
 {
   "name": "@cs124/ace-recorder",
-  "version": "2026.2.0",
+  "version": "2026.10.0",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -8,9 +8,9 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "lint": "bunx eslint --max-warnings 0 .",
+    "lint": "oxlint --max-warnings 0 .",
     "test": "bun test",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit && tsc -p tsconfig.test.json"
   },
   "dependencies": {
     "@cs124/ace-recorder-types": "workspace:*",
@@ -24,12 +24,13 @@
     "runtypes": ">= 6"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^20.8.3",
-    "@types/node": "25.5.0",
+    "@happy-dom/global-registrator": "20.14.5",
+    "@types/bun": "1.4.2",
+    "@types/node": "26.6.4",
     "@types/throttle-debounce": "5.0.2",
     "@types/whatwg-mimetype": "5.0.0",
-    "ace-builds": "1.43.6",
-    "happy-dom": "^20.8.3",
+    "ace-builds": "1.44.0",
+    "happy-dom": "20.14.5",
     "runtypes": "6.7.0"
   }
 }

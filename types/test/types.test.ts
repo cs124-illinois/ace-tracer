@@ -6,11 +6,11 @@ import {
   Complete,
   CursorChange,
   Delta,
+  deserializeAceRecordTimestamp,
   ExternalChange,
   ScrollChange,
   SelectionChange,
   WindowSizeChange,
-  deserializeAceRecordTimestamp,
 } from "../src/index"
 
 const baseTimestamp = new Date("2025-01-15T10:00:00Z")
@@ -104,8 +104,8 @@ describe("Complete", () => {
   })
 
   test("validates all reason types", () => {
-    for (const reason of ["start", "timer", "end", "manual", "session", "counter"]) {
-      const record = makeValidComplete({ reason: reason as any })
+    for (const reason of ["start", "timer", "end", "manual", "session", "counter"] as const) {
+      const record = makeValidComplete({ reason })
       expect(record.reason).toBe(reason)
     }
   })
@@ -257,9 +257,19 @@ describe("WindowSizeChange", () => {
       type: "windowsizechange",
       timestamp: baseTimestamp,
       focused: true,
+      width: 800,
+      height: 600,
       rows: 25,
+      fontSize: 14,
+      lineHeight: 18,
     })
     expect(record.rows).toBe(25)
+  })
+
+  test("rejects a window size change without its dimensions", () => {
+    expect(() =>
+      WindowSizeChange.check({ type: "windowsizechange", timestamp: baseTimestamp, focused: true, rows: 25 }),
+    ).toThrow()
   })
 })
 
@@ -270,6 +280,21 @@ describe("ExternalChange", () => {
       timestamp: baseTimestamp,
     })
     expect(record.type).toBe("external")
+    expect(record.external).toBeUndefined()
+  })
+
+  test("accepts an external dictionary", () => {
+    const record = ExternalChange.check({
+      type: "external",
+      timestamp: baseTimestamp,
+      external: { step: 2, label: "loop", nested: { done: false } },
+    })
+    expect(record.external).toEqual({ step: 2, label: "loop", nested: { done: false } })
+  })
+
+  test("rejects an external that isn't a dictionary", () => {
+    expect(ExternalChange.guard({ type: "external", timestamp: baseTimestamp, external: "step 2" })).toBe(false)
+    expect(ExternalChange.guard({ type: "external", timestamp: baseTimestamp, external: 2 })).toBe(false)
   })
 })
 
@@ -296,6 +321,8 @@ describe("AceRecord union", () => {
       }),
     ).toBe(true)
     expect(AceRecord.guard({ type: "external", timestamp: baseTimestamp })).toBe(true)
+    expect(AceRecord.guard({ type: "external", timestamp: baseTimestamp, external: { step: 1 } })).toBe(true)
+    expect(AceRecord.guard({ type: "external", timestamp: baseTimestamp, external: "step 1" })).toBe(false)
   })
 
   test("rejects unknown type", () => {
@@ -344,7 +371,7 @@ describe("AceTrace", () => {
   test("throws when sessionName doesn't match sessionInfo", () => {
     const records = makeRecords(2)
     expect(() => new AceTrace(records, sessionInfo, "nonexistent")).toThrow(
-      "Must set sessionName when trace includes multiple sessions",
+      `sessionName "nonexistent" does not match any session in sessionInfo`,
     )
   })
 

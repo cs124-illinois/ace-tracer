@@ -11,8 +11,8 @@
     "build": "turbo build",
     "check": "turbo lint tsc && bun run format",
     "clean": "turbo clean && rm -rf node_modules",
-    "format": "prettier --write --log-level warn .",
-    "format:check": "prettier --check .",
+    "format": "biome check --write . && prettier --write --log-level warn \"**/*.{md,mdx,yaml,yml}\"",
+    "format:check": "biome check . && prettier --check \"**/*.{md,mdx,yaml,yml}\"",
     "lint": "turbo lint",
     "ncu": "bun run scripts/check-updates.ts",
     "ncu:apply": "bun run scripts/check-updates.ts --apply",
@@ -22,17 +22,12 @@
     "tsc": "turbo tsc"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
-    "@playwright/test": "^1.58.2",
-    "eslint": "10.1.0",
-    "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-react-hooks": "7.0.1",
-    "prettier": "3.8.1",
-    "prettier-plugin-organize-imports": "4.3.0",
-    "turbo": "^2.8.20",
-    "typescript": "6.0.2",
-    "typescript-eslint": "8.57.2"
+    "@biomejs/biome": "2.5.15",
+    "@playwright/test": "1.63.0",
+    "oxlint": "1.87.0",
+    "prettier": "3.9.9",
+    "turbo": "2.11.7",
+    "typescript": "7.0.2"
   },
-  "packageManager": "bun@1.3.11"
+  "packageManager": "bun@1.4.2"
 }

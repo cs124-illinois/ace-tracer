@@ -1,94 +1,115 @@
-import { expect, test } from "@playwright/test"
-import { getEditorContent, waitForAceEditors } from "./fixtures"
+import {
+  expect,
+  getEditorValue,
+  gotoDemo,
+  multiDemo,
+  playButton,
+  recordButton,
+  seekSlider,
+  singleDemo,
+  test,
+} from "./fixtures"
+
+type AceEditor = { getValue: () => string; on: (event: "change", listener: () => void) => void }
 
 test.describe("Recording", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/")
-    await waitForAceEditors(page, 4)
+    await gotoDemo(page)
   })
 
   test("click Record, verify state changes", async ({ page }) => {
-    // Click Record on the multi demo (last Record button to avoid audio permission issues)
-    const recordButtons = page.locator("button", { hasText: "Record" })
-    const multiRecordButton = recordButtons.last()
-    await multiRecordButton.click()
-
-    // Button should change to Stop
-    await expect(page.locator("button", { hasText: "Stop" }).last()).toBeVisible({ timeout: 3000 })
+    const demo = multiDemo(page)
+    await recordButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Stop")
+    await expect(recordButton(demo)).toBeDisabled()
+    await expect(seekSlider(demo)).toBeDisabled()
   })
 
   test("type in editor during recording", async ({ page }) => {
-    // Use multi demo (no audio permissions needed)
-    const recordButtons = page.locator("button", { hasText: "Record" })
-    await recordButtons.last().click()
+    const demo = multiDemo(page)
+    await recordButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Stop")
 
-    // Wait for recording to start
-    await expect(page.locator("button", { hasText: "Stop" }).last()).toBeVisible({ timeout: 3000 })
-
-    // Type in the third ace editor (first editor of multi demo, index 2)
-    const editor = page.locator(".ace_editor").nth(2)
-    await editor.click()
+    await page.locator("#multi-first").click()
     await page.keyboard.type("hello test", { delay: 50 })
-
-    // Verify content was typed
-    const content = await getEditorContent(page, 2)
-    expect(content).toContain("hello test")
+    expect(await getEditorValue(page, "multi-first")).toBe("hello test")
   })
 
-  test("click Stop, verify returns to paused", async ({ page }) => {
-    // Use multi demo
-    const recordButtons = page.locator("button", { hasText: "Record" })
-    await recordButtons.last().click()
+  test("click Stop, verify returns to paused with something to play", async ({ page }) => {
+    const demo = multiDemo(page)
+    await recordButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Stop")
 
-    await expect(page.locator("button", { hasText: "Stop" }).last()).toBeVisible({ timeout: 3000 })
-
-    // Type something
-    const editor = page.locator(".ace_editor").nth(2)
-    await editor.click()
+    await page.locator("#multi-first").click()
     await page.keyboard.type("test", { delay: 50 })
 
-    // Wait a moment for recording to have some duration
-    await page.waitForTimeout(500)
-
-    // Stop recording
-    await page.locator("button", { hasText: "Stop" }).last().click()
-
-    // Should return to paused state (Play button visible again)
-    await expect(page.locator("button", { hasText: "Play" }).last()).toBeVisible({ timeout: 3000 })
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Play")
+    await expect(playButton(demo)).toBeEnabled()
+    await expect(recordButton(demo)).toBeEnabled()
+    await expect(seekSlider(demo)).toBeEnabled()
   })
 
-  test("play after recording shows recorded content", async ({ page }) => {
-    // Use multi demo
-    const recordButtons = page.locator("button", { hasText: "Record" })
-    await recordButtons.last().click()
+  test("play after recording replays recorded content", async ({ page }) => {
+    const demo = multiDemo(page)
+    await recordButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Stop")
 
-    await expect(page.locator("button", { hasText: "Stop" }).last()).toBeVisible({ timeout: 3000 })
-
-    // Type in editor
-    const editor = page.locator(".ace_editor").nth(2)
-    await editor.click()
+    await page.locator("#multi-first").click()
     await page.keyboard.type("recorded text", { delay: 30 })
+    expect(await getEditorValue(page, "multi-first")).toBe("recorded text")
 
-    await page.waitForTimeout(500)
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Play")
+    await expect(playButton(demo)).toBeEnabled()
 
-    // Stop recording
-    await page.locator("button", { hasText: "Stop" }).last().click()
-    await expect(page.locator("button", { hasText: "Play" }).last()).toBeVisible({ timeout: 3000 })
+    // Clear the editor so that only playback can bring the recorded text back
+    await page.locator("#multi-first").click()
+    await page.keyboard.press("ControlOrMeta+A")
+    await page.keyboard.press("Backspace")
+    expect(await getEditorValue(page, "multi-first")).toBe("")
 
-    // Play the recording
-    await page.locator("button", { hasText: "Play" }).last().click()
+    // Playback resets to the start when it ends, so collect every value the editor passes through
+    await page.locator("#multi-first").evaluate((element) => {
+      const editor = (element as unknown as { env: { editor: AceEditor } }).env.editor
+      const seen = new Set<string>()
+      ;(window as unknown as { seenValues: Set<string> }).seenValues = seen
+      editor.on("change", () => seen.add(editor.getValue()))
+    })
+    const seenValues = () =>
+      page.evaluate(() => Array.from((window as unknown as { seenValues: Set<string> }).seenValues))
 
-    // Wait for some playback
-    await page.waitForTimeout(1000)
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Pause")
+    await expect(playButton(demo)).toHaveText("Play", { timeout: 10000 })
+    const values = await seenValues()
+    expect(values).toContain("recorded text")
+    // Partial text shows the typing itself was replayed, not just a final snapshot
+    expect(values.some((value) => value !== "" && value !== "recorded text" && "recorded text".startsWith(value))).toBe(
+      true,
+    )
+  })
+})
 
-    // The editor should show content from the recording
-    const content = await getEditorContent(page, 2)
-    expect(content.length).toBeGreaterThan(0)
+test.describe("Single demo recording", () => {
+  test("recording streams records without timer snapshots and enables Play", async ({ page }) => {
+    await gotoDemo(page)
+    const demo = singleDemo(page)
+    await recordButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Stop")
+    await expect(demo.locator("select#language")).toBeDisabled()
 
-    // Pause to clean up
-    const pauseButton = page.locator("button", { hasText: "Pause" }).last()
-    if (await pauseButton.isVisible()) {
-      await pauseButton.click()
-    }
+    await page.locator("#single-record").click()
+    await page.keyboard.type("abc", { delay: 50 })
+    const records = demo.getByTestId("records").locator("pre")
+    await expect(records.filter({ hasText: '"type": "delta"' })).toHaveCount(3)
+    // The recording timer passing 0:02 means at least one timer snapshot (1000ms interval) has been recorded
+    await expect(demo.getByText("0:02")).toBeVisible({ timeout: 5000 })
+    await expect(records.filter({ hasText: '"reason": "timer"' })).toHaveCount(0)
+
+    await playButton(demo).click()
+    await expect(playButton(demo)).toHaveText("Play")
+    await expect(playButton(demo)).toBeEnabled()
+    await expect(seekSlider(demo)).toBeEnabled()
   })
 })
